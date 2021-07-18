@@ -3,8 +3,9 @@
     <!-- echo out the system feedback (error and success messages) -->
     <?php $this->renderFeedbackMessages(); ?>
 
-    <div>
-        <div style="margin: 0 auto; width:90%">
+    <div class="row">
+    <div class="col-md-3"></div>
+        <div class="col-md-6">
 
             <!-- login box on left side -->
             <div>
