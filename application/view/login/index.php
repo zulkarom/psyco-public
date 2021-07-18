@@ -1,4 +1,4 @@
-<div class="container">
+
 
     <!-- echo out the system feedback (error and success messages) -->
     <?php $this->renderFeedbackMessages(); ?>
@@ -35,7 +35,7 @@
 				<div class="form-group">
 				<label for="user_name">NRIC/PASSPORT NO.:</label>
 				
-				<input type="text" name="user_name"  class="form-control" required />
+				<input type="text" name="user_name"  class="form-control input-lg" required />
 				</div>
       
 					<input type="hidden" name="csrf_token" value="<?= Csrf::makeToken(); ?>" />
@@ -65,20 +65,20 @@
                 <div class="form-group">
 				<label for="user_name">NAMA / NAME.:</label>
 				
-				<input type="text" name="fullname"  class="form-control" required />
+				<input type="text" name="fullname"  class="form-control input-lg" required />
 				</div>
 
 				
 				<div class="form-group">
 				<label for="user_name">NRIC/PASSPORT NO.:</label>
 				
-				<input type="text" name="username"  class="form-control" required />
+				<input type="text" name="username"  class="form-control input-lg" required />
 				</div>
 				
 				<div class="form-group">
 				<label for="user_name">JABATAN / DEPARTMENT:</label>
 				
-				<input type="text" name="department"  class="form-control" required />
+				<input type="text" name="department"  class="form-control input-lg" required />
 				</div>
 				
        
@@ -114,4 +114,4 @@
 
         </div>
     </div>
-</div>
+
