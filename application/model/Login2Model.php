@@ -131,7 +131,7 @@ class Login2Model
 		$result = UserModel::getStudentDataByLogin($matrik, $ic);
         if (!$result){
             self::incrementUserNotFoundCounter();
-            Session::add('feedback_negative', 'Candidate Data Not Found');
+            Session::add('feedback_negative', 'User Data Not Found');
 			return false;
 		}
 		
@@ -161,7 +161,7 @@ class Login2Model
 		$result = UserModel::getUserDataByUsername($user_name);
         if (!$result){
             self::incrementUserNotFoundCounter();
-            Session::add('feedback_negative', 'Candidate Data Not Found');
+            Session::add('feedback_negative', 'User Data Not Found');
 			return false;
 		}
 		

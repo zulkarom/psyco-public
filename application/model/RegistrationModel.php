@@ -16,10 +16,10 @@ class RegistrationModel
 	 public static function registerNewCandidate(){
 		$full_name = strip_tags(Request::post('fullname'));
 		$user_name = strip_tags(Request::post('username'));
-		$password = Request::post('pwd');
-		$password_repeat = Request::post('pwd_repeat');
-		$zone = Request::post('zone');
-		$batch = Request::post('batch');
+		$department = Request::post('department');
+		
+		$user_name  = str_replace('-', '', $user_name);
+
 		
 		
 		$return = true;
@@ -39,9 +39,13 @@ class RegistrationModel
 		}
 		if (!$return) return false;
 		// write user data to database
-		$user_password_hash = password_hash($password, PASSWORD_DEFAULT);
-		if (self::writeNewCandidateToDatabase($full_name,$user_name, $zone, $batch)) {
-			Session::add('feedback_positive', 'A New Candidate Has Been Successfuly Created.');
+		
+		
+		$batch = self:: getDefaultBatch();
+		
+		if (self::writeNewCandidateToDatabase($full_name,$user_name, $department, $batch)) {
+			Session::add('feedback_positive', 'Registration Successful.');
+			
 		}else{
 			Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_CREATION_FAILED'));
             return false; // no reason not to return false here
@@ -57,8 +61,18 @@ class RegistrationModel
 			//TestModel::insertAnswerOverall($user_id);
 		}
 		
-
+		return true;
 		
+	 }
+	 
+	 public static function getDefaultBatch(){
+	     $database = DatabaseFactory::getFactory()->getConnection();
+	     
+	     $query = $database->prepare("SELECT setting_num FROM psy_setting
+                                     WHERE set_id = 1");
+	     $query->execute();
+	     
+	     return $query->fetch()->setting_num;
 	 }
 	 
 	
@@ -269,19 +283,20 @@ class RegistrationModel
 		return false;
 	}
 	
-	public static function writeNewCandidateToDatabase($full_name,$user_name, $zone, $batch)
+	public static function writeNewCandidateToDatabase($full_name,$user_name, $department, $batch)
 	{
 		$database = DatabaseFactory::getFactory()->getConnection();
 		// write new users data into database
-		$sql = "INSERT INTO users (can_name, user_name, can_zone, can_batch)
+		$sql = "INSERT INTO users (can_name, user_name, department, can_batch)
                     VALUES (:name, :user_name, :zone, :batch)";
 		$query = $database->prepare($sql);
 		$query->execute(array(':name' => $full_name,
 							':user_name' => $user_name,
-		                      ':zone' => $zone,
+		                      ':zone' => $department,
 		                      ':batch' => $batch
 							  ));
 		$count =  $query->rowCount();
+		
 		if ($count == 1) {
 			return true;
 		}

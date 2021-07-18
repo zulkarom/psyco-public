@@ -27,23 +27,7 @@
 			</select>
 			</div>
 		</div>
-		<div class="col-md-3">
-			<div class="form-group">
-			<select class="form-control" id="zonesel">
-				<option value="0">-=Select Zone=-</option>
-				<?php
-				foreach($this->zone as $rz){
-					if($this->szone == $rz->zone_id)
-						{$s="selected";}else{$s="";}
-					echo "<option value='".$rz->zone_id ."' ".$s.">";
-					echo $rz->zone_text;
-					echo "</option>";
-				}
-				?>
-			</select>
-			</div>
-		
-		</div>
+
 		
 		<div class="col-md-2">
 			<div class="form-group">
@@ -92,7 +76,7 @@
                 <tr>
                     <th>No. </th>
                     <th>Full Name<i>(NRIC)</i></th>
-                    <th>Zone/Batch</th>
+                    <th>Department / Batch</th>
 
 					<th>Status</th>
 					<th>Submission Time</th>
@@ -115,7 +99,7 @@
                         <td><?php echo $i; ?>. </td>
                         
                         <td><?php echo $user->can_name; ?><br/><i>(<?php echo $user->user_name; ?>)</i></td>
-                        <td><?php echo $user->can_zone; ?><br /><?php echo $user->can_batch; ?></td>
+                        <td><?php echo $user->department; ?><br /><?php echo $user->can_batch; ?></td>
 						<td><?php echo $user->status; ?></td>
 						
 						<td><?php 

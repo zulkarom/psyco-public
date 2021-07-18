@@ -18,8 +18,7 @@ class MYPDF extends TCPDF {
 		//$this->SetY($savedY);
 		//$this->SetX($savedX);
         // Title
-       $this->Cell(0, 10, 'ONLINE INTERVIEW :: PROGRAM 2U2I', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
-	   $this->Cell(0, 10, 'FAKULTI KEUSAHAWANAN DAN PERNIAGAAN', 0, false, 'R', 0, '', 0, false, 'M', 'M');
+       $this->Cell(0, 10, 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
 
 	    $this->SetTopMargin($this->GetY() + 2);
     }
@@ -89,14 +88,13 @@ $pdf->SetFont('helvetica', '', 10);
 $html = '
 
 <br />
-<h2>UJIAN PSIKOMETRIK</h2>
 
 <table cellpadding="3">
 <tr><td><strong>NAMA: </strong> '. strtoupper($this->user->can_name) . ' </td></tr>
 
 <tr><td><strong>NO. KAD PENGENALAN: </strong>'. strtoupper($this->user->user_name) .'</td></tr>
-<tr><td><strong>ZONE: </strong>'. strtoupper($this->user->zone_text) .'</td></tr>
-<tr><td><strong>BATCH: </strong>'. strtoupper($this->user->bat_text) .'</td></tr>
+
+
 </table>
 <br /><br /><br />';
 
@@ -158,28 +156,6 @@ EOD;
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
-$pdf->AddPage("P");
-
-$pdf->SetFont('helvetica', '', 10);
-
-$html = '
-<br />
-<h2>IDEA PERNIAGAAN</h2>
-
-<br /><br />
-<table cellpadding="3">
-<tr><td><strong>NAMA: </strong> '. strtoupper($this->user->can_name) . ' </td></tr>
-
-<tr><td><strong>NO. KAD PENGENALAN: </strong>'. strtoupper($this->user->user_name) .'</td></tr>
-</table>
-<br /><br />' . nl2br($this->essay);
-
-
-
-$tbl = <<<EOD
-$html
-EOD;
-$pdf->writeHTML($tbl, true, false, false, false, '');
 
 
 $pdf->Output($this->user->user_name.'.pdf', 'I');

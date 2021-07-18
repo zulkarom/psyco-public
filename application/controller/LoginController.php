@@ -46,17 +46,45 @@ class LoginController extends Controller
         }
 
         // perform the login method, put result (true or false) into $login_successful
-        $login_successful = LoginModel::login(
-            Request::post('user_name')
-        );
+        
+        $user_name  = str_replace('-', '', Request::post('user_name'));
+        $login_successful = LoginModel::login($user_name);
 
         // check login status: if true, then redirect user to user/index, if false, then to login form again
         if ($login_successful) {
             if (Request::post('redirect')) {
-                Redirect::to('option');
+                Redirect::to('test');
             } else {
-                Redirect::to('option');
+                Redirect::to('test');
             }
+        } else {
+            Redirect::to('login/index');
+        }
+    }
+    
+    public function register()
+    {
+        // check if csrf token is valid
+        if (!Csrf::isTokenValid()) {
+            LoginModel::logout();
+            Redirect::home();
+            exit();
+        }
+        
+        // perform the login method, put result (true or false) into $login_successful
+        $register_successful = RegistrationModel::registerNewCandidate();
+        
+        // check login status: if true, then redirect user to user/index, if false, then to login form again
+        if ($register_successful) {
+            
+            $user_name  = str_replace('-', '', Request::post('username'));
+            
+            $login_successful = LoginModel::login($user_name);
+            
+            if($login_successful){
+                Redirect::to('test');
+            }
+            
         } else {
             Redirect::to('login/index');
         }

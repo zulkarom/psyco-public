@@ -144,11 +144,9 @@ class UserModel
 		//echo $batch;
         $database = DatabaseFactory::getFactory()->getConnection();
 		
-        $sql = "SELECT a.user_id, a.user_name, a.overall_status, a.finished_at,
-		a.user_deleted, a.can_name, a.can_zone, a.can_batch, b.zone_text, c.bat_text 
+        $sql = "SELECT a.user_id, a.user_name, a.answer_status, a.finished_at,
+		a.user_deleted, a.can_name, a.can_zone, a.can_batch, c.bat_text 
 		FROM users as a
-		INNER JOIN psy_zone as b
-		ON b.zone_id = a.can_zone
 		INNER JOIN psy_batch as c
 		ON c.bat_id = a.can_batch
 		WHERE a.user_deleted = 0
@@ -167,16 +165,16 @@ class UserModel
             $all_users_profiles[$user->user_id]->user_name = $user->user_name;
             $all_users_profiles[$user->user_id]->user_deleted = $user->user_deleted;
 			$all_users_profiles[$user->user_id]->can_name = $user->can_name;
-			$all_users_profiles[$user->user_id]->can_zone = $user->zone_text;
+		
 			$all_users_profiles[$user->user_id]->can_batch = $user->bat_text;
 			$all_users_profiles[$user->user_id]->can_zone_id = $user->can_zone;
 			$all_users_profiles[$user->user_id]->can_batch_id = $user->can_batch;
 			$all_users_profiles[$user->user_id]->finished_at = $user->finished_at;
-			if($user->overall_status==0){
+			if($user->answer_status==0){
 				$status="Not Started";
-			}else if($user->overall_status==1){
+			}else if($user->answer_status==1){
 				$status="Started";
-			}else if($user->overall_status==3){
+			}else if($user->answer_status==3){
 				$status="Submitted";
 			}
 			$all_users_profiles[$user->user_id]->status = $status;
@@ -579,10 +577,10 @@ class UserModel
     {
 		//echo ""
         $database = DatabaseFactory::getFactory()->getConnection();
-        $sql = "SELECT a.user_id, a.user_name, a.matric_no, a.program, a.can_zone, a.can_name, a.can_batch, a.answer_status, a.answer_last_saved,a.answer_status2, a.overall_status, a.finished_at, a.answer_last_saved2, a.question_last_saved, b.zone_text, c.bat_text
+        $sql = "SELECT a.user_id, a.user_name, a.matric_no, a.department, a.program, a.can_zone, a.can_name, 
+a.can_batch, a.answer_status, a.answer_last_saved,a.answer_status2, a.overall_status, 
+a.finished_at, a.answer_last_saved2, a.question_last_saved, c.bat_text
 		FROM users as a
-		INNER JOIN psy_zone as b
-		ON b.zone_id = a.can_zone
 		INNER JOIN psy_batch as c
 		ON c.bat_id = a.can_batch
 		WHERE user_id = :user

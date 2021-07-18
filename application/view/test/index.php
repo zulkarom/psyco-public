@@ -6,7 +6,13 @@
 	</div>
 	<br />
 	<div class="form-group"><strong>NAMA/<i>Name</i>:</strong> <?php echo $this->user->can_name ;?><br />
-	<strong>NRIC/PASSPORT NO:</strong>  <?php echo $this->user->user_name ;?></div>
+	<strong>NRIC/PASSPORT NO:</strong>  <?php echo $this->user->user_name ;?><br />
+	<strong>DEPARTMENT:</strong>  <?php echo $this->user->department ;?></div>
+	
+	<div class="form-group">
+	<a href='<?php echo Config::get('URL'); ?>login/logout'>LOGOUT</a>
+</div>
+
 	
 	</div>
 	<div class="col-md-4">
@@ -39,7 +45,7 @@
 		<div id="ginstruction" class="instruction"><b>ANDA TELAH MENJAWAB UJIAN INI</b> / <i>YOU HAVE ANSWERED THE TEST.</i></div>
 		<div style="text-align:center">
 		
-		<a href="<?=Config::get('URL')?>option" class="btn btn-warning " id="kembali-btn">KEMBALI / BACK</a>
+
 		
 		</div>
 
@@ -55,7 +61,7 @@
 		</div>
 		
 		<div align="center">
-		<a href="<?=Config::get('URL')?>option" class="btn btn-warning " id="kembali-btn">KEMBALI / BACK</a> <button class="btn btn-success" id="start-btn">MULA MENJAWAB / START ANSWERING</button>
+<button class="btn btn-success" id="start-btn">MULA MENJAWAB / START ANSWERING</button>
 		</div>
 		
 		<?php
@@ -85,7 +91,7 @@
 		
 	<input type="hidden"  id="curr-name" value="<?php echo $qstart?>" />
 	
-	<button class="btn btn-warning center-block hidden" id="next-btn">SOALAN SETERUSNYA / NEXT QUESTION</button>
+	<button class="btn btn-warning center-block hidden" id="next-btn">SETERUSNYA / NEXT</button>
 	<button class="btn btn-danger center-block hidden" id="submit-btn">HANTAR JAWAPAN / SUBMIT ANSWER</button>
 	
 	</div>
@@ -98,7 +104,11 @@
 	
 	<div id="counter" class="hidden"></div>
 	<div id="counterMsg"></div>
-	<div id="timerMsg"></div>
+	<div class="form-group" align="center">
+	<br />
+<div id="timerMsg"></div>
+</div>
+	
 	<div style="text-align:center;" id="conxls" class="hidden"><br /><a href="#" id="dwnxls" >Save as Excel</a></div>
 </div>
 <!-- <button id="test">test</button> -->
@@ -153,7 +163,6 @@ if(mm > 0){
 $('#masa').text(stringminit + stringsaat);
 $('#masa-en').text(stringminit2 + stringsaat2);
 var errmsg ="Soalan ini mesti dijawab / This question must be attempted";
-var linklogout = "<br /><br /><a href='<?php echo Config::get('URL'); ?>option'>Kembali / Back</a>";
 var seterus = parseInt($("#curr-name").val() + 1);
 prog = qlastsaved / totalQuestion * 100;
 prog = prog.toFixed(0) + '%';
@@ -199,7 +208,6 @@ $("#start-btn").click(function(){
 	var curr = parseInt($("#curr-name").val());
     startTimer();
 	$("#start-btn").addClass("hidden");
-	$("#kembali-btn").addClass("hidden");
 	$('#ginstruction').addClass("hidden");
 	$("#progress-timer").removeClass("hidden");
 	$("#con-quest").removeClass("hidden");

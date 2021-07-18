@@ -228,12 +228,12 @@ class TestModel
 		
 		$user = UserModel::getUserDataById($user_id);
 		
-		if(($status == 1 and $which == 1 and $user->answer_status2 == 0) 
+		if(($status == 1 and $which == 1) 
 			or ($status == 1 and $which == 2 and $user->answer_status == 0)){
 			self::setOverallStatus(1,$user_id);
 		}
 		
-		if(($status == 3 and $which == 1 and $user->answer_status2 == 3) or ($status == 3 and $which == 2 and $user->answer_status == 3)){
+		if(($status == 3 and $which == 1) or ($status == 3 and $which == 2 and $user->answer_status == 3)){
 			self::setOverallStatus(3,$user_id);
 			self::setFinishTime($user_id);
 		}
@@ -356,7 +356,8 @@ class TestModel
 	
 	private static function columResultAnswers(){
 		$result = self::getGradeCat();
-		$colum = "a.user_id, a.user_name, a.can_name, a.can_zone, a.can_batch, b.zone_text, c.bat_text ,a.answer_status, a.overall_status, a.finished_at, ";
+		$colum = "a.user_id, a.user_name, a.can_name, a.department, a.can_zone, a.can_batch,  c.bat_text ,
+a.answer_status, a.overall_status, a.finished_at, ";
 		$c=1;
 		foreach($result as $row){
 		if($c==1){$comma="";}else{$comma=", ";}
@@ -388,8 +389,7 @@ class TestModel
 		$colum = self::columResultAnswers();
         $sql = "SELECT  ".$colum."
 		FROM users as a
-		INNER JOIN psy_zone as b
-		ON b.zone_id = a.can_zone
+		
 		INNER JOIN psy_batch as c
 		ON c.bat_id = a.can_batch
 		INNER JOIN psy_answers as d
@@ -411,7 +411,7 @@ class TestModel
             $all_users_profiles[$user->user_id]->user_id = $user->user_id;
             $all_users_profiles[$user->user_id]->user_name = $user->user_name;
 			$all_users_profiles[$user->user_id]->can_name = $user->can_name;
-			$all_users_profiles[$user->user_id]->can_zone = $user->zone_text;
+			$all_users_profiles[$user->user_id]->department = $user->department;
 			$all_users_profiles[$user->user_id]->can_batch = $user->bat_text;
 			if($user->overall_status==0){
 				$status="Not Started";
@@ -618,10 +618,10 @@ class TestModel
 		
 		foreach($list as $row){
 			$id = $row->user_id;
-			if($row->answer_status == 3 and $row->answer_status2 == 3){
+			if($row->answer_status == 3){
 				self::setOverallStatus(3 ,$id);
 				self:: setFinishTime2($id);
-			}else if($row->answer_status == 1 or $row->answer_status2 == 1){
+			}else if($row->answer_status == 1){
 				self::setOverallStatus(1 ,$id);
 			}
 		}

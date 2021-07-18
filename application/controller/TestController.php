@@ -24,7 +24,7 @@ class TestController extends Controller
      */
     public function index()
     {
-		
+        //echo Session::get('user_id') ;  print_r(UserModel::getUserDataById(Session::get('user_id')));die();
         $this->View->render('test/index', array(
         'quest'=>TestModel::getAllQuestions(),
 		'user'=>UserModel::getUserDataById(Session::get('user_id')),

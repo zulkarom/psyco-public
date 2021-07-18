@@ -48,7 +48,7 @@
                     <th>Username (NRIC)</th>
 					<th>Status</th>
 					<th>Submission Time</th>
-                    <th>Zone</th>
+
                     <th>Batch</th>
 					
 					<th>Excel Psychometric</th>
@@ -78,7 +78,7 @@
 						
 						?></td>
                         
-                        <td><?= $user->can_zone; ?><span id="tzone-<?php echo $user->user_id;?>" class="hidden"><?= $user->can_zone_id; ?></span></td>
+                    
 						
 						<td><?= $user->can_batch; ?><span id="tbatch-<?php echo $user->user_id;?>" class="hidden"><?= $user->can_batch_id; ?></span></td>
 						
@@ -198,34 +198,12 @@
   
 
   <div class="form-group">
-    <label for="zone">ZONE:</label>
-    <select class="form-control" id="zone" name="zone" >
-	<?php
-	foreach($this->zone as $row){
-		echo "<option value='".$row->zone_id ."'>".$row->zone_text ."</option>";
-	}
-	
-	?>
-	</select>
+    <label for="fullname">DEPARTMENT:</label>
+    <input type="text" class="form-control" id="department" name="department" required>
   </div>
-  <div class="form-group">
-    <label for="batch">BATCH:</label>
-    <select class="form-control" id="batch" name="batch">
-	<?php
-	foreach($this->batch as $row){
-		if($this->sbatch ==0){
-			if($this->dbatch == $row->bat_id)
-			{$s="selected";}else{$s="";}
-		}else{
-			if($this->sbatch == $row->bat_id)
-			{$s="selected";}else{$s="";}
-		}
-		echo "<option value='".$row->bat_id ."' ".$s.">".$row->bat_text ."</option>";
-	}
-	
-	?>
-	</select>
-  </div>
+  
+  
+
 
   
 

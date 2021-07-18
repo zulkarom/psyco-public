@@ -18,8 +18,7 @@ class MYPDF extends TCPDF {
 		//$this->SetY($savedY);
 		//$this->SetX($savedX);
         // Title
-       $this->Cell(0, 10, 'PSYCHOMETRIC TEST :: PROGRAM 2U2I', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
-	   $this->Cell(0, 10, 'FAKULTI KEUSAHAWANAN DAN PERNIAGAAN', 0, false, 'R', 0, '', 0, false, 'M', 'M');
+		$this->Cell(0, 10, 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST', 0, 1, 'R', 0, '', 0, false, 'M', 'M');
 
 	    $this->SetTopMargin($this->GetY() + 10);
     }
@@ -87,9 +86,13 @@ $pdf->AddPage("P");
 for($i=1;$i<=9;$i++){
 	
 }
-$w2=30;
-$w3= 8;
+$w2=32;
+$w3= 10.5;
+$w4= 8;
 $pdf->Cell(0, 10, 'KEPUTUSAN UJIAN PSIKOMETRIK', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+
+
+$wid = [10, 8, 9, 11, 8.5, 12];
 
 $pdf->SetFont('helvetica', '', 8);
 $html ='<br /><br /><br /><table border="1" cellpadding="5" width="620">
@@ -97,13 +100,15 @@ $html ='<br /><br /><br /><table border="1" cellpadding="5" width="620">
 	<tr >
 		<th width="5%"><strong>#</strong></th>
 		<th width="'.$w2.'%"><strong>NAMA</strong><br/><i>(NRIC)</i></th>
-		<th><strong>ZONE</strong></th>';
+		';
 			
-foreach($this->gcat as $grow){
-		$html .= '<th width="'.$w3.'%"><strong>'.strtoupper($grow->gcat_text) .'</strong></th>';
+foreach($this->gcat as $i => $grow){
+    $text = ucfirst(strtolower($grow->gcat_text));
+
+    $html .= '<th width="'.$wid[$i].'%"><strong>'. $text .'</strong></th>';
 	}
 
-$html .= '<th><strong>TOTAL</strong></th>
+$html .= '<th width="'.$w4.'%"><strong>TOTAL</strong></th>
 </tr>
 </thead>';
 
@@ -112,14 +117,14 @@ foreach ($this->users as $user) {
 	$html .= '<tr nobr="true">
 		<td width="5%">'. $i.'. </td>
 		<td width="'.$w2.'%">'. $user->can_name .'<br /><i>('. $user->user_name .')</i></td>
-		<td>'. $user->can_zone .'</td>';
+		';
 
 		$set_sort = TestModel::getGradeCat();
-			foreach($set_sort as $sr){
+			foreach($set_sort as $i => $sr){
 				$id = "c".$sr->gcat_id;
-				$html .= '<td width="'.$w3.'%">'.$user->$id.'</td>';
+				$html .= '<td width="'.$wid[$i].'%">'.$user->$id.'</td>';
 			}
-		$html .= '<td>'. $user->total .'</td></tr>';
+		$html .= '<td width="'.$w4.'%">'. $user->total .'</td></tr>';
 $i++;
 }
 $html .= '</table>'; 

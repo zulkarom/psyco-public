@@ -66,6 +66,13 @@ class LoginModel
         // maybe do this in dependence of setSuccessfulLoginIntoSession ?
         return true;
     }
+    
+    public static function register($user_name, $full_name, $department){
+        if (empty($user_name) or empty($full_name) or empty($department)) {
+            Session::add('feedback_negative', 'Input Empty');
+            return false;
+        }
+    }
     public static function login($user_name)
     {
         if (empty($user_name)) {
@@ -131,7 +138,7 @@ class LoginModel
 		$result = UserModel::getUserDataByLogin($user_name);
         if (!$result){
             self::incrementUserNotFoundCounter();
-            Session::add('feedback_negative', 'Candidate Data Not Found');
+            Session::add('feedback_negative', 'User Data Not Found');
 			return false;
 		}
 		
@@ -161,7 +168,7 @@ class LoginModel
 		$result = UserModel::getUserDataByUsername($user_name);
         if (!$result){
             self::incrementUserNotFoundCounter();
-            Session::add('feedback_negative', 'Candidate Data Not Found');
+            Session::add('feedback_negative', 'User Data Not Found');
 			return false;
 		}
 		
