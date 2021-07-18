@@ -1,11 +1,10 @@
-
+<div class="container">
 
     <!-- echo out the system feedback (error and success messages) -->
     <?php $this->renderFeedbackMessages(); ?>
 
-    <div class="row">
-    <div class="col-md-3"></div>
-        <div class="col-md-6">
+    <div>
+        <div style="margin: 0 auto; width:90%">
 
             <!-- login box on left side -->
             <div>
@@ -114,4 +113,4 @@
 
         </div>
     </div>
-
+</div>
