@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>ONLINE INTERVIEW - 2U2I :: FACULTY OF ENTREPRENEURSHIP AND BUSINESS</title>
+    <title>UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST</title>
     <!-- META -->
     <meta charset="utf-8">
     <!-- send empty favicon fallback to prevent user's browser hitting the server for lots of favicon requests resulting in 404s -->
