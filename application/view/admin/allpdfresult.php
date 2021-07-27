@@ -113,9 +113,10 @@ $html .= '<th width="'.$w4.'%"><strong>TOTAL</strong></th>
 </thead>';
 
 $i=1;
+$x=1;
 foreach ($this->users as $user) {
 	$html .= '<tr nobr="true">
-		<td width="5%">'. $i.'. </td>
+		<td width="5%">'. $x.'. </td>
 		<td width="'.$w2.'%">'. $user->can_name .'<br /><i>('. $user->user_name .')</i></td>
 		';
 
@@ -126,6 +127,7 @@ foreach ($this->users as $user) {
 			}
 		$html .= '<td width="'.$w4.'%">'. $user->total .'</td></tr>';
 $i++;
+$x++;
 }
 $html .= '</table>'; 
 
