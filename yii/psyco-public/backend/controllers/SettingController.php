@@ -2,18 +2,19 @@
 
 namespace backend\controllers;
 
-use Yii;
-use common\models\ChangePasswordForm;
-use backend\models\Candidate;
-use backend\models\CandidateSearch;
+use backend\models\Setting;
+use backend\models\Setting2;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
+use backend\models\Batch;
 
 /**
- * CandidateController implements the CRUD actions for Candidate model.
+ * SettingController implements the CRUD actions for Setting model.
  */
-class CandidateController extends Controller
+class SettingController extends Controller
 {
     /**
      * @inheritDoc
@@ -34,22 +35,35 @@ class CandidateController extends Controller
     }
 
     /**
-     * Lists all Candidate models.
+     * Lists all Setting models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CandidateSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        $model = Setting::findOne(1);
+        $model2 = Setting2::findOne(2);
+        $batch = Batch::findOne(1);
+
+        if ($model->load(Yii::$app->request->post()) 
+            && $model2->load(Yii::$app->request->post())) {
+            if($model->save()){
+                if($model2->save()){
+                    Yii::$app->session->addFlash('success', "Setting Updated");
+                    return $this->redirect(['index']);
+                }
+            }
+        }
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'model' => $model,
+            'model2' => $model2,
+            'batch' => $batch,
         ]);
     }
 
     /**
-     * Displays a single Candidate model.
+     * Displays a single Setting model.
      * @param int $id ID
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,32 +76,29 @@ class CandidateController extends Controller
     }
 
     /**
-     * Creates a new Candidate model.
+     * Creates a new Setting model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Candidate();
+        $model = new Setting();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->can_batch = 1;
-                if($model->save()){
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
 
-        return $this->renderAjax('create', [
+        return $this->render('create', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Candidate model.
+     * Updates an existing Setting model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return mixed
@@ -101,13 +112,13 @@ class CandidateController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->renderAjax('update', [
+        return $this->render('update', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Deletes an existing Candidate model.
+     * Deletes an existing Setting model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return mixed
@@ -120,35 +131,16 @@ class CandidateController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionChangePassword()
-    {
-        $id = Yii::$app->user->id;
-     
-        try {
-            $model = new ChangePasswordForm($id);
-        } catch (InvalidParamException $e) {
-            throw new \yii\web\BadRequestHttpException($e->getMessage());
-        }
-     
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
-            Yii::$app->session->setFlash('success', 'Password Changed!');
-        }
-     
-        return $this->render('change-password', [
-            'model' => $model,
-        ]);
-    }
-
     /**
-     * Finds the Candidate model based on its primary key value.
+     * Finds the Setting model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Candidate the loaded model
+     * @return Setting the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Candidate::findOne($id)) !== null) {
+        if (($model = Setting::findOne($id)) !== null) {
             return $model;
         }
 

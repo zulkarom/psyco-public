@@ -11,10 +11,12 @@ use yii\helpers\Url;
 
 $this->title = 'Candidates';
 $this->params['breadcrumbs'][] = $this->title;
+
+$dirAssests = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset');
 ?>
 
 <div class="row">
-    <div class="col-4">
+    <div class="col-2">
         <p>
             <?php echo Html::button('<span class="fa fa-plus"></span> NEW CANDIDATE', ['value' => Url::to(['/candidate/create']), 'class' => 'btn btn-success', 'id' => 'modalBttnCandidate']);
 
@@ -60,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
     </div>
     <div class="col-4">
-        <a href="'.Url::to(['/teaching-load/appointment-letter/pdf/']).'" target="_blank">Download Offline Excel Question</a>
+        <a href="file/offline.xls" target="_blank">Download Offline Excel Question</a>
     </div>
 </div>
 

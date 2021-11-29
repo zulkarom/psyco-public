@@ -2,18 +2,16 @@
 
 namespace backend\controllers;
 
-use Yii;
-use common\models\ChangePasswordForm;
 use backend\models\Candidate;
-use backend\models\CandidateSearch;
+use backend\models\ResultSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CandidateController implements the CRUD actions for Candidate model.
+ * ResultController implements the CRUD actions for Candidate model.
  */
-class CandidateController extends Controller
+class ResultController extends Controller
 {
     /**
      * @inheritDoc
@@ -39,7 +37,7 @@ class CandidateController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CandidateSearch();
+        $searchModel = new ResultSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -71,17 +69,14 @@ class CandidateController extends Controller
         $model = new Candidate();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->can_batch = 1;
-                if($model->save()){
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
 
-        return $this->renderAjax('create', [
+        return $this->render('create', [
             'model' => $model,
         ]);
     }
@@ -101,7 +96,7 @@ class CandidateController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->renderAjax('update', [
+        return $this->render('update', [
             'model' => $model,
         ]);
     }
@@ -118,25 +113,6 @@ class CandidateController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    public function actionChangePassword()
-    {
-        $id = Yii::$app->user->id;
-     
-        try {
-            $model = new ChangePasswordForm($id);
-        } catch (InvalidParamException $e) {
-            throw new \yii\web\BadRequestHttpException($e->getMessage());
-        }
-     
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
-            Yii::$app->session->setFlash('success', 'Password Changed!');
-        }
-     
-        return $this->render('change-password', [
-            'model' => $model,
-        ]);
     }
 
     /**

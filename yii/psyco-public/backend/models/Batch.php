@@ -37,7 +37,7 @@ class Batch extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'bat_id' => 'Bat ID',
+            'id' => 'Bat ID',
             'bat_text' => 'Bat Text',
         ];
     }

@@ -83,7 +83,12 @@ class Candidate extends \common\models\User
 
     public function getBatch()
     {
-        return $this->hasOne(Batch::className(), ['bat_id' => 'can_batch']);
+        return $this->hasOne(Batch::className(), ['id' => 'can_batch']);
+    }
+
+    public function getAnswer()
+    {
+        return $this->hasOne(Answer::className(), ['can_id' => 'id']);
     }
 
     public function getStatusText(){
