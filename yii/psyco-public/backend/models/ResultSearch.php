@@ -38,12 +38,40 @@ class ResultSearch extends Candidate
      *
      * @return ActiveDataProvider
      */
+
+    private function columResultAnswers(){
+        $result = GradeCategory::find()->all();
+        $colum = ["a.id", "a.username", "a.can_name", "a.department", "a.can_zone", "a.can_batch",  "b.bat_text" ,
+        "a.answer_status", "a.overall_status", "a.finished_at"];
+        $c=1;
+        
+        foreach($result as $row){
+        if($c==1){$comma="";}else{$comma=", ";}
+            $str = "";
+            $quest = Question::find()->where(['grade_cat' => $row->id])->all();
+            $i=1;
+            $jumq = count($quest);
+            // echo $jumq;die();
+            foreach($quest as $rq){
+                if($i == $jumq){$plus = "";}else{$plus=" + ";}
+                $str .= "IF(q".$rq->que_id ." > 0,1,0) ". $plus ;
+            $i++;
+            }
+            $str .= " as c". $row->id;
+        $c++;  
+        $colum[] = $str; 
+        }
+        return $colum;
+    }
+
     public function search($params)
     {
+        // echo "<pre>";print_r($this->columResultAnswers());die();
         $query = Candidate::find()
-        ->alias('c')
-        ->joinWith(['batch b', 'answer a'])
-        ->where(['!=' ,'c.id', 1]);
+        ->alias('a')
+        ->select($this->columResultAnswers())
+        ->joinWith(['batch b', 'answer c'])
+        ->where(['!=' ,'a.id', 1]);
 
         // add conditions that should always apply here
 

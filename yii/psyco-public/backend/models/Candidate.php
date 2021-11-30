@@ -32,6 +32,12 @@ use common\models\Common;
  */
 class Candidate extends \common\models\User
 {
+    public $c1;
+    public $c2;
+    public $c3;
+    public $c4;
+    public $c5;
+    public $c6;
     /**
      * {@inheritdoc}
      */
@@ -78,6 +84,12 @@ class Candidate extends \common\models\User
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'verification_token' => 'Verification Token',
+            'c1' => 'Enterprise',
+            'c2' => 'Social',
+            'c3' => 'Realistic',
+            'c4' => 'Investigate',
+            'c5' => 'Artistic',
+            'c6' => 'Conventional',
         ];
     }
 
