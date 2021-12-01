@@ -70,6 +70,17 @@ class ResultController extends Controller
         $pdf->generatePdf();
     }
 
+    public function actionIndividualResult($id){
+
+        $model = $this->findModel($id);
+        $gcat = GradeCategory::find()->all();
+
+        return $this->render('individualresult', [
+            'user' => $model,
+            'gcat' => $gcat,
+        ]);
+    }
+
     /**
      * Finds the Candidate model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

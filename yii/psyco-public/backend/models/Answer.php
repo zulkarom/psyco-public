@@ -284,4 +284,28 @@ class Answer extends \yii\db\ActiveRecord
             'biz_idea' => 'Biz Idea',
         ];
     }
+
+    public static function getAnswersByCat($can,$cat)
+    {
+        $listQuestion = Question::find()
+        ->select('que_id')
+        ->where(['grade_cat' => $cat])
+        ->all();
+
+        $array = array();
+        foreach($listQuestion as $q){
+            $obj = new \stdClass();
+            $obj->quest = $q->que_id;
+            $obj->answer = self::getOneAnswer($can,$q->que_id);
+            $array[] = $obj;
+        }
+        
+        return $array;
+    }   
+
+    public static function getOneAnswer($can,$quest){
+        $colum = "q".$quest;
+        $result = self::find()->select($colum)->where(['can_id' => $can])->one();
+        return $result->$colum;
+    }
 }

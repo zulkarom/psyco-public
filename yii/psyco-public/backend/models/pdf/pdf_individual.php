@@ -5,6 +5,7 @@ namespace backend\models\pdf;
 
 use Yii;
 use backend\models\pdf\MYPDF_individual;
+use backend\models\Answer;
 
 class pdf_individual{
 	public $gcat;
@@ -86,7 +87,7 @@ $html ='<table cellpadding="3">
 $rowstring="";
 foreach($this->gcat as $grow){
 	$html .= "<th><strong>".strtoupper($grow->gcat_text) ."</strong></th>";
-	$result_cat = TestModel::getAnswersByCat($this->id,$grow->gcat_id);
+	$result_cat = Answer::getAnswersByCat($this->user->id,$grow->id);
 	$stringdata ='<table border="0" cellpadding="5">
 	<tr><td><strong>Q</strong></td>
 	<td><strong>A</strong></td>
@@ -123,10 +124,10 @@ $html .= "</tr>
 </table>";
 	
 
-// $tbl = <<<EOD
-// $html
-// EOD;
-// $pdf->writeHTML($tbl, true, false, false, false, '');
+$tbl = <<<EOD
+$html
+EOD;
+$pdf->writeHTML($tbl, true, false, false, false, '');
 
 
 $pdf->Output($this->user->username.'.pdf', 'I');

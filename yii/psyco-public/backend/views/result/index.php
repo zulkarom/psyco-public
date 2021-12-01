@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\bootstrap4\Modal;
+use yii\export\ExportMenu;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ResultSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -62,9 +63,20 @@ $columns = [
 
 <div class="result-index">
 
-    <p>
-        <?= Html::a('Download Result', ['create'], ['class' => 'btn btn-danger']) ?>
-    </p>
+    <div class="row">
+
+        <div class="col-md-4">
+            <p>
+                <?= Html::a('Download Result', ['create'], ['class' => 'btn btn-danger']) ?>
+            </p>
+        </div>
+        
+        <div class="col-md-2">
+            
+        </div> 
+    </div>
+
+    
 
     <div class="card card-primary card-outline">
         <div class="card-body">
@@ -124,10 +136,10 @@ $columns = [
                         //'visible' => false,
                         'buttons'=>[
                             'view'=>function ($url, $model) {
-                                return Html::a('<span class="fa fa-eye"></span> VIEW',['view', 'id' => $model->id],['class'=>'btn btn-info btn-sm']);
+                                return Html::a('<span class="fa fa-eye"></span> VIEW',['individual-result', 'id' => $model->id],['class'=>'btn btn-info btn-sm']);
                             },
                             'pdf'=>function ($url, $model) {
-                                return Html::a('<span class="fa fa-download"></span> PDF',['individual-pdf', 'id' => $model->id],['class'=>'btn btn-danger btn-sm']);
+                                return Html::a('<span class="fa fa-download"></span> PDF',['individual-pdf', 'id' => $model->id],['class'=>'btn btn-danger btn-sm', 'target' => '_blank']);
                             }
                         ],
                     
