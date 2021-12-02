@@ -17,7 +17,7 @@ class CandidateSearch extends Candidate
     public function rules()
     {
         return [
-            [['id', 'status', 'can_batch', 'can_zone', 'finished_at', 'answer_status', 'answer_status2', 'overall_status', 'question_last_saved', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'status', 'can_batch', 'can_zone', 'answer_status', 'answer_status2', 'overall_status', 'question_last_saved', 'created_at', 'updated_at'], 'integer'],
             [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'can_name', 'department', 'answer_last_saved', 'answer_last_saved2', 'verification_token'], 'safe'],
         ];
     }
@@ -62,7 +62,7 @@ class CandidateSearch extends Candidate
             'status' => $this->status,
             'can_batch' => $this->can_batch,
             'can_zone' => $this->can_zone,
-            'finished_at' => $this->finished_at,
+            // 'finished_at' => $this->finished_at,
             'answer_status' => $this->answer_status,
             'answer_status2' => $this->answer_status2,
             'overall_status' => $this->overall_status,

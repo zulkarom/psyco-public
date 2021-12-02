@@ -11,8 +11,32 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'gridview' => ['class' => 'kartik\grid\Module'],
+        // 'kvgrid' => [
+        //     'class' => 'yii\i18n\PhpMessageSource',
+        //     'basePath' => '@kvexport/messages',
+        //     'forceTranslation' => true
+        // ],
+    ],
     'components' => [
+        'i18n' => [
+            'translations' => [
+                 'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                ],
+                'kvgrid' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                ],
+                'kvexport' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                    'forceTranslation' => true
+                ],
+            ]
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],

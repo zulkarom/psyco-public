@@ -81,6 +81,15 @@ class ResultController extends Controller
         ]);
     }
 
+    public function actionResultPdf($id){
+
+        $model = $this->findModel($id);
+        $pdf = new pdf_individual;
+        $pdf->gcat = GradeCategory::find()->all();
+        $pdf->user = $model;
+        $pdf->generatePdf();
+    }
+
     /**
      * Finds the Candidate model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

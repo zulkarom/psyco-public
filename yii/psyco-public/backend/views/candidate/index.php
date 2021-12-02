@@ -4,7 +4,9 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\bootstrap4\Modal;
 use yii\helpers\Url;
-
+use common\models\Common;
+use yii\helpers\ArrayHelper;
+use backend\models\Batch;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CandidateSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -91,13 +93,26 @@ $dirAssests = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset')
             ],
             'username',
             [
+                'format' => 'html',
+                'attribute' => 'can_batch',
+                'filter' => Html::activeDropDownList($searchModel, 'can_batch', ArrayHelper::map(Batch::find()->all(),'id', 'batch_text'), ['class'=> 'form-control','prompt' => 'Select Batch']),
+                'value' => function($model){
+                    if($model->batch){
+                       return $model->batch->bat_text; 
+                    }
+                }
+            ], 
+            [
+                'format' => 'html',
                 'attribute' => 'status',
+                'filter' => Html::activeDropDownList($searchModel, 'answer_status', Common::status() ,['class'=> 'form-control','prompt' => 'Select Status']),
                 'value' => function($model){
                     return $model->statusText;
                 }
             ],
             [
                 'attribute' => 'finished_at',
+                // 'label' => 'finished_at',
                 'value' => function($model){
                     if($model->finished_at){
                         return date('d M Y h:i:s', $model->finished_at);
@@ -108,17 +123,20 @@ $dirAssests = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset')
                 }
             ],
             
-            [
-                'attribute' => 'can_batch',
-                'value' => function($model){
-                    if($model->batch){
-                       return $model->batch->bat_text; 
-                    }
-                }
-            ], 
+            
             
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'contentOptions' => ['style' => 'width: 10%'],
+                'template' => '{delete}',
+                //'visible' => false,
+                'buttons'=>[
+                    'delete'=>function ($url, $model) {
+                        return Html::a('<span class="fa fa-trash"></span>',['individual-result', 'id' => $model->id],['class'=>'btn btn-danger btn-sm']);
+                    },
+                ],
+            
+            ],
         ],
     ]); ?>
 
