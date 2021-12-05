@@ -6,10 +6,11 @@ namespace backend\models\pdf;
 use Yii;
 use backend\models\pdf\MYPDF_result;
 use backend\models\Answer;
+use backend\models\GradeCategory;
 
-class pdf_individual{
+class pdf_result{
 	public $gcat;
-	public $user;
+	public $users;
 	public function generatePdf(){
 		$pdf = new MYPDF_result(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -92,12 +93,17 @@ class pdf_individual{
 		foreach ($this->users as $user) {
 			$html .= '<tr nobr="true">
 				<td width="5%">'. $x.'. </td>
-				<td width="'.$w2.'%">'. $user->can_name .'<br /><i>('. $user->user_name .')</i></td>
+				<td width="'.$w2.'%">'. $user->can_name .'<br /><i>('. $user->username .')</i></td>
 				';
 
-				$set_sort = Grade::getGradeCat();
+				$set_sort = GradeCategory::getGradeCat();
+				echo "<pre>";
+				print_r($set_sort);die();
+
 					foreach($set_sort as $i => $sr){
-						$id = "c".$sr->gcat_id;
+				// 		echo $sr->id;
+				// die();
+						$id = "c".$sr->id;
 						$html .= '<td width="'.$wid[$i].'%">'.$user->$id.'</td>';
 					}
 				$html .= '<td width="'.$w4.'%">'. $user->total .'</td></tr>';
@@ -115,6 +121,7 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
 $pdf->Output('AllResult.pdf', 'I');
-?>
 	}
 }
+?>
+	

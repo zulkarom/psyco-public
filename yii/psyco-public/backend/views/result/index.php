@@ -75,7 +75,7 @@ $columns = [
             ]) ?>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
 
             <?=
             ExportMenu::widget([
@@ -137,6 +137,8 @@ $columns = [
         </div>
         
         <div class="col-md-2">
+
+            <?=Html::a('DOWNLOAD RESULT PDF',['result-pdf', 'id' => Yii::$app->user->identity->id],['class'=>'btn btn-danger'])?>
             
         </div> 
     </div>

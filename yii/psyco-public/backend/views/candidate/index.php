@@ -33,11 +33,7 @@ $dirAssests = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset')
                   });
                 });
 
-                $("#modalBttnUptCandidate").click(function(){
-                  $("#uptCandidate").modal("show")
-                    .find("#formUptCandidate")
-                    .load($(this).attr("value"));
-                });
+               
             ');
 
             Modal::begin([
@@ -50,15 +46,7 @@ $dirAssests = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset')
 
             Modal::end();
 
-            Modal::begin([
-                    'title' => '<h4>Edit Candidate</h4>',
-                    'id' =>'uptCandidate',
-                    'size' => 'modal-md'
-                ]);
-
-            echo '<div id="formUptCandidate"></div>';
-
-            Modal::end();
+            
 
             ?>
         </p>
@@ -86,9 +74,7 @@ $dirAssests = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset')
                 'format' => 'raw',
                 'attribute' => 'can_name',
                 'value' => function($model){
-                    return '<a class="modalBttnUptCandidate" href="javascript:void(0)" value="' . Url::to(['/candidate/update', 'id' => $model->id]) . '" >'.$model->can_name .'<span class="fa fa-pencil"></span></a>';
-
-                    // return Html::a($model->can_name.'<span class="glyphicon glyphicon-pencil"></span>', ['/candidate/update', 'id' => $model->id], ['class' => 'modalBttnUptCandidate', 'href' => 'javascript:void(0)']);
+                    return Html::a($model->can_name.'<span class="glyphicon glyphicon-pencil"></span>', ['/candidate/update', 'id' => $model->id], ['class' => 'modalBttnUptCandidate']);
                 }
             ],
             'username',
@@ -122,7 +108,13 @@ $dirAssests = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset')
                     }
                 }
             ],
-            
+            [
+                'format' => 'raw',
+                'label' => 'Excel Psychometric',
+                'value' => function($model){
+                    return Html::button('Upload Answer', ['value' => Url::to(['/candidate/upload-answer']), 'class' => 'btn btn-success btn-sm', 'id' => 'modalBttnAnswer']);
+                }
+            ],
             
             
 
@@ -145,3 +137,43 @@ $dirAssests = Yii::$app->assetManager->getPublishedUrl('@backend/views/myasset')
 
 
 </div>
+
+
+<?php 
+$this->registerJs('
+    $(function(){
+      $("#modalBttnAnswer").click(function(){
+          $("#answer").modal("show")
+            .find("#formAnswer")
+            .load($(this).attr("value"));
+      });
+    });
+
+    $("#modalBttnUptCandidate").click(function(){
+      $("#uptCandidate").modal("show")
+        .find("#formUptCandidate")
+        .load($(this).attr("value"));
+    });
+');
+
+Modal::begin([
+        'title' => '<h4>UPLOAD ANSWERS</h4>',
+        'id' =>'answer',
+        'size' => 'modal-lg'
+    ]);
+
+echo '<div id="formAnswer"></div>';
+
+Modal::end();
+
+Modal::begin([
+        'title' => '<h4>Edit Candidate</h4>',
+        'id' =>'uptCandidate',
+        'size' => 'modal-md'
+    ]);
+
+echo '<div id="formUptCandidate"></div>';
+
+Modal::end();
+
+?>

@@ -4,7 +4,7 @@ namespace backend\models\pdf;
 
 use Yii;
 
-class MYPDF extends \TCPDF {
+class MYPDF_result extends \TCPDF {
 
     //Page header
     public function Header() {

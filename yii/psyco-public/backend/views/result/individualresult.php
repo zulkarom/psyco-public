@@ -30,10 +30,10 @@ use backend\models\Answer;
 						$stringdata .="<tr>";
 						$stringdata .="<td><strong>".$rowcat->quest ."</strong></td>";
 						if($rowcat->answer == 1){
-							$ans ="<span class='glyphicon glyphicon-ok'></span>";
+							$ans ="<span class='fas fa-check'></span>";
 							$jum +=1;
 						}else if($rowcat->answer == 0){
-							$ans ="<span class='glyphicon glyphicon-remove'></span>";
+							$ans ="<span class='fas fa-times'></span>";
 						}else{
 							$ans ="NA";
 						}

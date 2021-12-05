@@ -4,12 +4,13 @@ namespace backend\controllers;
 
 use backend\models\Candidate;
 use backend\models\GradeCategory;
+use backend\models\Question;
 use backend\models\ResultSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\pdf\pdf_individual;
-
+use backend\models\pdf\pdf_result;
 /**
  * ResultController implements the CRUD actions for Candidate model.
  */
@@ -83,11 +84,41 @@ class ResultController extends Controller
 
     public function actionResultPdf($id){
 
-        $model = $this->findModel($id);
-        $pdf = new pdf_individual;
+        $pdf = new pdf_result;
         $pdf->gcat = GradeCategory::find()->all();
-        $pdf->user = $model;
+        $pdf->users = Candidate::find()
+                    ->alias('a')
+                    ->select($this->columResultAnswers())
+                    ->joinWith(['batch b', 'answer c'])
+                    ->where(['!=' ,'a.id', 1])
+                    ->all();
+
         $pdf->generatePdf();
+    }
+
+    private function columResultAnswers(){
+        $result = GradeCategory::find()->all();
+        $colum = ["a.id", "a.username", "a.can_name", "a.department", "a.can_zone", "a.can_batch",  "b.bat_text" ,
+        "a.answer_status", "a.overall_status", "a.finished_at"];
+        $c=1;
+        
+        foreach($result as $row){
+        if($c==1){$comma="";}else{$comma=", ";}
+            $str = "";
+            $quest = Question::find()->where(['grade_cat' => $row->id])->all();
+            $i=1;
+            $jumq = count($quest);
+            // echo $jumq;die();
+            foreach($quest as $rq){
+                if($i == $jumq){$plus = "";}else{$plus=" + ";}
+                $str .= "IF(q".$rq->que_id ." > 0,1,0) ". $plus ;
+            $i++;
+            }
+            $str .= " as c". $row->id;
+        $c++;  
+        $colum[] = $str; 
+        }
+        return $colum;
     }
 
     /**
