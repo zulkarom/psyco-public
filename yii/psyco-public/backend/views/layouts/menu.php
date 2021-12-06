@@ -11,7 +11,7 @@ use common\widgets\MenuAdminLte;
     <?=MenuAdminLte::widget(
     [
             
-            // ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
+            ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []],
 
             // ['label' => 'My Profile', 'level' => 1, 'url' => ['/profile/view'], 'icon' => 'fas fa-user', 'children' => []],
 

@@ -28,6 +28,7 @@ class Batch extends \yii\db\ActiveRecord
         return [
             [['bat_text'], 'required'],
             [['bat_text'], 'string', 'max' => 100],
+            [['bat_show'], 'integer'],
         ];
     }
 
@@ -38,7 +39,13 @@ class Batch extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Bat ID',
-            'bat_text' => 'Bat Text',
+            'bat_text' => 'Batch',
+            'bat_show' => 'Showing'
         ];
+    }
+
+    public static function countBatches(){
+        return self::find()
+        ->count();
     }
 }

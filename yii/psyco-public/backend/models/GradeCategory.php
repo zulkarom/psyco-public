@@ -48,7 +48,7 @@ class GradeCategory extends \yii\db\ActiveRecord
     public static function getGradeCat()
     {
         $query = self::find()
-        ->select('id', 'gcat_text')
+        // ->select('id', 'gcat_text')
         ->orderBy('gcat_order ASC')
         ->all();
         return $query;

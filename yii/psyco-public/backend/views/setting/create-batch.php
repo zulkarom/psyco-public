@@ -12,14 +12,12 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'setting_item')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'bat_text')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'setting_num')->textInput() ?>
-
-    <?= $form->field($model, 'setting_text')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'bat_show')->dropDownList( [1 => 'Yes' , 0 => 'No'] )?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save Batch', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

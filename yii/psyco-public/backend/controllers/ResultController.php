@@ -94,6 +94,7 @@ class ResultController extends Controller
                     ->all();
 
         $pdf->generatePdf();
+        exit();
     }
 
     private function columResultAnswers(){
@@ -119,6 +120,19 @@ class ResultController extends Controller
         $colum[] = $str; 
         }
         return $colum;
+    }
+
+    public function actionUploadResult($id){
+
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->renderAjax('upload-result', [
+            'model' => $model,
+        ]);
     }
 
     /**

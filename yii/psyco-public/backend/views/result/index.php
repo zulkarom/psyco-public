@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\bootstrap4\Modal;
 use kartik\export\ExportMenu;
 use yii\grid\GridView;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ResultSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -135,12 +136,6 @@ $columns = [
 
 
         </div>
-        
-        <div class="col-md-2">
-
-            <?=Html::a('DOWNLOAD RESULT PDF',['result-pdf', 'id' => Yii::$app->user->identity->id],['class'=>'btn btn-danger'])?>
-            
-        </div> 
     </div>
 
     
@@ -217,6 +212,28 @@ $columns = [
         </div>
         </div>
     </div>
-
-
 </div>
+
+<?php
+
+$js = '
+
+$(document).ready(function(){
+    changePdfId();
+});
+
+function changePdfId()
+{
+    $("#w0-pdf").attr("id", "ovrw-pdf");
+    $("#ovrw-pdf").data("format",null);
+}
+
+$(".export-full-pdf").click(function(){
+    var x = document.getElementById("ovrw-pdf");
+    x.href = "'.Url::to(['result-pdf', 'id' => Yii::$app->user->identity->id]).'"
+});
+
+
+';
+$this->registerJs($js);
+?>

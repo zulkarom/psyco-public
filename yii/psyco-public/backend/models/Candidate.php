@@ -144,4 +144,10 @@ class Candidate extends \common\models\User
         return $query;
     }
 
+    public static function countCandidates(){
+        return self::find()
+        ->where(['!=' ,'id', 1])
+        ->count();
+    }
+
 }

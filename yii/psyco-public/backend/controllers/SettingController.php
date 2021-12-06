@@ -42,23 +42,27 @@ class SettingController extends Controller
     {
 
         $model = Setting::findOne(1);
-        $model2 = Setting2::findOne(2);
-        $batch = Batch::findOne(1);
+        // $model2 = Setting2::findOne(2);
+        $batches = Batch::find()->all();
 
         if ($model->load(Yii::$app->request->post()) 
-            && $model2->load(Yii::$app->request->post())) {
-            if($model->save()){
-                if($model2->save()){
-                    Yii::$app->session->addFlash('success', "Setting Updated");
-                    return $this->redirect(['index']);
-                }
-            }
+            && $batches->load(Yii::$app->request->post())) {
+
+            // echo "<pre>";
+            // print_r($batches->load(Yii::$app->request->post()));
+            // die();
+            // if($model->save()){
+            //     if($model2->save()){
+            //         Yii::$app->session->addFlash('success', "Setting Updated");
+            //         return $this->redirect(['index']);
+            //     }
+            // }
         }
 
         return $this->render('index', [
             'model' => $model,
-            'model2' => $model2,
-            'batch' => $batch,
+            // 'model2' => $model2,
+            'batches' => $batches,
         ]);
     }
 
@@ -80,19 +84,19 @@ class SettingController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreateBatch()
     {
-        $model = new Setting();
+        $model = new Batch();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect('setting/index');
             }
         } else {
             $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create-batch', [
             'model' => $model,
         ]);
     }
