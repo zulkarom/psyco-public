@@ -53,4 +53,16 @@ class GradeCategory extends \yii\db\ActiveRecord
         ->all();
         return $query;
     }
+
+    public static function getTotalByCat($user_id, $grow_id)
+    {
+        $result_cat = Answer::getAnswersByCat($user_id,$grow_id);
+        $jum = 0;
+        foreach($result_cat as $rowcat){
+            if($rowcat->answer == 1){
+                $jum +=1;
+            }
+        }
+        return $jum;
+    }
 }

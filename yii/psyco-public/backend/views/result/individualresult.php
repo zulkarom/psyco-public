@@ -1,13 +1,31 @@
 <?php 
 
 use backend\models\Answer;
+use backend\models\GradeCategory;
 use yii\bootstrap4\Modal;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use backend\assets\ExcelAsset;
+use richardfan\widget\JSRegister;
 ?>
 
 
+
+<div class="card card-info">
+  <div class="card-header">
+    <h3 class="card-title">Pie Chart</h3>
+
+    <div class="card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <i class="fas fa-minus"></i>
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+  </div>
+  <!-- /.card-body -->
+</div>
 
 <div class="card">
 	<div class="card-body">
@@ -129,12 +147,12 @@ var X = XLSX;
             var sheet = obj[key];
             for(var row in sheet){
               var row = sheet[row];
-              //console.log(row);
-              $("#"+row[1]+"-total_student").val(row[5]);
-              $("#"+row[1]+"-max_lecture").val(row[6]);
-              $("#"+row[1]+"-prefix_lecture").val(row[7]);
-              $("#"+row[1]+"-max_tutorial").val(row[8]);
-              $("#"+row[1]+"-prefix_tutorial").val(row[9]);
+              console.log(row);
+              // $("#"+row[1]+"-total_student").val(row[5]);
+              // $("#"+row[1]+"-max_lecture").val(row[6]);
+              // $("#"+row[1]+"-prefix_lecture").val(row[7]);
+              // $("#"+row[1]+"-max_tutorial").val(row[8]);
+              // $("#"+row[1]+"-prefix_tutorial").val(row[9]);
             }
             break;
           }
@@ -155,9 +173,87 @@ var X = XLSX;
 
 ?>
 
+
 <?php
-    
-    ExcelAsset::register($this);
+	$enterprise = []; 
+	$social = [];
+	$investigate = []; 
+	$artistic = []; 
+	$conventional = [];
+	$realistic = [];
+
+	foreach($gcat as $grow){	
+		if($grow->id == 1){
+			$enterprise[] = GradeCategory::getTotalByCat($user->id,$grow->id);
+		}
+		else if($grow->id == 2){
+			$social[] = GradeCategory::getTotalByCat($user->id,$grow->id);
+		}
+		else if($grow->id == 3){
+			$investigate[] = GradeCategory::getTotalByCat($user->id,$grow->id);
+		}
+		else if($grow->id == 4){
+			$artistic[] = GradeCategory::getTotalByCat($user->id,$grow->id);
+		}
+		else if($grow->id == 5){
+			$conventional[] = GradeCategory::getTotalByCat($user->id,$grow->id);
+		}
+		else if($grow->id == 6){
+			$realistic[] = GradeCategory::getTotalByCat($user->id,$grow->id);
+		}
+	}
 ?>
+
+<?php JSRegister::begin(); ?>
+<script>
+	$(function () {
+  	//-------------
+    //- PIE CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+
+    var data_enterprise = <?php echo json_encode($enterprise)?>;
+    var data_social = <?php echo json_encode($social)?>;
+    var data_investigate = <?php echo json_encode($investigate)?>;
+    var data_artistic = <?php echo json_encode($artistic)?>;
+    var data_conventional = <?php echo json_encode($conventional)?>;
+    var data_realistic = <?php echo json_encode($realistic)?>;
+
+    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+    var pieData        = {
+      labels: [
+          'Enterprise',
+          'Social',
+          'Investigate',
+          'Artistic',
+          'Conventional',
+          'Realistic',
+      ],
+      datasets: [
+        {
+          data: [data_enterprise,data_social,data_investigate,data_artistic,data_conventional,data_realistic],
+          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+        }
+      ]
+    }
+    var pieOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    new Chart(pieChartCanvas, {
+      type: 'pie',
+      data: pieData,
+      options: pieOptions
+    })
+
+  });
+
+</script>
+<?php JSRegister::end(); ?>
+<?php ExcelAsset::register($this);?>
+
+
 
 

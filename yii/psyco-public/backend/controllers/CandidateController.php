@@ -9,6 +9,7 @@ use backend\models\CandidateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\Answer;
 
 /**
  * CandidateController implements the CRUD actions for Candidate model.
@@ -74,7 +75,15 @@ class CandidateController extends Controller
             if ($model->load($this->request->post())) {
                 $model->can_batch = 1;
                 if($model->save()){
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    $new = new Answer();
+                    $new->can_id = $model->id;
+                    for($i=1;$i<=120;$i++){
+                        $q = 'q'.$i;
+                        $new->$q = '-1';
+                    }
+                    if($new->save()){
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
                 }
             }
         } else {
