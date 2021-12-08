@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
 use backend\models\Batch;
+use backend\models\BatchSearch;
 
 /**
  * SettingController implements the CRUD actions for Setting model.
@@ -42,27 +43,17 @@ class SettingController extends Controller
     {
 
         $model = Setting::findOne(1);
-        // $model2 = Setting2::findOne(2);
-        $batches = Batch::find()->all();
+        $searchModel = new BatchSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         if ($model->load(Yii::$app->request->post()) 
             && $batches->load(Yii::$app->request->post())) {
-
-            // echo "<pre>";
-            // print_r($batches->load(Yii::$app->request->post()));
-            // die();
-            // if($model->save()){
-            //     if($model2->save()){
-            //         Yii::$app->session->addFlash('success', "Setting Updated");
-            //         return $this->redirect(['index']);
-            //     }
-            // }
         }
 
         return $this->render('index', [
             'model' => $model,
-            // 'model2' => $model2,
-            'batches' => $batches,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

@@ -5,6 +5,9 @@ use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\bootstrap4\Modal;
+use yii\helpers\ArrayHelper;
+use backend\models\Batch;
+use common\models\Common;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -12,42 +15,6 @@ $this->title = 'Setting';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-
-<div class="row">
-    <div class="col-2">
-        <p>
-            <?php echo Html::button('<span class="fa fa-plus"></span> NEW BATCH', ['value' => Url::to(['/setting/create-batch']), 'class' => 'btn btn-success', 'id' => 'modalBttnBatch']);
-
-            
-
-            $this->registerJs('
-                $(function(){
-                  $("#modalBttnBatch").click(function(){
-                      $("#batch").modal("show")
-                        .find("#formBatch")
-                        .load($(this).attr("value"));
-                  });
-                });
-
-               
-            ');
-
-            Modal::begin([
-                    'title' => '<h4>New Batch</h4>',
-                    'id' =>'batch',
-                    'size' => 'modal-lg'
-                ]);
-
-            echo '<div id="formBatch"></div>';
-
-            Modal::end();
-
-            
-
-            ?>
-        </p>
-    </div>
-</div>
 
 <?php $form = ActiveForm::begin(); ?>
 <div class="setting-index">
@@ -58,38 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
           <br/><br/>
 
             <?= $form->field($model, 'setting_num')->dropDownList( [1 => 'Yes' , 0 => 'No'] )->label('Open Online Interview') ?>
-
-            <table class="table">
-              <thead>
-                <tr>
-                  <th style="width: 10px">No.</th>
-                  <th>Batch Name</th>
-                  <th>Showing</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php 
-                $i=1;
-                foreach($batches as $batch){
-                echo'<tr>
-                    <td>'.$i.'</td>
-                    <td>'.$batch->bat_text.'</td>
-                    <td>
-                      '.$form->field($batch, 'bat_show')->dropDownList( [1 => 'Yes' , 0 => 'No'] )->label(false).'
-                    </td>
-                  </tr>';
-                  $i++;
-                }
-                ?>
-              </tbody>
-            </table>
+            <div class="form-group">
+                <?= Html::submitButton('Save Setting', ['class' => 'btn btn-primary']) ?>
+            </div>
         </div>
     </div>
 
 </div>
+<?php ActiveForm::end(); ?>
 
-<div class="form-group">
-    <?= Html::submitButton('Save Setting', ['class' => 'btn btn-primary']) ?>
-</div>
-
-    <?php ActiveForm::end(); ?>

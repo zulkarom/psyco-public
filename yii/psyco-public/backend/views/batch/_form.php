@@ -8,18 +8,28 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<div class="card">
+<div class="card-body">
 <div class="batch-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'bat_text')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'bat_show')->textInput() ?>
+    <?= $form->field($model, 'bat_show')->dropDownList( [1 => 'Yes' , 0 => 'No'] )?>
+
+    <?= $form->field($model, 'column1')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'column2')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'column3')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save Batch', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
+</div>
+</div>
 </div>

@@ -19,6 +19,8 @@ use common\widgets\MenuAdminLte;
 
             ['label' => 'View All Result', 'level' => 1, 'url' => ['/result/index'], 'icon' => 'fas fa-list', 'children' => []],
 
+            ['label' => 'Batches', 'level' => 1, 'url' => ['/batch/index'], 'icon' => 'fas fa-cog', 'children' => []],
+
             ['label' => 'Setting', 'level' => 1, 'url' => ['/setting/index'], 'icon' => 'fas fa-cog', 'children' => []],
 
             ['label' => 'Change Password', 'level' => 1, 'url' => ['/candidate/change-password'], 'icon' => 'fas fa-unlock-alt', 'children' => []],

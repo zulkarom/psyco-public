@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Batch;
 use backend\models\BatchSearch;
+use backend\models\BatchCandidateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -44,6 +45,20 @@ class BatchController extends Controller
         ]);
     }
 
+    public function actionViewCandidates($bat_id)
+    {
+        $searchModel = new BatchCandidateSearch();
+        $searchModel->bat_id = $bat_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $batch = Batch::findOne($bat_id);
+
+        return $this->render('view-candidates', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'batch' => $batch,
+        ]);
+    }
+
     /**
      * Displays a single Batch model.
      * @param integer $id
@@ -66,8 +81,12 @@ class BatchController extends Controller
     {
         $model = new Batch();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -92,6 +111,33 @@ class BatchController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionUploadCandidates()
+    {
+        // $model = new Candidate();
+
+        // if ($this->request->isPost) {
+        //     if ($model->load($this->request->post())) {
+        //         if($model->save()){
+        //             $new = new Answer();
+        //             $new->can_id = $model->id;
+        //             for($i=1;$i<=120;$i++){
+        //                 $q = 'q'.$i;
+        //                 $new->$q = '-1';
+        //             }
+        //             if($new->save()){
+        //                 return $this->redirect(['view', 'id' => $model->id]);
+        //             }
+        //         }
+        //     }
+        // } else {
+        //     $model->loadDefaultValues();
+        // }
+
+        return $this->renderAjax('upload-candidates', [
+            // 'model' => $model,
         ]);
     }
 

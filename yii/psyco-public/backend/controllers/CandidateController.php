@@ -73,7 +73,6 @@ class CandidateController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                $model->can_batch = 1;
                 if($model->save()){
                     $new = new Answer();
                     $new->can_id = $model->id;
