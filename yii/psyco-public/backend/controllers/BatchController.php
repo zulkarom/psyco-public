@@ -4,7 +4,9 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Batch;
+use backend\models\Answer;
 use backend\models\BatchSearch;
+use backend\models\Candidate;
 use backend\models\BatchCandidateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -50,7 +52,74 @@ class BatchController extends Controller
         $searchModel = new BatchCandidateSearch();
         $searchModel->bat_id = $bat_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $batch = Batch::findOne($bat_id);
+        $batch = $this->findModel($bat_id);
+
+
+        if(Yii::$app->request->post()){
+
+            $data = Yii::$app->request->post('json_candidate');
+            $data = json_decode($data);
+
+            //  echo '<pre>';
+            // print_r($data);die(); 
+
+            if($data){
+                foreach (array_slice($data,1) as $can) {
+                    if(is_array($can) and $can){
+                        $checkCan = Candidate::find()->where(['username' => $can[1]])->one();
+                        $newAns = new Answer();
+                        if($checkCan){
+                            $checkAns = Answer::find()->where(['can_id' => $checkCan->id, 'bat_id' => $bat_id])->one();
+                            if(!$checkAns){
+                                $newAns->can_id = $checkCan->id;
+                                $newAns->bat_id = $bat_id;
+                                /*foreach((array_slice($data, 0, 1)) as $dt){
+                                   $newAns->column1 = $dt[2]; 
+                                   $newAns->column2 = $dt[3]; 
+                                   $newAns->column3 = $dt[4]; 
+                                }*/
+                                $newAns->column1 = $can[2]; 
+                                $newAns->column2 = $can[3]; 
+                                $newAns->column3 = $can[4]; 
+
+                                for($i=1;$i<=120;$i++){
+                                    $q = 'q'.$i;
+                                    $newAns->$q = '-1';
+                                }
+                                if(!$newAns->save()){
+                                    
+                                }
+                            }
+                        }else{
+                            
+                            // if(!$checkAns){
+                                $new = new Candidate();
+                                $new->can_name = $can[0];
+                                $new->username = $can[1];
+                                $new->can_batch = $batch->id;
+
+                                if($new->save()){
+                                    $newAns->can_id = $new->id;
+                                    $newAns->bat_id = $bat_id;
+                                    $newAns->column1 = $can[2]; 
+                                    $newAns->column2 = $can[3]; 
+                                    $newAns->column3 = $can[4]; 
+                                    for($i=1;$i<=120;$i++){
+                                        $q = 'q'.$i;
+                                        $newAns->$q = '-1';
+                                    }
+                                    if(!$newAns->save()){
+                                    
+                                    }
+                                }
+                            // }
+                        }
+                    }
+                }
+                return $this->redirect(['view-candidates', 'bat_id' => $batch->id]);
+            }
+
+        }
 
         return $this->render('view-candidates', [
             'searchModel' => $searchModel,

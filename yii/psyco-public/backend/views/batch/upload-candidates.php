@@ -1,5 +1,7 @@
 <?php
 use richardfan\widget\JSRegister;
+
+ExcelAsset::register($this); 
 ?>
 
 <div style="text-align:center">
@@ -7,7 +9,7 @@ use richardfan\widget\JSRegister;
 <input type="file" id="xlf" style="display:none;" />
 <button type="button" id="btn-importexcel" class="btn btn-info">Select Excel File</button>
 
-<div align="center" id="uploadmsg"></div>
+<div align="center" id="uploadmsg">testtt</div>
 
 </div>
 </div>
@@ -18,9 +20,9 @@ use richardfan\widget\JSRegister;
 
 $("#btn-importexcel").click(function(){
   
-  if(confirm("Are you sure to import this excel file? Please note that this action will override all data in this table.")){
+  // if(confirm("Are you sure to import this excel file? Please note that this action will override all data in this table.")){
   document.getElementById("xlf").click();
-}
+// }
         
 });
 
@@ -44,14 +46,28 @@ var X = XLSX;
 		$("#uploadmsg").text(tt);
 	}
   
-  function to_jsObject(workbook) {
-    var result = {};
+  function to_csv(workbook) {
+    var result = [];
+    var tetapan="";
+    var baik = 0;
     workbook.SheetNames.forEach(function(sheetName) {
-      var roa = X.utils.sheet_to_json(workbook.Sheets[sheetName], {header:1});
-      if(roa.length) result[sheetName] = roa;
+      var csv = X.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+      if(csv.length > 0){
+        if(sheetName=="workSheet"){
+          var baik = 1;
+          var user = $('#upuserid').text();
+          saveAllAnswers(user, csv);
+          //alert(user);
+          //alert(csv); 
+            //alert(baik);
+        }
+      }
     });
-    return result;
-
+    
+    if(baik ==0){
+      //$("#uploadmsg").html("Maaf, jawapan tidak berjaya direkod!");
+    }
+    
   }
 
   var xlf = document.getElementById('xlf');

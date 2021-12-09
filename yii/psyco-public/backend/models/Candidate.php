@@ -46,7 +46,7 @@ class Candidate extends \common\models\User
         return [
             // [['username', 'auth_key', 'password_hash', 'email', 'can_name', 'department', 'can_batch', 'can_zone', 'finished_at', 'answer_status', 'answer_status2', 'overall_status', 'answer_last_saved', 'answer_last_saved2', 'created_at', 'updated_at'], 'required'],
             [['status', 'can_batch', 'can_zone', 'finished_at', 'answer_status', 'answer_status2', 'overall_status', 'question_last_saved', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
+            [['password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['can_name'], 'string', 'max' => 200],
             [['department'], 'string', 'max' => 80],
