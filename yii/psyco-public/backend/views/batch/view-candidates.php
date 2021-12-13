@@ -21,7 +21,12 @@ $this->title = 'Candidates';
 $this->params['breadcrumbs'][] = ['label' => 'Batches', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $batch->bat_text, 'url' => ['view', 'id' => $batch->id]];
 $this->params['breadcrumbs'][] = $this->title;
-
+$column1[] = array();
+$column2[] = array();
+$column3[] = array();
+$grid_column1[] = array();
+$grid_column2[] = array();
+$grid_column3[] = array();
 $columns = [
           
             // ['class' => 'yii\grid\SerialColumn'],
@@ -39,36 +44,133 @@ $columns = [
                     return "";
                 }
             ],
-            [
+
+        ];
+        if($batch->column1)
+        {
+            $columns[] = [
                 'format' => 'raw',
                 'header' =>  $batch->column1 ,
                 'value' => function($model){
                     return "";
                 }
-            ],
-            [
+            ];
+        }
+        if($batch->column2)
+        {
+            $columns[] = [
                 'format' => 'raw',
                 'header' =>  $batch->column2 ,
                 'value' => function($model){
                     return "";
                 }
-            ],
-            [
+            ];
+        }
+        if($batch->column3)
+        {
+            $columns[] = [
                 'format' => 'raw',
                 'header' =>  $batch->column3 ,
                 'value' => function($model){
                     return "";
                 }
-            ],
-            
+            ];
+        }
 
+?>
+
+<?php
+    $grid_columns = [
+        ['class' => 'yii\grid\SerialColumn'],
+        [
+            'format' => 'raw',
+            'attribute' => 'can_name',
+            'value' => function($model) use ($batch){
+                return Html::a($model->can_name.'<span class="fa fa-pencil"></span>', ['/batch/update-candidate', 'cid' => $model->id, 'bid' => $batch->id]);
+            }
+        ],
+        'username',       
+        
+        
+    ];
+
+    if($batch->column1)
+    {
+        $grid_columns[] = [
+            'format' => 'raw',
+            'header' =>  $batch->column1 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column1;
+                }
+            }
         ];
-
+    }
+    if($batch->column2)
+    {
+        $grid_columns[] = [
+            'format' => 'raw',
+            'header' =>  $batch->column3 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column3;
+                }
+            }
+        ];
+    }
+    if($batch->column3)
+    {
+        $grid_columns[] = [
+            'format' => 'raw',
+            'header' =>  $batch->column2 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column2;
+                }
+            }
+        ];
+    }
+    if($batch->bat_text || $batch->column1 || $batch->column2 || $batch->column3){
+        $grid_columns[] = ['class' => 'yii\grid\ActionColumn',
+            'contentOptions' => ['style' => 'width: 10%'],
+            'template' => '{delete}',
+            //'visible' => false,
+            'buttons'=>[
+                'delete'=>function ($url, $model) {
+                    return Html::a('<span class="fa fa-trash"></span> Delete',['individual-result', 'id' => $model->id],['class'=>'btn btn-danger btn-sm']);
+                },
+            ],
+        ];
+    }
 ?>
 
 <h4><?= $batch->bat_text?></h4>
 
 <div class="bttn-arrange">  
+    <?php echo Html::button('<span class="fa fa-plus"></span> NEW CANDIDATE', ['value' => Url::to(['/batch/create-candidate', 'id' => $batch->id]), 'class' => 'btn btn-success', 'id' => 'modalBttnCandidate']);
+        $this->registerJs('
+            $(function(){
+              $("#modalBttnCandidate").click(function(){
+                  $("#candidate").modal("show")
+                    .find("#formCandidate")
+                    .load($(this).attr("value"));
+              });
+            });
+
+           
+        ');
+
+        Modal::begin([
+                'title' => '<h4>New Candidate</h4>',
+                'id' =>'candidate',
+                'size' => 'modal-lg'
+            ]);
+
+        echo '<div id="formCandidate"></div>';
+
+        Modal::end();
+    ?>
+    &nbsp
     <input type="file" id="xlf" style="display:none;" />
     <button type="button" id="btn-importexcel" class="btn btn-info "><span class="fa fa-upload"></span> IMPORT CANDIDATES </button>
    &nbsp
@@ -110,57 +212,8 @@ $columns = [
          <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'format' => 'raw',
-                'attribute' => 'can_name',
-                'value' => function($model){
-                    return Html::a($model->can_name.'<span class="glyphicon glyphicon-pencil"></span>', ['/candidate/update', 'id' => $model->id], ['class' => 'modalBttnUptCandidate']);
-                }
-            ],
-            'username',
-            [
-                'format' => 'raw',
-                'header' =>  $batch->column1 ,
-                'value' => function($model){
-                    if($model->answer){
-                        return $model->answer->column1;
-                    }
-                }
-            ],
-            [
-                'format' => 'raw',
-                'header' =>  $batch->column2 ,
-                'value' => function($model){
-                    if($model->answer){
-                        return $model->answer->column2;
-                    }
-                }
-            ],
-            [
-                'format' => 'raw',
-                'header' =>  $batch->column3 ,
-                'value' => function($model){
-                    if($model->answer){
-                        return $model->answer->column3;
-                    }
-                }
-            ],
-            ['class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['style' => 'width: 10%'],
-                'template' => '{delete}',
-                //'visible' => false,
-                'buttons'=>[
-                    'delete'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-trash"></span> Delete',['individual-result', 'id' => $model->id],['class'=>'btn btn-danger btn-sm']);
-                    },
-                ],
-            
-            ],
-        ],
+        'columns' => $grid_columns
     ]); ?>
-   
 
 </div>
 </div>

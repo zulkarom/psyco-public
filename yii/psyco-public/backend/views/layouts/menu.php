@@ -15,13 +15,15 @@ use common\widgets\MenuAdminLte;
 
             // ['label' => 'My Profile', 'level' => 1, 'url' => ['/profile/view'], 'icon' => 'fas fa-user', 'children' => []],
 
-            ['label' => 'All Candidate', 'level' => 1, 'url' => ['/candidate/index'], 'icon' => 'fas fa-users', 'children' => []],
+            // ['label' => 'All Candidate', 'level' => 1, 'url' => ['/candidate/index'], 'icon' => 'fas fa-users', 'children' => []],
 
             ['label' => 'View All Result', 'level' => 1, 'url' => ['/result/index'], 'icon' => 'fas fa-list', 'children' => []],
 
             ['label' => 'Batches', 'level' => 1, 'url' => ['/batch/index'], 'icon' => 'fas fa-cog', 'children' => []],
 
             ['label' => 'Setting', 'level' => 1, 'url' => ['/setting/index'], 'icon' => 'fas fa-cog', 'children' => []],
+
+            ['label' => 'User Access', 'level' => 1, 'url' => ['/admin/'], 'icon' => 'fas fa-cog', 'children' => []],
 
             ['label' => 'Change Password', 'level' => 1, 'url' => ['/candidate/change-password'], 'icon' => 'fas fa-unlock-alt', 'children' => []],
 

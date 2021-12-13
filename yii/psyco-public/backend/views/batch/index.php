@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <div class="card card-primary card-outline">
-    <div class="card-header"><label>Batches</label></div>
     <div class="card-body">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,

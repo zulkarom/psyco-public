@@ -160,4 +160,8 @@ class Common {
 	public static function status(){
 		return [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
 	}
+
+	public static function showing(){
+		return [0 => 'No', 1 => 'Yes'];
+	}
 }

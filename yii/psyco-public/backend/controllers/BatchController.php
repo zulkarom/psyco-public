@@ -183,6 +183,64 @@ class BatchController extends Controller
         ]);
     }
 
+    public function actionCreateCandidate($id)
+    {
+        $model = new Candidate();
+        $modelBatch = $this->findModel($id);
+        $modelAnswer = new Answer();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                if($model->save()){
+                    
+                    $modelAnswer->can_id = $model->id;
+                    for($i=1;$i<=120;$i++){
+                        $q = 'q'.$i;
+                        $modelAnswer->$q = '-1';
+                    }
+                    if($modelAnswer->save()){
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                }
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->renderAjax('create-candidate', [
+            'model' => $model,
+            'modelBatch' => $modelBatch,
+            'modelAnswer' => $modelAnswer,
+        ]);
+    }
+
+    public function actionUpdateCandidate($cid,$bid)
+    {
+        $model = Candidate::findOne($cid);
+        $modelBatch = $this->findModel($bid);
+        $modelAnswer = Answer::find()->where(['can_id' => $cid, 'bat_id' => $bid])->one();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) 
+                && $modelAnswer->load($this->request->post())) {
+                if($model->save()){                    
+                    if($modelAnswer->save()){
+                        Yii::$app->session->addFlash('success', 'Data Updated');
+                        return $this->redirect(['update-candidate', 'cid' => $cid, 'bid' => $bid]);
+                    }
+                }
+            }
+        }else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('update-candidate', [
+            'model' => $model,
+            'modelBatch' => $modelBatch,
+            'modelAnswer' => $modelAnswer,
+        ]);
+    }
+
     public function actionUploadCandidates()
     {
         // $model = new Candidate();

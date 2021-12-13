@@ -44,7 +44,7 @@ class BatchCandidateSearch extends Candidate
         $query = Candidate::find()
         ->alias('c')
         ->joinWith(['batch b', 'answer a'])
-        ->where(['c.can_batch' => $this->bat_id])
+        ->where(['a.bat_id' => $this->bat_id])
         ->orWhere(['a.can_id' => 'c.id']);
 
         // add conditions that should always apply here

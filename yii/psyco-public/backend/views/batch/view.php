@@ -11,6 +11,47 @@ $this->title = $model->bat_text;
 $this->params['breadcrumbs'][] = ['label' => 'Batches', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$column1[] = array();
+$column2[] = array();
+$column3[] = array();
+
+$attributes = [
+            'bat_text',
+            [
+                'attribute' => 'bat_show',
+                'value' => function($model){
+                    return $model->showText;
+                }
+            ],
+        ];
+        if($model->column1)
+        {
+            $attributes[] = [
+                'attribute' => 'column1',
+                'value' => function($model){
+                    return $model->column1;
+                }
+            ];
+        }
+        if($model->column2)
+        {
+            $attributes[] = [
+                'attribute' => 'column2',
+                'value' => function($model){
+                    return $model->column2;
+                }
+            ];
+        }
+        if($model->column3)
+        {
+            $attributes[] = [
+                'attribute' => 'column3',
+                'value' => function($model){
+                    return $model->column3;
+                }
+            ];
+        }
 ?>
 
 <div class="card">
@@ -34,18 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => [
-            'bat_text',
-            [
-                'attribute' => 'bat_show',
-                'value' => function($model){
-                    return $model->showText;
-                }
-            ],
-            'column1',
-            'column2',
-            'column3',
-        ],
+        'attributes' => $attributes,
     ]) ?>
 </div>
 </div>

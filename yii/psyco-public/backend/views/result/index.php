@@ -25,9 +25,9 @@ $columns = [
             ],
             [
                 'format' => 'raw',
-                'label' => 'Department / Batch',
+                'label' => 'Batch',
                 'value' => function($model){
-                    return $model->department.'<br/>'.$model->batch->bat_text;
+                    return $model->batch->bat_text;
                 }
             ],
             [
@@ -70,13 +70,45 @@ $columns = [
 
     <div class="row">
 
-        <div class="col-md-6">
+        <div class="col-md-8">
             <?= $this->render('_form_search', [
                 'model' => $searchModel,
             ]) ?>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-4">
+
+            <?php echo Html::button('<span class="fa fa-plus"></span> NEW CANDIDATE', ['value' => Url::to(['/candidate/create']), 'class' => 'btn btn-success', 'id' => 'modalBttnCandidate']);
+
+            
+
+            $this->registerJs('
+                $(function(){
+                  $("#modalBttnCandidate").click(function(){
+                      $("#candidate").modal("show")
+                        .find("#formCandidate")
+                        .load($(this).attr("value"));
+                  });
+                });
+
+               
+            ');
+
+            Modal::begin([
+                    'title' => '<h4>New Candidate</h4>',
+                    'id' =>'candidate',
+                    'size' => 'modal-lg'
+                ]);
+
+            echo '<div id="formCandidate"></div>';
+
+            Modal::end();
+
+            
+
+            ?>
+
+            &nbsp
 
             <?=
             ExportMenu::widget([
@@ -150,6 +182,7 @@ $columns = [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
                         'format' => 'html',
+                        'attribute' => 'others',
                         'label' => 'Full Name(NRIC)',
                         'value' => function($model){
                             return $model->can_name.'<br/>('.$model->username.')';
@@ -157,9 +190,9 @@ $columns = [
                     ],
                     [
                         'format' => 'html',
-                        'label' => 'Department / Batch',
+                        'label' => 'Batch',
                         'value' => function($model){
-                            return $model->department.'<br/>'.$model->batch->bat_text;
+                            return $model->batch->bat_text;
                         }
                     ],
                     [

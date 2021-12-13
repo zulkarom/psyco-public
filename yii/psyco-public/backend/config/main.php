@@ -13,11 +13,9 @@ return [
     'bootstrap' => ['log'],
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module'],
-        // 'kvgrid' => [
-        //     'class' => 'yii\i18n\PhpMessageSource',
-        //     'basePath' => '@kvexport/messages',
-        //     'forceTranslation' => true
-        // ],
+        'admin' => [
+            'class' => 'mdm\admin\Module'
+        ],
     ],
     'components' => [
         'i18n' => [
@@ -45,9 +43,20 @@ return [
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', 
+            //'yii\rbac\PhpManager' or use 
+        ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
+        ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@mdm/admin/views' => '@backend/modules/admin/views/rbac'
+                ],
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
