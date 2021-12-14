@@ -16,7 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
 $columns = [
     ['class' => 'yii\grid\SerialColumn'],
 	'username',
-    'can_name'
+    [
+        'format' => 'html',
+        'attribute' => 'can_name',
+        'label' => 'Full Name',
+        'value' => function($model){
+            return $model->can_name;
+        }
+    ],
 ];
 if (!empty($extraColumns)) {
     $columns = array_merge($columns, $extraColumns);

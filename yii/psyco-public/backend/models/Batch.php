@@ -56,4 +56,9 @@ class Batch extends \yii\db\ActiveRecord
     public function getShowText(){
         return Common::showing()[$this->bat_show];
     }
+
+    public function getAnswer()
+    {
+        return $this->hasOne(Batch::className(), ['id' => 'can_batch']);
+    }
 }

@@ -9,14 +9,14 @@ use common\models\User;
 
 class AssignmentSearch extends User
 {
-	public $staff_no;
+    public $can_name;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-			[['user_name', 'staff_name', 'user_email', 'staff_code'], 'string']
+			[['username', 'can_name'], 'string']
 			
 
         ];
@@ -40,7 +40,7 @@ class AssignmentSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->where(['<>', 'user_id', 1])->orderBy('staff_name ASC');
+        $query = User::find()->where(['<>', 'user_id', 1])->orderBy('can_name ASC');
 
         // add conditions that should always apply here
 
@@ -59,10 +59,8 @@ class AssignmentSearch extends User
             // $query->where('0=1');
             return $dataProvider;
         }
-		$query->andFilterWhere(['like', 'user_name', $this->user_name]);
-		$query->andFilterWhere(['like', 'user_email', $this->user_email]);
-        $query->andFilterWhere(['like', 'staff_code', $this->staff_code]);
-		$query->andFilterWhere(['like', 'staff_name', $this->staff_name]);
+		$query->andFilterWhere(['like', 'username', $this->username]);
+		$query->andFilterWhere(['like', 'can_name', $this->can_name]);
 		
 
         return $dataProvider;
