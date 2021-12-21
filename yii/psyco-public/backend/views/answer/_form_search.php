@@ -27,7 +27,7 @@ $form = ActiveForm::begin([
     </div>
     <div class="col-md-4">
 
-        <?= $form->field($model, 'can_batch')->dropDownList(
+        <?= $form->field($model, 'bat_id')->dropDownList(
             ArrayHelper::map(Batch::find()->all(),'id', 'bat_text'), ['options'=>[$bat_id=>["Selected"=>true]]]
         )->label(false) ?>
 
@@ -54,15 +54,15 @@ $this->registerJs('
 //     }
 // });
 
-$("#resultsearch-answer_status").change(function(){
+$("#answersearch-answer_status").change(function(){
     $("#sel-result-form").submit();
 });
 
-$("#resultsearch-can_batch").change(function(){
+$("#answersearch-bat_id").change(function(){
     $("#sel-result-form").submit();
 });
 
-$("#resultsearch-others").change(function(){
+$("#answersearch-others").change(function(){
     $("#sel-result-form").submit();
 });
 ');

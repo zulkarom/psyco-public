@@ -7,26 +7,77 @@
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 
-$this->title = 'Login';
+$this->title = 'Psychometric';
+
+$fieldOptions1 = [
+    'options' => ['class' => 'input-group mb-3'],
+    'inputTemplate' => "{input}
+            <div class='input-group-text'>
+              <span class='fa fa-user'></span>
+            </div>
+          </div>"
+];
+
+$fieldOptions2 = [
+    'options' => ['class' => 'input-group mb-3'],
+    'inputTemplate' => "{input}<div class='input-group-append'>
+            <div class='input-group-text'>
+              <span class='fa fa-lock'></span>
+            </div>
+          </div>"
+];
 ?>
 <div class="site-login">
-    <div class="mt-5 offset-lg-3 col-lg-6">
-        <h1><?= Html::encode($this->title) ?></h1>
-
-        <p>Please fill out the following fields to login:</p>
+    <center>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-
-            <?= $form->field($model, 'password')->passwordInput() ?>
-
-            <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
-            <div class="form-group">
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
-            </div>
-
-        <?php ActiveForm::end(); ?>
+<div class="login-box">
+  <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="../../index2.html" class="h1"><b>Psychometric</b></a>
     </div>
+    <div class="card-body">
+      <p class="login-box-msg">Sign in to start your session</p>
+
+        
+            <?= $form
+                ->field($model, 'username', $fieldOptions1)
+                ->label(false)
+                ->textInput(['placeholder' => 'Your Username', 'class' => 'form-control']) 
+             ?>
+
+             <?= $form
+                ->field($model, 'password', $fieldOptions2)
+                ->label(false)
+                ->passwordInput(['placeholder' => 'Password', 'class' => 'form-control']) 
+             ?>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="remember">
+              <label for="remember">
+                Remember Me
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <div class="form-group">
+                <?= Html::submitButton('Sign In', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+
+      <p class="mb-1">
+        <a href="forgot-password.html">I forgot my password</a>
+      </p>
+    </div>
+    <!-- /.card-body -->
+  </center>
+  <!-- /.card -->
 </div>
+
+<?php ActiveForm::end(); ?>

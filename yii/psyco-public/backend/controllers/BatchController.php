@@ -151,8 +151,13 @@ class BatchController extends Controller
         $model = new Batch();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view' => $model->id]);
+            if ($model->load($this->request->post())) {
+                if($model->save()){
+                    if($model->bat_show == 1){
+                        Batch::updateAll(['bat_show' => 0], ['<>','id',$model->id]);
+                    }
+                    return $this->redirect(['view', 'id' => $model->id]);  
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -174,8 +179,13 @@ class BatchController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->save()){
+                if($model->bat_show == 1){
+                    Batch::updateAll(['bat_show' => 0], ['<>','id',$id]);
+                }
+                return $this->redirect(['view', 'id' => $model->id]);  
+            }
         }
 
         return $this->render('update', [

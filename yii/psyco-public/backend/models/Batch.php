@@ -29,7 +29,8 @@ class Batch extends \yii\db\ActiveRecord
             [['bat_text'], 'required'],
             [['bat_text'], 'string', 'max' => 100],
             [['column1', 'column2', 'column3'], 'string', 'max' => 225],
-            [['bat_show'], 'integer'],
+            [['bat_show', 'allow_register'], 'integer'],
+            [['start_date', 'end_date'], 'safe'],
         ];
     }
 
@@ -42,6 +43,7 @@ class Batch extends \yii\db\ActiveRecord
             'id' => 'Bat ID',
             'bat_text' => 'Batch',
             'bat_show' => 'Showing',
+            'allow_register' => 'Allow Registration',
             'column1' => 'Column 1',
             'column2' => 'Column 2',
             'column3' => 'Column 3'
@@ -55,6 +57,10 @@ class Batch extends \yii\db\ActiveRecord
 
     public function getShowText(){
         return Common::showing()[$this->bat_show];
+    }
+
+    public function getAllowText(){
+        return Common::showing()[$this->allow_register];
     }
 
     public function getAnswer()

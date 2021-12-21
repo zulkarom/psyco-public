@@ -49,6 +49,14 @@ class ResultController extends Controller
         ]);
     }
 
+    public function actionAnalysis()
+    {
+
+
+        return $this->render('analysis', [
+        ]);
+    }
+
     /**
      * Displays a single Candidate model.
      * @param int $id ID

@@ -3,12 +3,26 @@
 namespace backend\models;
 
 use Yii;
-
+use common\models\Common;
 /**
  * This is the model class for table "psy_answers".
  *
  * @property int $id
  * @property int $can_id user_id
+ * @property int $bat_id
+ * @property string $column1
+ * @property string $column2
+ * @property string $column3
+ * @property int $status
+ * @property int|null $finished_at
+ * @property int $answer_status
+ * @property int $answer_status2
+ * @property int $overall_status
+ * @property string $answer_last_saved
+ * @property int $question_last_saved
+ * @property string|null $answer_last_saved2
+ * @property int $created_at
+ * @property int $updated_at
  * @property int $q1
  * @property int $q2
  * @property int $q3
@@ -148,8 +162,10 @@ class Answer extends \yii\db\ActiveRecord
     {
         return [
             [['can_id'], 'required'],
-            [['can_id', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20', 'q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30', 'q31', 'q32', 'q33', 'q34', 'q35', 'q36', 'q37', 'q38', 'q39', 'q40', 'q41', 'q42', 'q43', 'q44', 'q45', 'q46', 'q47', 'q48', 'q49', 'q50', 'q51', 'q52', 'q53', 'q54', 'q55', 'q56', 'q57', 'q58', 'q59', 'q60', 'q61', 'q62', 'q63', 'q64', 'q65', 'q66', 'q67', 'q68', 'q69', 'q70', 'q71', 'q72', 'q73', 'q74', 'q75', 'q76', 'q77', 'q78', 'q79', 'q80', 'q81', 'q82', 'q83', 'q84', 'q85', 'q86', 'q87', 'q88', 'q89', 'q90', 'q91', 'q92', 'q93', 'q94', 'q95', 'q96', 'q97', 'q98', 'q99', 'q100', 'q101', 'q102', 'q103', 'q104', 'q105', 'q106', 'q107', 'q108', 'q109', 'q110', 'q111', 'q112', 'q113', 'q114', 'q115', 'q116', 'q117', 'q118', 'q119', 'q120'], 'integer'],
-            [['biz_idea', 'column1', 'column2', 'column3'], 'string'],
+            [['can_id', 'bat_id', 'status', 'finished_at', 'answer_status', 'answer_status2', 'overall_status', 'question_last_saved', 'created_at', 'updated_at', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11', 'q12', 'q13', 'q14', 'q15', 'q16', 'q17', 'q18', 'q19', 'q20', 'q21', 'q22', 'q23', 'q24', 'q25', 'q26', 'q27', 'q28', 'q29', 'q30', 'q31', 'q32', 'q33', 'q34', 'q35', 'q36', 'q37', 'q38', 'q39', 'q40', 'q41', 'q42', 'q43', 'q44', 'q45', 'q46', 'q47', 'q48', 'q49', 'q50', 'q51', 'q52', 'q53', 'q54', 'q55', 'q56', 'q57', 'q58', 'q59', 'q60', 'q61', 'q62', 'q63', 'q64', 'q65', 'q66', 'q67', 'q68', 'q69', 'q70', 'q71', 'q72', 'q73', 'q74', 'q75', 'q76', 'q77', 'q78', 'q79', 'q80', 'q81', 'q82', 'q83', 'q84', 'q85', 'q86', 'q87', 'q88', 'q89', 'q90', 'q91', 'q92', 'q93', 'q94', 'q95', 'q96', 'q97', 'q98', 'q99', 'q100', 'q101', 'q102', 'q103', 'q104', 'q105', 'q106', 'q107', 'q108', 'q109', 'q110', 'q111', 'q112', 'q113', 'q114', 'q115', 'q116', 'q117', 'q118', 'q119', 'q120'], 'integer'],
+            [['biz_idea'], 'string'],
+            [['column1', 'column2', 'column3'], 'string', 'max' => 225],
+            [['answer_last_saved', 'answer_last_saved2'], 'string', 'max' => 8],
         ];
     }
 
@@ -161,6 +177,20 @@ class Answer extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'can_id' => 'Can ID',
+            'bat_id' => 'Bat ID',
+            'column1' => 'Column1',
+            'column2' => 'Column2',
+            'column3' => 'Column3',
+            'status' => 'Status',
+            'finished_at' => 'Finished At',
+            'answer_status' => 'Answer Status',
+            'answer_status2' => 'Answer Status2',
+            'overall_status' => 'Overall Status',
+            'answer_last_saved' => 'Answer Last Saved',
+            'question_last_saved' => 'Question Last Saved',
+            'answer_last_saved2' => 'Answer Last Saved2',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
             'q1' => 'Q1',
             'q2' => 'Q2',
             'q3' => 'Q3',
@@ -170,7 +200,7 @@ class Answer extends \yii\db\ActiveRecord
             'q7' => 'Q7',
             'q8' => 'Q8',
             'q9' => 'Q9',
-            'q10' => 'Q10',
+            'q10' => 'q10',
             'q11' => 'Q11',
             'q12' => 'Q12',
             'q13' => 'Q13',
@@ -180,7 +210,7 @@ class Answer extends \yii\db\ActiveRecord
             'q17' => 'Q17',
             'q18' => 'Q18',
             'q19' => 'Q19',
-            'q20' => 'Q20',
+            'q20' => 'q20',
             'q21' => 'Q21',
             'q22' => 'Q22',
             'q23' => 'Q23',
@@ -190,7 +220,7 @@ class Answer extends \yii\db\ActiveRecord
             'q27' => 'Q27',
             'q28' => 'Q28',
             'q29' => 'Q29',
-            'q30' => 'Q30',
+            'q30' => 'q30',
             'q31' => 'Q31',
             'q32' => 'Q32',
             'q33' => 'Q33',
@@ -200,7 +230,7 @@ class Answer extends \yii\db\ActiveRecord
             'q37' => 'Q37',
             'q38' => 'Q38',
             'q39' => 'Q39',
-            'q40' => 'Q40',
+            'q40' => 'q40',
             'q41' => 'Q41',
             'q42' => 'Q42',
             'q43' => 'Q43',
@@ -210,7 +240,7 @@ class Answer extends \yii\db\ActiveRecord
             'q47' => 'Q47',
             'q48' => 'Q48',
             'q49' => 'Q49',
-            'q50' => 'Q50',
+            'q50' => 'q50',
             'q51' => 'Q51',
             'q52' => 'Q52',
             'q53' => 'Q53',
@@ -220,7 +250,7 @@ class Answer extends \yii\db\ActiveRecord
             'q57' => 'Q57',
             'q58' => 'Q58',
             'q59' => 'Q59',
-            'q60' => 'Q60',
+            'q60' => 'q60',
             'q61' => 'Q61',
             'q62' => 'Q62',
             'q63' => 'Q63',
@@ -230,7 +260,7 @@ class Answer extends \yii\db\ActiveRecord
             'q67' => 'Q67',
             'q68' => 'Q68',
             'q69' => 'Q69',
-            'q70' => 'Q70',
+            'q70' => 'q70',
             'q71' => 'Q71',
             'q72' => 'Q72',
             'q73' => 'Q73',
@@ -240,7 +270,7 @@ class Answer extends \yii\db\ActiveRecord
             'q77' => 'Q77',
             'q78' => 'Q78',
             'q79' => 'Q79',
-            'q80' => 'Q80',
+            'q80' => 'q80',
             'q81' => 'Q81',
             'q82' => 'Q82',
             'q83' => 'Q83',
@@ -250,7 +280,7 @@ class Answer extends \yii\db\ActiveRecord
             'q87' => 'Q87',
             'q88' => 'Q88',
             'q89' => 'Q89',
-            'q90' => 'Q90',
+            'q90' => 'q90',
             'q91' => 'Q91',
             'q92' => 'Q92',
             'q93' => 'Q93',
@@ -260,7 +290,7 @@ class Answer extends \yii\db\ActiveRecord
             'q97' => 'Q97',
             'q98' => 'Q98',
             'q99' => 'Q99',
-            'q100' => 'Q100',
+            'q100' => 'q100',
             'q101' => 'Q101',
             'q102' => 'Q102',
             'q103' => 'Q103',
@@ -270,7 +300,7 @@ class Answer extends \yii\db\ActiveRecord
             'q107' => 'Q107',
             'q108' => 'Q108',
             'q109' => 'Q109',
-            'q110' => 'Q110',
+            'q110' => 'q110',
             'q111' => 'Q111',
             'q112' => 'Q112',
             'q113' => 'Q113',
@@ -280,7 +310,7 @@ class Answer extends \yii\db\ActiveRecord
             'q117' => 'Q117',
             'q118' => 'Q118',
             'q119' => 'Q119',
-            'q120' => 'Q120',
+            'q120' => 'q120',
             'biz_idea' => 'Biz Idea',
         ];
     }
@@ -307,5 +337,19 @@ class Answer extends \yii\db\ActiveRecord
         $colum = "q".$quest;
         $result = self::find()->select($colum)->where(['can_id' => $can])->one();
         return $result->$colum;
+    }
+
+    public function getStatusText(){
+        return Common::status()[$this->answer_status];
+    }
+
+    public function getBatch()
+    {
+        return $this->hasOne(Batch::className(), ['id' => 'bat_id']);
+    }
+
+    public function getCandidate()
+    {
+        return $this->hasOne(Candidate::className(), ['id' => 'can_id']);
     }
 }

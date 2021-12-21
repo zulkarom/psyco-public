@@ -19,11 +19,30 @@ $column3[] = array();
 $attributes = [
             'bat_text',
             [
+                'attribute' => 'start_date',
+                'value' => function($model){
+                    return date("d F Y",strtotime($model->start_date));
+                }
+            ],
+            [
+                'attribute' => 'end_date',
+                'value' => function($model){
+                    return date("d F Y",strtotime($model->end_date));
+                }
+            ],
+            [
                 'attribute' => 'bat_show',
                 'value' => function($model){
                     return $model->showText;
                 }
             ],
+            [
+                'attribute' => 'allow_register',
+                'value' => function($model){
+                    return $model->allowText;
+                }
+            ],
+            
         ];
         if($model->column1)
         {

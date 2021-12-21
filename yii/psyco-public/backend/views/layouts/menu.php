@@ -9,12 +9,19 @@ $user = Yii::$app->user;
 $items[] = ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []];
 
 if($user->can('manage-admin')){
-    $items[] = ['label' => 'Batches', 'level' => 1, 'url' => ['/batch/index'], 'icon' => 'fas fa-cog', 'children' => []];
+    $items[] =  ['label' => 'Batches', 'level' => 1, 'url' => ['/batch/index'], 'icon' => 'fas fa-cog', 'children' => []];
 
-    $items[] = ['label' => 'Setting', 'level' => 1, 'url' => ['/setting/index'], 'icon' => 'fas fa-cog', 'children' => []];
+    $items[] =  ['label' => 'Setting', 'level' => 1, 'url' => ['/setting/index'], 'icon' => 'fas fa-cog', 'children' => []];
 
-    $items[] = ['label' => 'User Access', 'level' => 1, 'url' => ['/admin/'], 'icon' => 'fas fa-cog', 'children' => []];
+    $items[] =  ['label' => 'System Management', 'level' => 2 , 'icon' => 'fas fa-th', 'children' => [
+                    ['label' => 'User Assignment', 'url' => ['/admin'], 'icon' => 'far fa-circle'],
+                    ['label' => 'Role List', 'url' => ['/admin/role'], 'icon' => 'far fa-circle'],
+                    ['label' => 'Route List', 'url' => ['/admin/route'], 'icon' => 'far fa-circle'],
+                    ['label' => 'Login As', 'url' => ['/user-admin/login-as'], 'icon' => 'far fa-circle'],
+                        
+                ]];
 }
+
 
 if($user->can('manage-view')){
     $items[] = ['label' => 'View All Result', 'level' => 1, 'url' => ['/result/index'], 'icon' => 'fas fa-list', 'children' => []];
