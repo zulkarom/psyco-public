@@ -61,7 +61,7 @@ $columns = [
 
         <div class="col-md-4">
 
-            <?= Html::a('ANALYSIS', ['/result/analysis'], ['class' => 'btn btn-danger']) ?>
+            <?= Html::a('ANALYSIS', ['/result/analysis', "id" => $batch->id], ['class' => 'btn btn-danger']) ?>
 
 
         </div>

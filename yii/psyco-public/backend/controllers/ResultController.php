@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use Yii;
 use backend\models\Candidate;
 use backend\models\GradeCategory;
 use backend\models\Question;
@@ -11,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\pdf\pdf_individual;
 use backend\models\pdf\pdf_result;
+use backend\models\AnalysisDomain;
 /**
  * ResultController implements the CRUD actions for Candidate model.
  */
@@ -49,13 +51,29 @@ class ResultController extends Controller
         ]);
     }
 
-    public function actionAnalysis()
+    public function actionAnalysis($id)
     {
 
+        $model = new AnalysisDomain();
+        $model->batch_id = $id;
+        
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                $model->saveDomains();
+                return $this->redirect(['analysis', 'id' => $id]);
+            }
+        }
+        $model->loadDomains();
+        
+        $items = AnalysisDomain::getAvailableDomain();
 
         return $this->render('analysis', [
+            'model' => $model,
+            'items' => $items,
         ]);
     }
+
+    
 
     /**
      * Displays a single Candidate model.

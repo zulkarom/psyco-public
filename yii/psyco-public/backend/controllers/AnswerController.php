@@ -8,6 +8,7 @@ use backend\models\AnswerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\Batch;
 
 /**
  * AnswerController implements the CRUD actions for Answer model.
@@ -35,10 +36,12 @@ class AnswerController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AnswerSearch();
+        $batch = Batch::find()->where(['bat_show' => 1])->one();
+        $searchModel = new AnswerSearch(['bat_id' => $batch->id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'batch' => $batch,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
