@@ -6,36 +6,122 @@
 
 use yii\bootstrap4\Html;
 use yii\bootstrap4\ActiveForm;
+use frontend\assets\FrontendAsset;
 
-$this->title = 'Login';
-$this->params['breadcrumbs'][] = $this->title;
+FrontendAsset::register($this);
+
+$dirAssets = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/frontendAssets');
+
+$this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 ?>
 <div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
+    
+        <div class="container">
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+    <div>
+        <div style="margin: 0 auto; width:90%">
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+            <!-- login box on left side -->
+            <div>
+            
+<img src="<?=$dirAssets?>/images/Psychometric-Tests.png" width="80%" />
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+<div class="row">
+                
+                <div class="col-md-12">
+                
+                
+                
+                
 
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <div class="row">
 
-                <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
-                    <br>
-                    Need new verification email? <?= Html::a('Resend', ['site/resend-verification-email']) ?>
-                </div>
+                <div class="col-md-6">
+                
+                <?php 
+                
+                // if($this->open == 1){
+                ?>
+                <h4> MULA MENJAWAB / <i>START ANSWERING</i>  </h4><br />
+                <?php $form = ActiveForm::begin(); ?>
 
+                
                 <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+
+                <?= $form
+                    ->field($model, 'username')
+                    ->label('NRIC/PASSPORT NO.:')
+                    ->textInput(['class' => 'form-control input-lg']) 
+                 ?>
+                </div>
+                <?= Html::submitButton('LOG IN', ['class' => 'btn btn-primary', 'name' => 'submit']) ?>
+                <br /><br />
+                <?php 
+                // } else { 
+                
+                // echo '<h3>TUTUP / CLOSED</h3>';
+                // }
+                ?>
+                </div>
+                <?php ActiveForm::end(); ?>
+                
+                
+                <div class="col-md-6">
+                
+                    <?php 
+                
+                // if($this->open == 1){
+                ?>
+                    <h4> DAFTAR / <i>REGISTER</i>  </h4><br />
+                
+                <div class="form-group">
+                <?= $form
+                    ->field($model, 'username')
+                    ->label('NAMA / NAME.:')
+                    ->textInput(['class' => 'form-control input-lg']) 
+                ?>
                 </div>
 
-            <?php ActiveForm::end(); ?>
+                
+                <div class="form-group">
+                <?= $form
+                    ->field($model, 'username')
+                    ->label('NRIC/PASSPORT NO.:')
+                    ->textInput(['class' => 'form-control input-lg']) 
+                 ?>
+                </div>                
+                    <?= Html::submitButton('REGISTER', ['class' => 'btn btn-primary', 'name' => 'submit']) ?>
+                
+                <?php 
+                // } else { 
+                
+                // echo '<h3>TUTUP / CLOSED</h3>';
+                // }
+                ?>
+                
+                
+                
+                
+                
+                </div>
+                </div>
+        
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            
+            
+                
+                
+
+            </div>
+
+
+
         </div>
     </div>
+</div>
+
 </div>

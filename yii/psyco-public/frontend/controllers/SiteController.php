@@ -10,7 +10,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use frontend\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -29,15 +29,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'login'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'index', 'login', 'download'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index', 'login'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -75,7 +75,38 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+        $this->layout = "//main-login";
+        //die();
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            //echo Yii::$app->user->identity->cl_name;
+            //die();
+            return $this->redirect(['test']);
+            //return $this->goHome();
+            
+            //return $this->goBack();
+            //return $this->goHome();
+        } else {
+            $this->layout = "//main-login";
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+
+    public function actionTest()
+    {
+        $this->layout = "//main-login";
+        
+        return $this->render('test', [
+            'model' => $model,
+        ]);   
     }
 
     /**
@@ -85,20 +116,27 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->layout = "//main-login";
+        //die();
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
+        
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            //echo Yii::$app->user->identity->cl_name;
+            //die();
+            return $this->redirect(['index']);
+            //return $this->goHome();
+            
+            //return $this->goBack();
+            //return $this->goHome();
+        } else {
+            $this->layout = "//main-login";
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         }
-
-        $model->password = '';
-
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
     /**
