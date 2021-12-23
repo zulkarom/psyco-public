@@ -14,7 +14,7 @@ class AnalysisDemographic extends Model
     /**
      * @var array IDs of the favorite foods
      */
-    public $grad_ids = [];
+    public $demo_ids = [];
     public $batch_id;
     
     /**
@@ -27,7 +27,7 @@ class AnalysisDemographic extends Model
             ['batch_id', 'required'],
             ['batch_id', 'exist', 'targetClass' => Batch::className(), 'targetAttribute' => 'id'],
 
-            ['grad_ids', 'each', 'rule' => [
+            ['demo_ids', 'each', 'rule' => [
                 'exist', 'targetClass' => GradeCategory::className(), 'targetAttribute' => 'id'
             ]],
         ];
@@ -39,47 +39,52 @@ class AnalysisDemographic extends Model
     public function attributeLabels()
     {
         return [
-            'grad_ids' => 'Grade Categories',
+            'demo_ids' => 'Demographic',
         ];
     }
 
     /**
      * load the user's favorite foods
      */
-    public function loadDomains()
-    {
-        $this->grad_ids = [];
-        $domains = Domain::find()->where(['bat_id' => $this->batch_id])->all();
+    // public function loadDomains()
+    // {
+    //     $this->grad_ids = [];
+    //     $domains = Domain::find()->where(['bat_id' => $this->batch_id])->all();
 
-        foreach($domains as $dd) {
-            $this->grad_ids[] = $dd->grade_cat;
-        }
-    }
+    //     foreach($domains as $dd) {
+    //         $this->grad_ids[] = $dd->grade_cat;
+    //     }
+    // }
 
-    /**
-     * save the user's favorite foods
-     */
-    public function saveDomains()
-    {
-        Domain::deleteAll(['bat_id' => $this->batch_id]);
-        if (is_array($this->grad_ids)) {
-            foreach($this->grad_ids as $grad_id) {
-                $ff = new Domain();
-                $ff->bat_id = $this->batch_id;
-                $ff->grade_cat = $grad_id;
-                $ff->save();
-            }
-        }
-        /* Be careful, $this->food_ids can be empty */
-    }
+    // /**
+    //  * save the user's favorite foods
+    //  */
+    // public function saveDomains()
+    // {
+    //     Domain::deleteAll(['bat_id' => $this->batch_id]);
+    //     if (is_array($this->grad_ids)) {
+    //         foreach($this->grad_ids as $grad_id) {
+    //             $ff = new Domain();
+    //             $ff->bat_id = $this->batch_id;
+    //             $ff->grade_cat = $grad_id;
+    //             $ff->save();
+    //         }
+    //     }
+    //     /* Be careful, $this->food_ids can be empty */
+    // }
    
 
     /**
      * @return array available foods
      */
-    public static function getAvailableDomain()
+    public static function getAvailableDemographic()
     {
         $grads = GradeCategory::find()->orderBy('gcat_order')->asArray()->all();
+        $items = ArrayHelper::map($grads, 'id', 'gcat_text');
+        return $items;
+
+
+        $column = Batch::findOne($batch_id);
         $items = ArrayHelper::map($grads, 'id', 'gcat_text');
         return $items;
     }

@@ -13,6 +13,13 @@ use yii\helpers\Url;
 $this->title = 'View All Result';
 $this->params['breadcrumbs'][] = $this->title;
 
+$col1[] = array();
+$col2[] = array();
+$col3[] = array();
+$col4[] = array();
+$col5[] = array();
+$col6[] = array();
+
 $columns = [
           
             ['class' => 'yii\grid\SerialColumn'],
@@ -138,15 +145,8 @@ $columns = [
         </div>
     </div>
 
-    
-
-    <div class="card card-primary card-outline">
-        <div class="card-body">
-            <div class="table-responsive">
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                // 'filterModel' => $searchModel,
-                'columns' => [
+<?php
+    $grid_columns = [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
                         'format' => 'html',
@@ -179,21 +179,25 @@ $columns = [
                                 return "-";
                             }
                         }
-                    ],   
-                    'c1',
-                    'c2',
-                    'c3',
-                    'c4',
-                    'c5',
-                    'c6', 
-                    [   
+                    ],                                
+
+                ];
+                foreach($domains as $domain){
+                    if($domain->grade_cat)
+                    {
+                        $grid_columns[] = 'c'.$domain->grade_cat;
+                    }
+                }
+                if($domains){
+                    $grid_columns[] =[   
                         'label' => 'Total',
                         'value' => function($model){
                             return ($model->c1+$model->c2+$model->c3+$model->c4+$model->c5+$model->c6);
                         }
-                    ], 
-
-                    ['class' => 'yii\grid\ActionColumn',
+                    ];
+                }
+                if($domains){
+                    $grid_columns[] = ['class' => 'yii\grid\ActionColumn',
                         'contentOptions' => ['style' => 'width: 10%'],
                         'template' => '{view} {pdf}',
                         //'visible' => false,
@@ -206,9 +210,19 @@ $columns = [
                             }
                         ],
                     
-                    ],            
+                    ];
+                }
+                
+?>
 
-                ],
+
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+            <div class="table-responsive">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => $grid_columns
             ]); ?>
         </div>
         </div>

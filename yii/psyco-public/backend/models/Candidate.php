@@ -86,10 +86,10 @@ class Candidate extends \common\models\User
             'verification_token' => 'Verification Token',
             'c1' => 'Enterprise',
             'c2' => 'Social',
-            'c3' => 'Realistic',
-            'c4' => 'Investigate',
-            'c5' => 'Artistic',
-            'c6' => 'Conventional',
+            'c3' => 'Investigate',
+            'c4' => 'Artistic',
+            'c5' => 'Conventional',
+            'c6' => 'Realistic',
         ];
     }
 
@@ -107,8 +107,8 @@ class Candidate extends \common\models\User
         return Common::status()[$this->answer_status];
     }
 
-    private function columResultAnswers(){
-        $result = GradeCategory::find()->all();
+    private function columResultAnswers($bat_id){
+        $result = Domain::find()->where(['bat_id' => $this->bat_id])->all();
         $colum = ["a.id", "a.username", "a.can_name", "a.department", "a.can_zone", "a.can_batch",  "b.bat_text" ,
         "a.answer_status", "a.overall_status", "a.finished_at"];
         $c=1;
@@ -116,7 +116,7 @@ class Candidate extends \common\models\User
         foreach($result as $row){
         if($c==1){$comma="";}else{$comma=", ";}
             $str = "";
-            $quest = Question::find()->where(['grade_cat' => $row->id])->all();
+            $quest = Question::find()->where(['grade_cat' => $row->grade_cat])->all();
             $i=1;
             $jumq = count($quest);
             // echo $jumq;die();
@@ -125,7 +125,7 @@ class Candidate extends \common\models\User
                 $str .= "IF(q".$rq->que_id ." > 0,1,0) ". $plus ;
             $i++;
             }
-            $str .= " as c". $row->id;
+            $str .= " as c". $row->grade_cat;
         $c++;  
         $colum[] = $str; 
         }

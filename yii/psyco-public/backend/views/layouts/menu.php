@@ -8,6 +8,17 @@ $user = Yii::$app->user;
 
 $items[] = ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'icon' => 'fas fa-tachometer-alt', 'children' => []];
 
+
+
+
+if($user->can('manage-view')){
+    $items[] = ['label' => 'Participants', 'level' => 1, 'url' => ['/answer/index'], 'icon' => 'fas fa-users', 'children' => []];
+
+    
+
+    
+}
+
 if($user->can('manage-admin')){
     $items[] =  ['label' => 'Batches', 'level' => 1, 'url' => ['/batch/index'], 'icon' => 'fas fa-cog', 'children' => []];
 
@@ -20,15 +31,10 @@ if($user->can('manage-admin')){
                         
                 ]];
 }
+$items[] = ['label' => 'Change Password', 'level' => 1, 'url' => ['/candidate/change-password'], 'icon' => 'fas fa-unlock-alt', 'children' => []];
 
+$items[] = ['label' => 'Logout', 'level' => 1, 'url' => ['/site/logout'], ['data-method' => 'post'], 'icon' => 'fas fa-times', 'children' => []];
 
-if($user->can('manage-view')){
-    $items[] = ['label' => 'View All Result', 'level' => 1, 'url' => ['/answer/index'], 'icon' => 'fas fa-list', 'children' => []];
-
-    $items[] = ['label' => 'Change Password', 'level' => 1, 'url' => ['/candidate/change-password'], 'icon' => 'fas fa-unlock-alt', 'children' => []];
-
-    $items[] = ['label' => 'Logout', 'level' => 1, 'url' => ['/site/logout'], ['data-method' => 'post'], 'icon' => 'fas fa-times', 'children' => []];
-}
 
 ?> 
     <nav class="mt-2">

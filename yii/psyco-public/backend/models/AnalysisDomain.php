@@ -79,7 +79,7 @@ class AnalysisDomain extends Model
      */
     public static function getAvailableDomain()
     {
-        $grads = GradeCategory::find()->orderBy('gcat_order')->asArray()->all();
+        $grads = GradeCategory::find()->asArray()->all();
         $items = ArrayHelper::map($grads, 'id', 'gcat_text');
         return $items;
     }

@@ -12,13 +12,14 @@ use backend\models\Candidate;
 class ResultSearch extends Candidate
 {
     public $others = null;
+    public $bat_id;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['status', 'can_batch'], 'integer'],
+            [['status', 'can_batch', 'bat_id'], 'integer'],
             [['others'], 'string'],
         ];
     }
@@ -41,7 +42,7 @@ class ResultSearch extends Candidate
      */
 
     private function columResultAnswers(){
-        $result = GradeCategory::find()->all();
+        $result = Domain::find()->where(['bat_id' => $this->bat_id])->all();
         $colum = ["a.id", "a.username", "a.can_name", "a.department", "a.can_zone", "a.can_batch",  "b.bat_text" ,
         "a.answer_status", "a.overall_status", "a.finished_at"];
         $c=1;
@@ -49,7 +50,7 @@ class ResultSearch extends Candidate
         foreach($result as $row){
         if($c==1){$comma="";}else{$comma=", ";}
             $str = "";
-            $quest = Question::find()->where(['grade_cat' => $row->id])->all();
+            $quest = Question::find()->where(['grade_cat' => $row->grade_cat])->all();
             $i=1;
             $jumq = count($quest);
             // echo $jumq;die();
@@ -58,7 +59,7 @@ class ResultSearch extends Candidate
                 $str .= "IF(q".$rq->que_id ." > 0,1,0) ". $plus ;
             $i++;
             }
-            $str .= " as c". $row->id;
+            $str .= " as c". $row->grade_cat;
         $c++;  
         $colum[] = $str; 
         }

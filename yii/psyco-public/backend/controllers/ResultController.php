@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use backend\models\pdf\pdf_individual;
 use backend\models\pdf\pdf_result;
 use backend\models\AnalysisDomain;
+use backend\models\Domain;
 /**
  * ResultController implements the CRUD actions for Candidate model.
  */
@@ -40,14 +41,17 @@ class ResultController extends Controller
      * Lists all Candidate models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($bat_id)
     {
+        $domains = Domain::find()->where(['bat_id' => $bat_id])->all();
         $searchModel = new ResultSearch();
+        $searchModel->bat_id = $bat_id;
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'domains' => $domains,
         ]);
     }
 
@@ -60,7 +64,7 @@ class ResultController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 $model->saveDomains();
-                return $this->redirect(['analysis', 'id' => $id]);
+                return $this->redirect(['index', 'bat_id' => $id]);
             }
         }
         $model->loadDomains();
