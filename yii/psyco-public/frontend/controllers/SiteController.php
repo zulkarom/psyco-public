@@ -8,6 +8,7 @@ use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\Session;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\LoginForm;
@@ -15,7 +16,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-
+use backend\models\Question;
+use backend\models\Batch;
 /**
  * Site controller
  */
@@ -83,30 +85,20 @@ class SiteController extends Controller
         }
         
         $model = new LoginForm();
+        $openBatch = Batch::find()->where(['bat_show' => 1])->one();
+        $session = Yii::$app->session;
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            //echo Yii::$app->user->identity->cl_name;
-            //die();
-            return $this->redirect(['test']);
-            //return $this->goHome();
+
             
-            //return $this->goBack();
-            //return $this->goHome();
+            $session->set('batch', $openBatch->id);
+            
+            return $this->redirect(['/test/index']);
+           
         } else {
-            $this->layout = "//main-login";
             return $this->render('login', [
                 'model' => $model,
             ]);
         }
-    }
-
-
-    public function actionTest()
-    {
-        $this->layout = "//main-login";
-        
-        return $this->render('test', [
-            'model' => $model,
-        ]);   
     }
 
     /**

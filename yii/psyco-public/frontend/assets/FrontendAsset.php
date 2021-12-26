@@ -19,11 +19,11 @@ class FrontendAsset extends AssetBundle
     ];
 
     public $js = [
+        'js/jquery/jquery.plugin.js',
+        'js/jquery/jquery.countdown.js',
         'js/jquery/core/jquery.min.js',
         'excel/dist/xlsx.core.min.js',
         'excel/dist/FileSaver.js',
-        'js/jquery/jquery.plugin.js',
-        'js/jquery/jquery.plugin.js',
         'js/jquery/timer.jquery.min.js',
     ];
 
