@@ -55,7 +55,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                     ->textInput(['class' => 'form-control input-lg']) 
                  ?>
                 </div>
-                <?= Html::submitButton('LOG IN', ['class' => 'btn btn-primary', 'name' => 'submit']) ?>
+                <?= Html::submitButton('LOG IN', ['class' => 'btn btn-primary', 'name' => 'submit', 'value' => '1']) ?>
                 <br /><br />
                 <?php 
                 // } else { 
@@ -91,8 +91,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                     ->textInput(['class' => 'form-control input-lg']) 
                  ?>
                 </div>                
-                    <?= Html::submitButton('REGISTER', ['class' => 'btn btn-primary', 'name' => 'submit']) ?>
-                
+                    <?= Html::submitButton('REGISTER', ['class' => 'btn btn-primary', 'name' => 'submit', 'value' => '2']) ?>
                 <?php 
                 // } else { 
                 

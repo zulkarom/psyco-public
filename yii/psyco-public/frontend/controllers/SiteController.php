@@ -79,26 +79,39 @@ class SiteController extends Controller
     {
 
         $this->layout = "//main-login";
-        //die();
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-        
-        $model = new LoginForm();
-        $openBatch = Batch::find()->where(['bat_show' => 1])->one();
-        $session = Yii::$app->session;
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
-            
-            $session->set('batch', $openBatch->id);
-            
-            return $this->redirect(['/test/index']);
-           
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+        $model = new LoginForm();
+
+        if(\Yii::$app->request->post('submit')) {
+            $submit = \Yii::$app->request->post('submit');
+            if($submit == 1){
+
+                if (!Yii::$app->user->isGuest) {
+                    return $this->goHome();
+                }
+                
+                
+                $openBatch = Batch::find()->where(['bat_show' => 1])->one();
+                $session = Yii::$app->session;
+                if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+                    
+                    $session->set('batch', $openBatch->id);
+                    
+                    return $this->redirect(['/test/index']);
+                   
+                } else {
+                    
+                }
+                
+            }elseif ($submit == 2) {
+                
+            }
         }
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -109,6 +122,17 @@ class SiteController extends Controller
     public function actionLogin()
     {
         $this->layout = "//main-login";
+
+        if(\Yii::$app->request->post('submit')) {
+            $submit = \Yii::$app->request->post('submit');
+            if($submit == 1){
+                
+            }elseif ($submit == 2) {
+                
+            }
+        }
+
+
         //die();
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();

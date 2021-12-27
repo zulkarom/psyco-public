@@ -47,7 +47,7 @@ $dirAssets = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/frontend
 		</div>
 		<button class="btn btn-success center-block" id="start-btn">SAMBUNG MENJAWAB / CONTINUE ANSWERING</button>
 		<?php
-		$qstart = $this->user->question_last_saved;
+		$qstart = $answer->question_last_saved;
 		}else if($answer->answer_status == 3){ ?>
 		<div id="ginstruction" class="instruction"><b>ANDA TELAH MENJAWAB UJIAN INI</b> / <i>YOU HAVE ANSWERED THE TEST.</i></div>
 		<div style="text-align:center">
@@ -221,7 +221,7 @@ $("#start-btn").click(function(){
 	//con-quest 
 	$("#q"+curr).removeClass("hidden");
 	$('#con-quest').text(curr+'/'+totalQuestion);
-	$.post("<?=Url::to(['/test/changestatus/1'])?>");
+	$.post("<?=Url::to(['/test/change-status', 'status' => ''])?>"+1);
 	if(<?php echo $qstart;?>==<?php echo $total_q;?>){
 		$("#submit-btn").removeClass("hidden");
 	}else{
@@ -331,7 +331,7 @@ function ajaxSubmit(action,curtime){
 	if(checkNetConnection(action)){
 		$.ajax({
         type: "POST",
-        url: "<?=Url::to(['/test/submit/'])?><?php echo $qstart;?>",
+        url: "<?=Url::to(['/test/submit', 'last' => ''])?>"+<?php echo $qstart;?>,
         
         data: 
 		{ 
