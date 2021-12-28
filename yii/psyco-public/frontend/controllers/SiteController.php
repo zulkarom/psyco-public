@@ -81,36 +81,40 @@ class SiteController extends Controller
         $this->layout = "//main-login";
 
         $model = new LoginForm();
+        $model2 = new SignupForm();
+        $openBatch = Batch::find()->where(['bat_show' => 1])->one();
 
         if(\Yii::$app->request->post('submit')) {
             $submit = \Yii::$app->request->post('submit');
             if($submit == 1){
-
+                $model->scenario = 'login';
                 if (!Yii::$app->user->isGuest) {
                     return $this->goHome();
                 }
                 
-                
-                $openBatch = Batch::find()->where(['bat_show' => 1])->one();
                 $session = Yii::$app->session;
                 if ($model->load(Yii::$app->request->post()) && $model->login()) {
-
-                    
                     $session->set('batch', $openBatch->id);
-                    
                     return $this->redirect(['/test/index']);
-                   
-                } else {
-                    
                 }
                 
             }elseif ($submit == 2) {
-                
+                // $model->scenario = 'register';
+                if ($model2->load(Yii::$app->request->post()) && $model2->signup($openBatch->id)) {
+                    $model->username = $model2->username;
+                    $session = Yii::$app->session;
+                    if($model->login()){
+                        $session->set('batch', $openBatch->id);
+                        Yii::$app->session->setFlash('success', 'Thank you for registration.');
+                        return $this->redirect(['/test/index']); 
+                    }
+                }
             }
         }
 
         return $this->render('login', [
             'model' => $model,
+            'model2' => $model2,
         ]);
     }
 

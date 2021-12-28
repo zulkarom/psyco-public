@@ -44,16 +44,6 @@ $form = ActiveForm::begin([
 
 $this->registerJs('
 
-// $(document).ready(function(){
-//     for (let i = 0; i <= 1; i++) {
-//         if (i === 1) { 
-//             break;
-//         }else{
-//             $("#sel-result-form").submit();
-//         }
-//     }
-// });
-
 $("#answersearch-answer_status").change(function(){
     $("#sel-result-form").submit();
 });

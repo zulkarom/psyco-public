@@ -5,7 +5,7 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
-
+use backend\models\Answer;
 /**
  * Signup form
  */
@@ -14,6 +14,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $fullname;
 
 
     /**
@@ -23,17 +24,19 @@ class SignupForm extends Model
     {
         return [
             ['username', 'trim'],
-            ['username', 'required'],
+            [['username', 'fullname'], 'required', 'on' => 'register'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
+            ['fullname', 'string', 'min' => 2, 'max' => 255],
+
             ['email', 'trim'],
-            ['email', 'required'],
+            // ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
-            ['password', 'required'],
+            // ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
         ];
     }
@@ -43,7 +46,7 @@ class SignupForm extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function signup()
+    public function signup($batch)
     {
         if (!$this->validate()) {
             return null;
@@ -51,12 +54,21 @@ class SignupForm extends Model
         
         $user = new User();
         $user->username = $this->username;
-        $user->email = $this->email;
-        $user->setPassword($this->password);
+        $user->can_name = $this->fullname;
+        $user->status = 10;
         $user->generateAuthKey();
-        $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($user);
+        if($user->save()){
+            $modelAnswer = new Answer();
+            $modelAnswer->can_id = $user->id;
+            $modelAnswer->bat_id = $batch;
+            for($i=1;$i<=120;$i++){
+                $q = 'q'.$i;
+                $modelAnswer->$q = '-1';
+            }
+            $modelAnswer->save();
+        }
+        return true;
     }
 
     /**

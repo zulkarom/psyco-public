@@ -40,6 +40,8 @@ class AnswerController extends Controller
         $searchModel = new AnswerSearch(['bat_id' => $batch->id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        
+
         return $this->render('index', [
             'batch' => $batch,
             'searchModel' => $searchModel,

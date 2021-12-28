@@ -43,17 +43,16 @@ class SettingController extends Controller
     {
 
         $model = Setting::findOne(1);
-        $searchModel = new BatchSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        if ($model->load(Yii::$app->request->post()) 
-            && $batches->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            if($model->save()){
+                Yii::$app->session->setFlash('success', 'Data Updated');
+            }
         }
 
         return $this->render('index', [
             'model' => $model,
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
         ]);
     }
 

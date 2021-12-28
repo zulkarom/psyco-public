@@ -160,7 +160,9 @@ $columns = [
                         'format' => 'html',
                         'label' => 'Batch',
                         'value' => function($model){
-                            return $model->batch->bat_text;
+                            if($model->batch){
+                                return $model->batch->bat_text;
+                            }
                         }
                     ],
                     [

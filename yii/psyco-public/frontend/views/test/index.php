@@ -2,6 +2,7 @@
 <?php
 use richardfan\widget\JSRegister;
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 $user =Yii::$app->user->identity;
 $dirAssets = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/frontendAssets');
@@ -17,7 +18,7 @@ $dirAssets = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/frontend
 	<strong>NRIC/PASSPORT NO:</strong>  <?php echo $user->username ;?><br /></div>
 	
 	<div class="form-group">
-	<a href=''>LOGOUT</a>
+	<?= Html::a('LOGOUT',['/site/logout'],['data-method' => 'post']) ?>
 </div>
 
 	

@@ -27,6 +27,9 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
             
 <img src="<?=$dirAssets?>/images/Psychometric-Tests.png" width="80%" />
 
+<?php $form = ActiveForm::begin([
+    'validateOnSubmit' => false
+]); ?>
 <div class="row">
                 
                 <div class="col-md-12">
@@ -44,8 +47,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 // if($this->open == 1){
                 ?>
                 <h4> MULA MENJAWAB / <i>START ANSWERING</i>  </h4><br />
-                <?php $form = ActiveForm::begin(); ?>
-
+               
                 
                 <div class="form-group">
 
@@ -64,7 +66,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 // }
                 ?>
                 </div>
-                <?php ActiveForm::end(); ?>
+                
                 
                 
                 <div class="col-md-6">
@@ -77,7 +79,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 
                 <div class="form-group">
                 <?= $form
-                    ->field($model, 'username')
+                    ->field($model2, 'fullname')
                     ->label('NAMA / NAME.:')
                     ->textInput(['class' => 'form-control input-lg']) 
                 ?>
@@ -86,7 +88,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 
                 <div class="form-group">
                 <?= $form
-                    ->field($model, 'username')
+                    ->field($model2, 'username')
                     ->label('NRIC/PASSPORT NO.:')
                     ->textInput(['class' => 'form-control input-lg']) 
                  ?>
@@ -109,6 +111,8 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 </div>
                 <div class="col-md-1"></div>
             </div>
+
+            <?php ActiveForm::end(); ?>
 
             
             

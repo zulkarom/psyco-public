@@ -39,7 +39,7 @@ class QuestionCategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'cat_id' => 'Cat ID',
+            'id' => 'Cat ID',
             'cat_text' => 'Cat Text',
             'cat_text_bi' => 'Cat Text Bi',
         ];

@@ -339,6 +339,48 @@ class Answer extends \yii\db\ActiveRecord
         return $result->$colum;
     }
 
+    public static function processOverallStatus($status, $which, $user_id, $batch){
+        //if 1 cari yg satu lg  - klu 0 set 1
+        //if 3 cari yg satu lg - klu 3 set 3
+        
+        // $user = UserModel::getUserDataById($user_id);
+        
+        if(($status == 1 and $which == 1) 
+            or ($status == 1 and $which == 2 and $this->answer_status == 0)){
+            self::setOverallStatus(1,$user_id,$batch);
+        }
+        
+        if(($status == 3 and $which == 1) or ($status == 3 and $which == 2 and $this->answer_status == 3)){
+            self::setOverallStatus(3,$user_id,$batch);
+            self::setFinishTime($user_id,$batch);
+        }
+    }
+
+    public static function setOverallStatus($status,$user,$batch)
+    {
+        Answer::updateAll(['overall_status' => $status], ['can_id' => $user, 'bat_id' => $batch]);
+    }
+
+    public static function updateLastSaved($user,$batch,$time,$qlast){
+        Answer::updateAll(['answer_last_saved' => $time, 'question_last_saved' => $qlast], ['can_id' => $user, 'bat_id' => $batch]);
+    }
+
+    public static function setStatus($status,$user,$batch)
+    {
+        Answer::updateAll(['answer_status' => $status], ['can_id' => $user, 'bat_id' => $batch]);
+        self::processOverallStatus($status, 1, $user, $batch);
+    }
+
+    public static function setFinishTime2($user,$batch)
+    {
+        Answer::updateAll(['finished_at' => Yii::$app->user->identity->user_last_login_timestamp], ['can_id' => $user, 'bat_id' => $batch]);
+    }
+
+    public static function setFinishTime($user,$batch)
+    {
+        Answer::updateAll(['finished_at' => time()], ['can_id' => $user, 'bat_id' => $batch]);
+    }
+
     public function getStatusText(){
         return Common::status()[$this->answer_status];
     }

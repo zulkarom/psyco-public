@@ -73,7 +73,8 @@ class ResultSearch extends Candidate
         ->alias('a')
         ->select($this->columResultAnswers())
         ->joinWith(['batch b', 'answer c'])
-        ->where(['!=' ,'a.id', 1]);
+        ->where(['!=' ,'a.id', 1])
+        ->andWhere(['b.id' => $this->bat_id]);
 
         // add conditions that should always apply here
 

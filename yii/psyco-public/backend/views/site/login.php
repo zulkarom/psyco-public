@@ -9,16 +9,16 @@ use yii\bootstrap4\Html;
 
 $this->title = 'Psychometric';
 
-$fieldOptions1 = [
-    'options' => ['class' => 'input-group mb-3'],
-    'inputTemplate' => "{input}
-            <div class='input-group-text'>
-              <span class='fa fa-user'></span>
-            </div>
-          </div>"
-];
+// $fieldOptions1 = [
+//     'options' => ['class' => 'input-group mb-3'],
+//     'inputTemplate' => "{input}
+//             <div class='input-group-text'>
+//               <span class='fa fa-user'></span>
+//             </div>
+//           </div>"
+// ];
 
-$fieldOptions2 = [
+$fieldOptions = [
     'options' => ['class' => 'input-group mb-3'],
     'inputTemplate' => "{input}<div class='input-group-append'>
             <div class='input-group-text'>
@@ -28,7 +28,6 @@ $fieldOptions2 = [
 ];
 ?>
 <div class="site-login">
-    <center>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
@@ -36,20 +35,20 @@ $fieldOptions2 = [
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../../index2.html" class="h1"><b>Psychometric</b></a>
+      <a href="" class="h1"><b>Psychometric</b></a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
         
             <?= $form
-                ->field($model, 'username', $fieldOptions1)
+                ->field($model, 'username', $fieldOptions)
                 ->label(false)
-                ->textInput(['placeholder' => 'Your Username', 'class' => 'form-control']) 
+                ->textInput(['placeholder' => 'Username', 'class' => 'form-control']) 
              ?>
 
              <?= $form
-                ->field($model, 'password', $fieldOptions2)
+                ->field($model, 'password', $fieldOptions)
                 ->label(false)
                 ->passwordInput(['placeholder' => 'Password', 'class' => 'form-control']) 
              ?>
@@ -64,19 +63,19 @@ $fieldOptions2 = [
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <div class="form-group">
-                <?= Html::submitButton('Sign In', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
-            </div>
+                <?= Html::submitButton('Sign In', ['class' => 'btn btn-primary btn-block']) ?>
           </div>
           <!-- /.col -->
         </div>
 
+      <div class="social-auth-links text-center mt-2 mb-3">
+      </div>
+
       <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
+        <a href="">I forgot my password</a>
       </p>
     </div>
     <!-- /.card-body -->
-  </center>
   <!-- /.card -->
 </div>
 

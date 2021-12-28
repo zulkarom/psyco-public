@@ -18,7 +18,7 @@ class AnswerSearch extends Answer
     public function rules()
     {
         return [
-            [['status', 'bat_id'], 'integer'],
+            [['status', 'bat_id', 'answer_status'], 'integer'],
             [['others'], 'string'],
         ];
     }
@@ -61,7 +61,7 @@ class AnswerSearch extends Answer
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'status' => $this->status,
+            'a.answer_status' => $this->answer_status,
             'bat_id' => $this->bat_id,
         ]);
 

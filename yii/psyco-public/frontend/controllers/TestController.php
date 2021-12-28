@@ -57,9 +57,6 @@ class TestController extends Controller
         $batch = $session->get('batch');
         $user_id = Yii::$app->user->identity->id;
 
-        echo $status;
-        die();
-
         // Answer::setStatus($status, $user->id);
         Answer::updateAll(['answer_status' => $status], ['can_id' => $user_id, 'bat_id' => $batch]);
         Answer::processOverallStatus($status, 1, $user_id, $batch);

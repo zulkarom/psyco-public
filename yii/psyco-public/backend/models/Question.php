@@ -48,4 +48,33 @@ class Question extends \yii\db\ActiveRecord
             'grade_cat' => 'Grade Cat',
         ];
     }
+
+    public static function getAllQuestions()
+    {
+        $query = self::find()
+        ->alias('a')
+        ->select('a.que_id, a.que_text, a.que_text_bi, b.cat_text, b.cat_text_bi')
+        ->joinWith('questionCategory b')
+        ->all();
+        return $query;
+    }
+
+    // public static function getAllQuestions()
+    // {
+    //     $database = DatabaseFactory::getFactory()->getConnection();
+
+    //     $sql = "SELECT a.que_id, a.que_text, a.que_text_bi, b.cat_text, b.cat_text_bi
+    //     FROM psy_question as a
+    //     INNER JOIN psy_question_cat as b
+    //     ON a.display_cat = b.cat_id
+    //     ";
+    //     $query = $database->prepare($sql);
+    //     $query->execute();
+    //     return $query->fetchAll();
+    // }
+
+    public function getQuestionCategory()
+    {
+        return $this->hasOne(QuestionCategory::className(), ['id' => 'display_cat']);
+    }
 }
