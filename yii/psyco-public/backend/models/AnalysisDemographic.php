@@ -14,7 +14,9 @@ class AnalysisDemographic extends Model
     /**
      * @var array IDs of the favorite foods
      */
-    public $demo_ids = [];
+    public $col_ids = [];
+    public $col2_ids = [];
+    public $col3_ids = [];
     public $batch_id;
     
     /**
@@ -27,8 +29,16 @@ class AnalysisDemographic extends Model
             ['batch_id', 'required'],
             ['batch_id', 'exist', 'targetClass' => Batch::className(), 'targetAttribute' => 'id'],
 
-            ['demo_ids', 'each', 'rule' => [
-                'exist', 'targetClass' => GradeCategory::className(), 'targetAttribute' => 'id'
+            ['col_ids', 'each', 'rule' => [
+                'exist', 'targetClass' => Answer::className(), 'targetAttribute' => 'column1'
+            ]],
+
+            ['col2_ids', 'each', 'rule' => [
+                'exist', 'targetClass' => Answer::className(), 'targetAttribute' => 'column2'
+            ]],
+
+            ['col3_ids', 'each', 'rule' => [
+                'exist', 'targetClass' => Answer::className(), 'targetAttribute' => 'column3'
             ]],
         ];
     }
@@ -39,55 +49,125 @@ class AnalysisDemographic extends Model
     public function attributeLabels()
     {
         return [
-            'demo_ids' => 'Demographic',
+            'col_ids' => 'Column 1',
         ];
     }
 
     /**
      * load the user's favorite foods
      */
-    // public function loadDomains()
-    // {
-    //     $this->grad_ids = [];
-    //     $domains = Domain::find()->where(['bat_id' => $this->batch_id])->all();
+    public function loadColumn1()
+    {
+        $this->col_ids = [];
+        $demos = Demographic::find()->where(['bat_id' => $this->batch_id, 'column_id' => 1])->all();
 
-    //     foreach($domains as $dd) {
-    //         $this->grad_ids[] = $dd->grade_cat;
-    //     }
-    // }
+        foreach($demos as $dd) {
+            $this->col_ids[] = $dd->demo_value;
+        }
+    }
+
+    public function loadColumn2()
+    {
+        $this->col2_ids = [];
+        $demos = Demographic::find()->where(['bat_id' => $this->batch_id, 'column_id' => 2])->all();
+
+        foreach($demos as $dd) {
+            $this->col2_ids[] = $dd->demo_value;
+        }
+    }
+
+    public function loadColumn3()
+    {
+        $this->col3_ids = [];
+        $demos = Demographic::find()->where(['bat_id' => $this->batch_id, 'column_id' => 3])->all();
+
+        foreach($demos as $dd) {
+            $this->col3_ids[] = $dd->demo_value;
+        }
+    }
 
     // /**
     //  * save the user's favorite foods
     //  */
-    // public function saveDomains()
-    // {
-    //     Domain::deleteAll(['bat_id' => $this->batch_id]);
-    //     if (is_array($this->grad_ids)) {
-    //         foreach($this->grad_ids as $grad_id) {
-    //             $ff = new Domain();
-    //             $ff->bat_id = $this->batch_id;
-    //             $ff->grade_cat = $grad_id;
-    //             $ff->save();
-    //         }
-    //     }
-    //     /* Be careful, $this->food_ids can be empty */
-    // }
+    public function saveColumn1()
+    {
+        Demographic::deleteAll(['bat_id' => $this->batch_id, 'column_id' => 1]);
+        if (is_array($this->col_ids)) {
+            foreach($this->col_ids as $col_name) {
+                $ff = new Demographic();
+                $ff->bat_id = $this->batch_id;
+                $ff->column_id = 1;
+                $ff->demo_value = $col_name;
+                $ff->save();
+            }
+        }
+        /* Be careful, $this->food_ids can be empty */
+    }
+
+    public function saveColumn2()
+    {
+        Demographic::deleteAll(['bat_id' => $this->batch_id, 'column_id' => 2]);
+        if (is_array($this->col2_ids)) {
+            foreach($this->col2_ids as $col_name) {
+                $ff = new Demographic();
+                $ff->bat_id = $this->batch_id;
+                $ff->column_id = 2;
+                $ff->demo_value = $col_name;
+                $ff->save();
+            }
+        }
+        /* Be careful, $this->food_ids can be empty */
+    }
+
+    public function saveColumn3()
+    {
+        Demographic::deleteAll(['bat_id' => $this->batch_id, 'column_id' => 3]);
+        if (is_array($this->col3_ids)) {
+            foreach($this->col3_ids as $col_name) {
+                $ff = new Demographic();
+                $ff->bat_id = $this->batch_id;
+                $ff->column_id = 3;
+                $ff->demo_value = $col_name;
+                $ff->save();
+            }
+        }
+        /* Be careful, $this->food_ids can be empty */
+    }
    
 
     /**
      * @return array available foods
      */
-    public static function getAvailableDemographic()
+    public static function getAvailableColumn1($bat_id)
     {
-        $grads = GradeCategory::find()->orderBy('gcat_order')->asArray()->all();
-        $items = ArrayHelper::map($grads, 'id', 'gcat_text');
-        return $items;
-
-
-        $column = Batch::findOne($batch_id);
-        $items = ArrayHelper::map($grads, 'id', 'gcat_text');
+        $columns = Answer::find()
+        ->select('DISTINCT(column1)')
+        ->where(['bat_id' => $bat_id])
+        ->all();
+        $items = ArrayHelper::map($columns, 'column1', 'column1');
         return $items;
     }
+
+    public static function getAvailableColumn2($bat_id)
+    {
+        $columns = Answer::find()
+        ->select('DISTINCT(column2)')
+        ->where(['bat_id' => $bat_id])
+        ->all();
+        $items = ArrayHelper::map($columns, 'column2', 'column2');
+        return $items;
+    }
+
+    public static function getAvailableColumn3($bat_id)
+    {
+        $columns = Answer::find()
+        ->select('DISTINCT(column3)')
+        ->where(['bat_id' => $bat_id])
+        ->all();
+        $items = ArrayHelper::map($columns, 'column3', 'column3');
+        return $items;
+    }
+
 }
 
 ?>

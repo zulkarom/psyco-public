@@ -13,7 +13,9 @@ use yii\filters\VerbFilter;
 use backend\models\pdf\pdf_individual;
 use backend\models\pdf\pdf_result;
 use backend\models\AnalysisDomain;
+use backend\models\AnalysisDemographic;
 use backend\models\Domain;
+use backend\models\Batch;
 /**
  * ResultController implements the CRUD actions for Candidate model.
  */
@@ -59,21 +61,42 @@ class ResultController extends Controller
     {
 
         $model = new AnalysisDomain();
+        $model2 = new AnalysisDemographic();
+        $batch = Batch::findOne($id);
         $model->batch_id = $id;
+        $model2->batch_id = $id;
+
         
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) 
+            && $model2->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 $model->saveDomains();
-                return $this->redirect(['index', 'bat_id' => $id]);
             }
+            if ($model2->validate()) {
+                $model2->saveColumn1();
+                $model2->saveColumn2();
+                $model2->saveColumn3();
+            }
+            return $this->redirect(['index', 'bat_id' => $id]);
         }
         $model->loadDomains();
-        
+        $model2->loadColumn1();
+        $model2->loadColumn2();
+        $model2->loadColumn3();
+
         $items = AnalysisDomain::getAvailableDomain();
+        $items2 = AnalysisDemographic::getAvailableColumn1($id);
+        $items3 = AnalysisDemographic::getAvailableColumn2($id);
+        $items4 = AnalysisDemographic::getAvailableColumn3($id);
 
         return $this->render('analysis', [
+            'batch' => $batch,
             'model' => $model,
+            'model2' => $model2,
             'items' => $items,
+            'items2' => $items2,
+            'items3' => $items3,
+            'items4' => $items4,
         ]);
     }
 

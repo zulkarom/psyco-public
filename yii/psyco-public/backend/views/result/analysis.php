@@ -29,11 +29,81 @@ $this->params['breadcrumbs'][] = $this->title;
                     'items' => $items,
                     'options' => [
                         'multiple' => true,
-                        'size' => 15,
+                        'size' => 8,
                     ],
                     'clientOptions' => [
                         'nonSelectedListLabel' => 'Available Domain',
                         'selectedListLabel' => 'Selected Domain',
+                        'moveOnSelect' => false,
+                    ],
+                ])
+                ->hint(false)
+                ->label(false);
+            ?>
+
+            
+
+            
+        </div>
+    </div>
+
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+           
+
+            <?php echo $form->field($model2, 'col_ids')->widget(DualListbox::className(),[
+                    'items' => $items2,
+                    'options' => [
+                        'multiple' => true,
+                        'size' => 8,
+                    ],
+                    'clientOptions' => [
+                        'nonSelectedListLabel' => 'Available '.$batch->column1,
+                        'selectedListLabel' => 'Selected '.$batch->column1,
+                        'moveOnSelect' => false,
+                    ],
+                ])
+                ->hint(false)
+                ->label(false);
+            ?>
+
+        </div>
+    </div>
+
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+           
+
+            <?php echo $form->field($model2, 'col2_ids')->widget(DualListbox::className(),[
+                    'items' => $items3,
+                    'options' => [
+                        'multiple' => true,
+                        'size' => 8,
+                    ],
+                    'clientOptions' => [
+                        'nonSelectedListLabel' => 'Available '.$batch->column2,
+                        'selectedListLabel' => 'Selected '.$batch->column2,
+                        'moveOnSelect' => false,
+                    ],
+                ])
+                ->hint(false)
+                ->label(false);
+            ?>
+        </div>
+    </div>
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+           
+
+            <?php echo $form->field($model2, 'col3_ids')->widget(DualListbox::className(),[
+                    'items' => $items4,
+                    'options' => [
+                        'multiple' => true,
+                        'size' => 8,
+                    ],
+                    'clientOptions' => [
+                        'nonSelectedListLabel' => 'Available '.$batch->column3,
+                        'selectedListLabel' => 'Selected '.$batch->column3,
                         'moveOnSelect' => false,
                     ],
                 ])
