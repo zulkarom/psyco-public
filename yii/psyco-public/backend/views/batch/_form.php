@@ -70,6 +70,11 @@ use kartik\date\DatePicker;
             <?= $form->field($model, 'column3')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-6">
+            <?= $form->field($model, 'column4')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton('Save Batch', ['class' => 'btn btn-success']) ?>

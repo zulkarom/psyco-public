@@ -28,7 +28,7 @@ class Batch extends \yii\db\ActiveRecord
         return [
             [['bat_text'], 'required'],
             [['bat_text'], 'string', 'max' => 100],
-            [['column1', 'column2', 'column3'], 'string', 'max' => 225],
+            [['column1', 'column2', 'column3', 'column4'], 'string', 'max' => 225],
             [['bat_show', 'allow_register'], 'integer'],
             [['start_date', 'end_date'], 'safe'],
         ];
@@ -46,7 +46,8 @@ class Batch extends \yii\db\ActiveRecord
             'allow_register' => 'Allow Registration',
             'column1' => 'Column 1',
             'column2' => 'Column 2',
-            'column3' => 'Column 3'
+            'column3' => 'Column 3',
+            'column4' => 'Column 4'
         ];
     }
 

@@ -18,6 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="result-index">
+<div class="card card-primary">
+<div class="card-body">
+<div class="row">
+<!-- <div class="col-2">
+</div> -->
+<div class="col-8">
     <div class="card card-primary card-outline">
         <div class="card-body">
            <?php $form = ActiveForm::begin([
@@ -111,6 +117,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 ->label(false);
             ?>
 
+        </div>
+    </div>
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+           
+
+            <?php echo $form->field($model2, 'col4_ids')->widget(DualListbox::className(),[
+                    'items' => $items5,
+                    'options' => [
+                        'multiple' => true,
+                        'size' => 8,
+                    ],
+                    'clientOptions' => [
+                        'nonSelectedListLabel' => 'Available '.$batch->column4,
+                        'selectedListLabel' => 'Selected '.$batch->column4,
+                        'moveOnSelect' => false,
+                    ],
+                ])
+                ->hint(false)
+                ->label(false);
+            ?>
+
             <div class="form-group">
                 <?= Html::submitButton('RESULT', [
                     'class' => 'btn btn-primary'
@@ -120,6 +148,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php ActiveForm::end(); ?>
         </div>
     </div>
+</div>
+<div class="col-2">
+</div>
+</div>
+</div>
+</div>
 </div>
 
 

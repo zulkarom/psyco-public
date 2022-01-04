@@ -17,6 +17,7 @@ class AnalysisDemographic extends Model
     public $col_ids = [];
     public $col2_ids = [];
     public $col3_ids = [];
+    public $col4_ids = [];
     public $batch_id;
     
     /**
@@ -39,6 +40,10 @@ class AnalysisDemographic extends Model
 
             ['col3_ids', 'each', 'rule' => [
                 'exist', 'targetClass' => Answer::className(), 'targetAttribute' => 'column3'
+            ]],
+
+            ['col4_ids', 'each', 'rule' => [
+                'exist', 'targetClass' => Answer::className(), 'targetAttribute' => 'column4'
             ]],
         ];
     }
@@ -83,6 +88,16 @@ class AnalysisDemographic extends Model
 
         foreach($demos as $dd) {
             $this->col3_ids[] = $dd->demo_value;
+        }
+    }
+
+    public function loadColumn4()
+    {
+        $this->col4_ids = [];
+        $demos = Demographic::find()->where(['bat_id' => $this->batch_id, 'column_id' => 4])->all();
+
+        foreach($demos as $dd) {
+            $this->col4_ids[] = $dd->demo_value;
         }
     }
 
@@ -133,7 +148,21 @@ class AnalysisDemographic extends Model
         }
         /* Be careful, $this->food_ids can be empty */
     }
-   
+    
+    public function saveColumn4()
+    {
+        Demographic::deleteAll(['bat_id' => $this->batch_id, 'column_id' => 4]);
+        if (is_array($this->col4_ids)) {
+            foreach($this->col4_ids as $col_name) {
+                $ff = new Demographic();
+                $ff->bat_id = $this->batch_id;
+                $ff->column_id = 4;
+                $ff->demo_value = $col_name;
+                $ff->save();
+            }
+        }
+        /* Be careful, $this->food_ids can be empty */
+    }
 
     /**
      * @return array available foods
@@ -165,6 +194,16 @@ class AnalysisDemographic extends Model
         ->where(['bat_id' => $bat_id])
         ->all();
         $items = ArrayHelper::map($columns, 'column3', 'column3');
+        return $items;
+    }
+
+    public static function getAvailableColumn4($bat_id)
+    {
+        $columns = Answer::find()
+        ->select('DISTINCT(column4)')
+        ->where(['bat_id' => $bat_id])
+        ->all();
+        $items = ArrayHelper::map($columns, 'column4', 'column4');
         return $items;
     }
 

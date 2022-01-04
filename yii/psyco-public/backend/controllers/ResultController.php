@@ -76,6 +76,7 @@ class ResultController extends Controller
                 $model2->saveColumn1();
                 $model2->saveColumn2();
                 $model2->saveColumn3();
+                $model2->saveColumn4();
             }
             return $this->redirect(['index', 'bat_id' => $id]);
         }
@@ -83,11 +84,13 @@ class ResultController extends Controller
         $model2->loadColumn1();
         $model2->loadColumn2();
         $model2->loadColumn3();
+        $model2->loadColumn4();
 
         $items = AnalysisDomain::getAvailableDomain();
         $items2 = AnalysisDemographic::getAvailableColumn1($id);
         $items3 = AnalysisDemographic::getAvailableColumn2($id);
         $items4 = AnalysisDemographic::getAvailableColumn3($id);
+        $items5 = AnalysisDemographic::getAvailableColumn4($id);
 
         return $this->render('analysis', [
             'batch' => $batch,
@@ -97,6 +100,7 @@ class ResultController extends Controller
             'items2' => $items2,
             'items3' => $items3,
             'items4' => $items4,
+            'items5' => $items5,
         ]);
     }
 

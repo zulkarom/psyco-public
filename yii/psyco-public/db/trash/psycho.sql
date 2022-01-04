@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2021 at 04:52 AM
+-- Generation Time: Dec 23, 2021 at 05:51 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.3.21
 
@@ -20,6 +20,74 @@ SET time_zone = "+00:00";
 --
 -- Database: `psycho`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_assignment`
+--
+
+CREATE TABLE `auth_assignment` (
+  `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `user_id` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `auth_assignment`
+--
+
+INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
+('manage-admin', '1', 1639386205),
+('manage-view', '1', 1639444095);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_item`
+--
+
+CREATE TABLE `auth_item` (
+  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `type` smallint(6) NOT NULL,
+  `description` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `data` blob DEFAULT NULL,
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `auth_item`
+--
+
+INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
+('manage-admin', 1, NULL, NULL, NULL, 1626569834, 1626572398),
+('manage-view', 1, NULL, NULL, NULL, 1626569834, 1626572398);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_item_child`
+--
+
+CREATE TABLE `auth_item_child` (
+  `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_rule`
+--
+
+CREATE TABLE `auth_rule` (
+  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `data` blob DEFAULT NULL,
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -66,6 +134,16 @@ CREATE TABLE `psy_answers` (
   `column1` varchar(225) NOT NULL,
   `column2` varchar(225) NOT NULL,
   `column3` varchar(225) NOT NULL,
+  `status` smallint(6) NOT NULL,
+  `finished_at` int(11) DEFAULT NULL,
+  `answer_status` tinyint(1) NOT NULL,
+  `answer_status2` tinyint(2) NOT NULL,
+  `overall_status` tinyint(1) NOT NULL,
+  `answer_last_saved` varchar(8) NOT NULL,
+  `question_last_saved` int(11) NOT NULL,
+  `answer_last_saved2` varchar(8) DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL,
   `q1` tinyint(1) NOT NULL DEFAULT -1,
   `q2` tinyint(1) NOT NULL DEFAULT -1,
   `q3` tinyint(1) NOT NULL DEFAULT -1,
@@ -193,19 +271,13 @@ CREATE TABLE `psy_answers` (
 -- Dumping data for table `psy_answers`
 --
 
-INSERT INTO `psy_answers` (`id`, `can_id`, `bat_id`, `column1`, `column2`, `column3`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `q19`, `q20`, `q21`, `q22`, `q23`, `q24`, `q25`, `q26`, `q27`, `q28`, `q29`, `q30`, `q31`, `q32`, `q33`, `q34`, `q35`, `q36`, `q37`, `q38`, `q39`, `q40`, `q41`, `q42`, `q43`, `q44`, `q45`, `q46`, `q47`, `q48`, `q49`, `q50`, `q51`, `q52`, `q53`, `q54`, `q55`, `q56`, `q57`, `q58`, `q59`, `q60`, `q61`, `q62`, `q63`, `q64`, `q65`, `q66`, `q67`, `q68`, `q69`, `q70`, `q71`, `q72`, `q73`, `q74`, `q75`, `q76`, `q77`, `q78`, `q79`, `q80`, `q81`, `q82`, `q83`, `q84`, `q85`, `q86`, `q87`, `q88`, `q89`, `q90`, `q91`, `q92`, `q93`, `q94`, `q95`, `q96`, `q97`, `q98`, `q99`, `q100`, `q101`, `q102`, `q103`, `q104`, `q105`, `q106`, `q107`, `q108`, `q109`, `q110`, `q111`, `q112`, `q113`, `q114`, `q115`, `q116`, `q117`, `q118`, `q119`, `q120`, `biz_idea`) VALUES
-(1, 4676, 0, '', '', '', 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, NULL),
-(2, 4677, 0, '', '', '', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
-(3, 4680, 0, '', '', '', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
-(4, 4681, 0, '', '', '', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
-(5, 4682, 0, '', '', '', 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, NULL),
-(6, 4684, 0, '', '', '', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
-(7, 4685, 0, '', '', '', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
-(8, 4686, 0, '', '', '', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
-(9, 4687, 0, '', '', '', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
-(10, 4688, 0, '', '', '', 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, NULL),
-(36, 4693, 1, 'A5545', '456', 'Sales', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
-(37, 4695, 1, 'B2334', '456', 'IT', -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL);
+INSERT INTO `psy_answers` (`id`, `can_id`, `bat_id`, `column1`, `column2`, `column3`, `status`, `finished_at`, `answer_status`, `answer_status2`, `overall_status`, `answer_last_saved`, `question_last_saved`, `answer_last_saved2`, `created_at`, `updated_at`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `q19`, `q20`, `q21`, `q22`, `q23`, `q24`, `q25`, `q26`, `q27`, `q28`, `q29`, `q30`, `q31`, `q32`, `q33`, `q34`, `q35`, `q36`, `q37`, `q38`, `q39`, `q40`, `q41`, `q42`, `q43`, `q44`, `q45`, `q46`, `q47`, `q48`, `q49`, `q50`, `q51`, `q52`, `q53`, `q54`, `q55`, `q56`, `q57`, `q58`, `q59`, `q60`, `q61`, `q62`, `q63`, `q64`, `q65`, `q66`, `q67`, `q68`, `q69`, `q70`, `q71`, `q72`, `q73`, `q74`, `q75`, `q76`, `q77`, `q78`, `q79`, `q80`, `q81`, `q82`, `q83`, `q84`, `q85`, `q86`, `q87`, `q88`, `q89`, `q90`, `q91`, `q92`, `q93`, `q94`, `q95`, `q96`, `q97`, `q98`, `q99`, `q100`, `q101`, `q102`, `q103`, `q104`, `q105`, `q106`, `q107`, `q108`, `q109`, `q110`, `q111`, `q112`, `q113`, `q114`, `q115`, `q116`, `q117`, `q118`, `q119`, `q120`, `biz_idea`) VALUES
+(10, 4688, 1, 'tess', 'hhh', 'jkkk', 0, NULL, 0, 0, 0, '', 0, NULL, 0, 0, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, NULL),
+(36, 4693, 1, 'A5545', '456', 'Sales', 0, NULL, 0, 0, 0, '', 0, NULL, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
+(39, 4697, 1, 'B2334', 'Babas', 'IT', 0, NULL, 0, 0, 0, '', 0, NULL, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
+(40, 4698, 1, 'C4453', 'Babas', 'Management', 0, NULL, 0, 0, 0, '', 0, NULL, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
+(41, 4699, 1, '', '', '', 0, NULL, 0, 0, 0, '', 0, NULL, 0, 0, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL),
+(42, 4700, 3, '', '', '', 0, NULL, 0, 0, 0, '', 0, NULL, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, NULL);
 
 -- --------------------------------------------------------
 
@@ -217,19 +289,58 @@ CREATE TABLE `psy_batch` (
   `id` int(11) NOT NULL,
   `bat_text` varchar(100) NOT NULL,
   `bat_show` int(11) NOT NULL,
+  `allow_register` tinyint(1) NOT NULL,
   `column1` varchar(225) NOT NULL,
   `column2` varchar(225) NOT NULL,
-  `column3` varchar(225) NOT NULL
+  `column3` varchar(225) NOT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `psy_batch`
 --
 
-INSERT INTO `psy_batch` (`id`, `bat_text`, `bat_show`, `column1`, `column2`, `column3`) VALUES
-(1, 'PTPTN-2021', 1, 'Company ID', 'Company', 'Department'),
-(3, 'PTPTN-2022', 0, '', '', ''),
-(8, 'PTPTN-2023', 1, '', '', '');
+INSERT INTO `psy_batch` (`id`, `bat_text`, `bat_show`, `allow_register`, `column1`, `column2`, `column3`, `start_date`, `end_date`) VALUES
+(1, 'PTPTN-2021', 1, 1, 'Company ID', 'Company', 'Department', '2021-12-21', '2021-12-31'),
+(3, 'PTPTN-2022', 0, 0, '', '', '', NULL, NULL),
+(8, 'PTPTN-2023', 0, 0, '', '', '', NULL, NULL),
+(9, 'PTPTN-2026', 0, 0, '', '', '', NULL, NULL),
+(11, 'PTPTN-2019', 0, 1, '', '', '', '2021-12-21', '2021-12-31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `psy_demographic`
+--
+
+CREATE TABLE `psy_demographic` (
+  `id` int(11) NOT NULL,
+  `bat_id` int(11) NOT NULL,
+  `column_id` int(11) NOT NULL,
+  `demo_value` varchar(225) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `psy_domain`
+--
+
+CREATE TABLE `psy_domain` (
+  `id` int(11) NOT NULL,
+  `bat_id` int(11) NOT NULL,
+  `grade_cat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `psy_domain`
+--
+
+INSERT INTO `psy_domain` (`id`, `bat_id`, `grade_cat`) VALUES
+(201, 1, 1),
+(202, 1, 3),
+(203, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -463,43 +574,6 @@ INSERT INTO `psy_zone` (`zone_id`, `zone_text`, `zone_order`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
---
-
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `status` smallint(6) NOT NULL DEFAULT 10,
-  `can_name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
-  `department` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
-  `can_batch` int(11) NOT NULL,
-  `can_zone` int(11) NOT NULL,
-  `finished_at` int(11) NOT NULL,
-  `answer_status` tinyint(1) NOT NULL,
-  `answer_status2` tinyint(2) NOT NULL,
-  `overall_status` tinyint(1) NOT NULL,
-  `answer_last_saved` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `question_last_saved` int(11) NOT NULL DEFAULT 1,
-  `answer_last_saved2` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
-  `verification_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `status`, `can_name`, `department`, `can_batch`, `can_zone`, `finished_at`, `answer_status`, `answer_status2`, `overall_status`, `answer_last_saved`, `question_last_saved`, `answer_last_saved2`, `created_at`, `updated_at`, `verification_token`) VALUES
-(1, 'admin', '', '$2y$10$G2CqfuUqiTshvYmzFbh/seDgLVXbHRvUrb8fu.8UxCHgyaF9vd3pG', NULL, '', 10, '', '', 0, 0, 0, 0, 0, 0, '', 1, '', 0, 0, NULL);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -549,14 +623,45 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `session_id`, `username`, `auth_key`, `matric_no`, `program`, `password_hash`, `password_reset_token`, `email`, `status`, `can_name`, `department`, `can_batch`, `can_zone`, `finished_at`, `answer_status`, `answer_status2`, `overall_status`, `answer_last_saved`, `question_last_saved`, `answer_last_saved2`, `created_at`, `updated_at`, `verification_token`, `user_active`, `user_deleted`, `user_account_type`, `user_has_avatar`, `user_remember_me_token`, `user_creation_timestamp`, `user_suspension_timestamp`, `user_last_login_timestamp`, `user_failed_logins`, `user_last_failed_login`, `user_activation_hash`, `user_password_reset_hash`, `user_password_reset_timestamp`, `user_provider_type`) VALUES
-(1, '4lg2e2i5hk8af4tj7afhd0k6lj', 'admin', '', NULL, '0', '$2y$13$5jwVMf2PeCPvVfS3tTRFq.XVCcA9sVyVdX/zr4SqjQSk.OQAedSfq', NULL, '', 10, 'Admin', NULL, 0, 0, NULL, 0, 0, 0, '00:00', 120, NULL, 0, 0, NULL, 1, 0, 7, 0, NULL, 1626588811, NULL, 1637826828, 0, NULL, NULL, NULL, NULL, 'DEFAULT'),
-(4688, '0uuu0qnb2qmivl962ac4m1ejha', '940821036159', '', NULL, '0', NULL, NULL, '', 10, 'Fakhrul Iqram Bin Rafien', 'test', 1, 0, 1638071893, 3, 0, 3, '12:15', 120, NULL, 0, 0, NULL, 0, 0, 1, 0, NULL, NULL, NULL, 1637638122, 0, NULL, NULL, NULL, NULL, NULL),
+(1, '4lg2e2i5hk8af4tj7afhd0k6lj', 'admin', '', NULL, '0', '$2y$13$5jwVMf2PeCPvVfS3tTRFq.XVCcA9sVyVdX/zr4SqjQSk.OQAedSfq', NULL, '', 10, 'Admin', NULL, 1, 0, NULL, 0, 0, 0, '00:00', 120, NULL, 0, 0, NULL, 1, 0, 7, 0, NULL, 1626588811, NULL, 1637826828, 0, NULL, NULL, NULL, NULL, 'DEFAULT'),
+(4688, '0uuu0qnb2qmivl962ac4m1ejha', '940821036159', '', NULL, '0', NULL, NULL, '', 10, 'Fakhrul Iqram Bin Rafien', 'test', 1, 0, 1638071893, 3, 0, 3, '12:15', 120, NULL, 0, 1639379103, NULL, 0, 0, 1, 0, NULL, NULL, NULL, 1637638122, 0, NULL, NULL, NULL, NULL, NULL),
 (4693, NULL, '940821036111', '', NULL, '0', NULL, NULL, '', 10, 'Hakimi Bin Ab Rahman', 'Sales And Marketing', 1, 0, NULL, 0, 0, 0, '0', 1, NULL, 1638863479, 1638863479, NULL, 0, 0, 1, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
-(4695, NULL, '960821036111', '', NULL, '0', NULL, NULL, '', 10, '	Azman Bin Abd Rahim', NULL, 1, 0, NULL, 0, 0, 0, '0', 1, NULL, 1639040903, 1639040903, NULL, 0, 0, 1, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL);
+(4697, NULL, '960821036111', '', NULL, '0', NULL, NULL, '', 10, 'Azman Bin Abd Rahman', NULL, 1, 0, NULL, 0, 0, 0, '0', 1, NULL, 1639359924, 1639359924, NULL, 0, 0, 1, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(4698, NULL, '960821036159', '', NULL, '0', NULL, NULL, '', 10, 'Hafizz Bin Hishamuddin', NULL, 1, 0, NULL, 0, 0, 0, '0', 1, NULL, 1639359924, 1639359924, NULL, 0, 0, 1, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(4699, NULL, '940821036112', '', NULL, '0', NULL, NULL, '', 10, 'Mohd Ali', NULL, 1, 0, NULL, 0, 0, 0, '0', 1, NULL, 1639378299, 1639378299, NULL, 0, 0, 1, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+(4700, NULL, '940821036116', '', NULL, '0', NULL, NULL, '', 10, 'Second Seller', NULL, 1, 0, NULL, 0, 0, 0, '0', 1, NULL, 1639379265, 1639379265, NULL, 0, 0, 1, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `auth_assignment`
+--
+ALTER TABLE `auth_assignment`
+  ADD PRIMARY KEY (`item_name`,`user_id`),
+  ADD KEY `auth_assignment_user_id_idx` (`user_id`);
+
+--
+-- Indexes for table `auth_item`
+--
+ALTER TABLE `auth_item`
+  ADD PRIMARY KEY (`name`),
+  ADD KEY `rule_name` (`rule_name`),
+  ADD KEY `idx-auth_item-type` (`type`);
+
+--
+-- Indexes for table `auth_item_child`
+--
+ALTER TABLE `auth_item_child`
+  ADD PRIMARY KEY (`parent`,`child`),
+  ADD KEY `child` (`child`);
+
+--
+-- Indexes for table `auth_rule`
+--
+ALTER TABLE `auth_rule`
+  ADD PRIMARY KEY (`name`);
 
 --
 -- Indexes for table `data_import`
@@ -581,6 +686,18 @@ ALTER TABLE `psy_answers`
 -- Indexes for table `psy_batch`
 --
 ALTER TABLE `psy_batch`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `psy_demographic`
+--
+ALTER TABLE `psy_demographic`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `psy_domain`
+--
+ALTER TABLE `psy_domain`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -614,15 +731,6 @@ ALTER TABLE `psy_zone`
   ADD PRIMARY KEY (`zone_id`);
 
 --
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `password_reset_token` (`password_reset_token`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -643,13 +751,25 @@ ALTER TABLE `data_import`
 -- AUTO_INCREMENT for table `psy_answers`
 --
 ALTER TABLE `psy_answers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `psy_batch`
 --
 ALTER TABLE `psy_batch`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `psy_demographic`
+--
+ALTER TABLE `psy_demographic`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `psy_domain`
+--
+ALTER TABLE `psy_domain`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
 
 --
 -- AUTO_INCREMENT for table `psy_grade_cat`
@@ -682,16 +802,10 @@ ALTER TABLE `psy_zone`
   MODIFY `zone_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'auto incrementing user_id of each user, unique index', AUTO_INCREMENT=4696;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'auto incrementing user_id of each user, unique index', AUTO_INCREMENT=4701;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
