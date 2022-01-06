@@ -13,11 +13,6 @@ class ResultSearch extends Candidate
 {
     public $others = null;
     public $bat_id;
-
-    public $col1;
-    public $col2;
-    public $col3;
-    public $col4;
     /**
      * {@inheritdoc}
      */
@@ -48,7 +43,7 @@ class ResultSearch extends Candidate
 
     private function columResultAnswers(){
         $result = Domain::find()->where(['bat_id' => $this->bat_id])->all();
-        $colum = ["c.id", "c.username", "c.can_name", "b.bat_text" ,
+        $colum = ["a.id", "a.username", "a.can_name", "a.department", "a.can_zone", "a.can_batch",  "b.bat_text" ,
         "a.answer_status", "a.overall_status", "a.finished_at"];
         $c=1;
         
@@ -74,10 +69,11 @@ class ResultSearch extends Candidate
     public function search($params)
     {
         // echo "<pre>";print_r($this->columResultAnswers());die();
-        $query = Answer::find()
+        $query = Candidate::find()
         ->alias('a')
-        ->joinWith(['batch b', 'candidate c'])
         ->select($this->columResultAnswers())
+        ->joinWith(['batch b', 'answer c'])
+        ->where(['!=' ,'a.id', 1])
         ->andWhere(['b.id' => $this->bat_id]);
 
         // add conditions that should always apply here

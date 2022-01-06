@@ -147,6 +147,16 @@ use common\models\Common;
  */
 class Answer extends \yii\db\ActiveRecord
 {
+
+    public $c1;
+    public $c2;
+    public $c3;
+    public $c4;
+    public $c5;
+    public $c6;
+    public $can_name;
+    public $username;
+    public $bat_text;
     /**
      * {@inheritdoc}
      */
@@ -313,6 +323,12 @@ class Answer extends \yii\db\ActiveRecord
             'q119' => 'Q119',
             'q120' => 'q120',
             'biz_idea' => 'Biz Idea',
+            'c1' => 'Enterprise',
+            'c2' => 'Social',
+            'c3' => 'Investigate',
+            'c4' => 'Artistic',
+            'c5' => 'Conventional',
+            'c6' => 'Realistic',
         ];
     }
 

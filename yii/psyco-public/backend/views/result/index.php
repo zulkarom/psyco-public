@@ -34,7 +34,7 @@ $columns = [
                 'format' => 'raw',
                 'label' => 'Batch',
                 'value' => function($model){
-                    return $model->batch->bat_text;
+                    return $model->bat_text;
                 }
             ],
             [
@@ -160,9 +160,9 @@ $columns = [
                         'format' => 'html',
                         'label' => 'Batch',
                         'value' => function($model){
-                            if($model->batch){
-                                return $model->batch->bat_text;
-                            }
+                            
+                                return $model->bat_text;
+                            
                         }
                     ],
                     [
