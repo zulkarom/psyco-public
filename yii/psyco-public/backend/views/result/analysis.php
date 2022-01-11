@@ -53,10 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
+    <?php if($batch->column1):?>
     <div class="card card-primary card-outline">
         <div class="card-body">
-           
-
             <?php echo $form->field($model2, 'col_ids')->widget(DualListbox::className(),[
                     'items' => $items2,
                     'options' => [
@@ -75,11 +74,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
         </div>
     </div>
+    <?php endif;?>
 
+    <?php if($batch->column2):?>
     <div class="card card-primary card-outline">
         <div class="card-body">
-           
-
             <?php echo $form->field($model2, 'col2_ids')->widget(DualListbox::className(),[
                     'items' => $items3,
                     'options' => [
@@ -97,6 +96,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </div>
     </div>
+    <?php endif;?>
+
+    <?php if($batch->column3):?>
     <div class="card card-primary card-outline">
         <div class="card-body">
            
@@ -119,6 +121,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
         </div>
     </div>
+    <?php endif;?>
+
+    <?php if($batch->column4):?>
     <div class="card card-primary card-outline">
         <div class="card-body">
            
@@ -138,16 +143,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 ->hint(false)
                 ->label(false);
             ?>
-
-            <div class="form-group">
-                <?= Html::submitButton('RESULT', [
-                    'class' => 'btn btn-primary'
-                ]) ?>
-            </div>
-
-            <?php ActiveForm::end(); ?>
         </div>
     </div>
+    <?php endif;?>
+
+    <div class="form-group">
+        <?= Html::submitButton('RESULT', [
+            'class' => 'btn btn-primary'
+        ]) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+        
 </div>
 <div class="col-2">
 </div>

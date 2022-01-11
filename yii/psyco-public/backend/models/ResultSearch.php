@@ -5,7 +5,7 @@ namespace backend\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Candidate;
-
+use yii\helpers\ArrayHelper;
 /**
  * ResultSearch represents the model behind the search form of `backend\models\Candidate`.
  */
@@ -48,6 +48,11 @@ class ResultSearch extends Candidate
 
     private function columResultAnswers(){
         $result = Domain::find()->where(['bat_id' => $this->bat_id])->all();
+
+        
+
+        
+
         $colum = ["c.id", "c.username", "c.can_name", "b.bat_text" ,
         "a.answer_status", "a.overall_status", "a.finished_at"];
         $c=1;
@@ -71,9 +76,42 @@ class ResultSearch extends Candidate
         return $colum;
     }
 
+    public function getAvailableColumn1($bat_id)
+    {
+        $columns = Answer::find()
+        ->select('DISTINCT(column1)')
+        ->where(['bat_id' => $bat_id])
+        ->all();
+        $items = ArrayHelper::map($columns, 'column1', 'column1');
+        return $items;
+    }
+
+    
+
     public function search($params)
     {
-        // echo "<pre>";print_r($this->columResultAnswers());die();
+        $array_filter = [];
+        $colum = Demographic::find()
+        ->select('DISTINCT(column_id)')
+        ->where(['bat_id' => $this->bat_id])
+        ->all();
+
+        foreach($colum as $col){
+            $demos = Demographic::find()
+            ->where(['bat_id' => $this->bat_id, 'column_id' => $col])
+            ->all();
+
+            $array_value = ArrayHelper::map($demos, 'id', 'demo_value');
+            $array_filter = 
+            echo "<pre>";print_r($array_value);
+            
+            
+        }
+
+        die();
+        
+
+        
         $query = Answer::find()
         ->alias('a')
         ->joinWith(['batch b', 'candidate c'])
