@@ -49,12 +49,8 @@ class ResultSearch extends Candidate
     private function columResultAnswers(){
         $result = Domain::find()->where(['bat_id' => $this->bat_id])->all();
 
-        
-
-        
-
         $colum = ["c.id", "c.username", "c.can_name", "b.bat_text" ,
-        "a.answer_status", "a.overall_status", "a.finished_at"];
+        "a.answer_status", "a.overall_status", "a.finished_at", 'b.column1', 'b.column2', 'b.column3', 'b.column4'];
         $c=1;
         
         foreach($result as $row){
@@ -76,18 +72,6 @@ class ResultSearch extends Candidate
         return $colum;
     }
 
-    public function getAvailableColumn1($bat_id)
-    {
-        $columns = Answer::find()
-        ->select('DISTINCT(column1)')
-        ->where(['bat_id' => $bat_id])
-        ->all();
-        $items = ArrayHelper::map($columns, 'column1', 'column1');
-        return $items;
-    }
-
-    
-
     public function search($params)
     {
         $array_filter = [];
@@ -98,18 +82,12 @@ class ResultSearch extends Candidate
 
         foreach($colum as $col){
             $demos = Demographic::find()
-            ->where(['bat_id' => $this->bat_id, 'column_id' => $col])
+            ->where(['bat_id' => $this->bat_id, 'column_id' => $col->column_id])
             ->all();
-
-            $array_value = ArrayHelper::map($demos, 'id', 'demo_value');
-            $array_filter = 
-            echo "<pre>";print_r($array_value);
             
+            $array_filter[$col->column_id] = ArrayHelper::map($demos, 'id', 'demo_value'); 
             
         }
-
-        die();
-        
 
         
         $query = Answer::find()
@@ -117,6 +95,12 @@ class ResultSearch extends Candidate
         ->joinWith(['batch b', 'candidate c'])
         ->select($this->columResultAnswers())
         ->andWhere(['b.id' => $this->bat_id]);
+
+        if($array_filter){
+            foreach($array_filter as $key => $val){
+                $query->andWhere(['a.column' . $key => $val]);
+            }
+        }
 
         // add conditions that should always apply here
 

@@ -46,6 +46,7 @@ class ResultController extends Controller
     public function actionIndex($bat_id)
     {
         $domains = Domain::find()->where(['bat_id' => $bat_id])->all();
+        $demos = Demographic::find()->where(['bat_id' => $bat_id])->all();
         $searchModel = new ResultSearch();
         $searchModel->bat_id = $bat_id;
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -54,6 +55,7 @@ class ResultController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'domains' => $domains,
+            'demos' => $demos,
         ]);
     }
 
