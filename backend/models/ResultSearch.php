@@ -50,7 +50,8 @@ class ResultSearch extends Candidate
         $result = Domain::find()->where(['bat_id' => $this->bat_id])->all();
 
         $colum = ["c.id", "c.username", "c.can_name", "b.bat_text" ,
-        "a.answer_status", "a.overall_status", "a.finished_at", 'b.column1', 'b.column2', 'b.column3', 'b.column4'];
+        "a.answer_status", "a.overall_status", "a.finished_at", 
+        'a.column1', 'a.column2', 'a.column3', 'a.column4'];
         $c=1;
         
         foreach($result as $row){

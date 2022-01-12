@@ -399,7 +399,7 @@ class Answer extends \yii\db\ActiveRecord
     }
 
     public function getStatusText(){
-        return Common::status()[$this->answer_status];
+        return Common::status()[$this->overall_status];
     }
 
     public function getBatch()
@@ -410,5 +410,17 @@ class Answer extends \yii\db\ActiveRecord
     public function getCandidate()
     {
         return $this->hasOne(Candidate::className(), ['id' => 'can_id']);
+    }
+
+    public static function countResultSubmission(){
+        return self::find()
+        ->where(['answer_status' => 3])
+        ->count();
+    }
+
+    public static function countSubmissionToday(){
+        return self::find()
+        ->where(['finished_at' => strtotime(date('Y-m-d'))])
+        ->count();
     }
 }

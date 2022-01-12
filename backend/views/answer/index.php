@@ -72,6 +72,9 @@ $columns = [
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 // 'filterModel' => $searchModel,
+                'pager' => [
+                    'class' => 'yii\bootstrap4\LinkPager',
+                ],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
@@ -103,8 +106,8 @@ $columns = [
                         'template' => '{view}',
                         //'visible' => false,
                         'buttons'=>[
-                            'view'=>function ($url, $model) {
-                                return Html::a('<span class="fa fa-eye"></span> VIEW',['individual-result', 'id' => $model->id],['class'=>'btn btn-info btn-sm']);
+                            'view'=>function ($url, $model) use ($batch){
+                                return Html::a('<span class="fa fa-eye"></span> VIEW',['/result/individual-result', 'id' => $model->can_id, 'batch_id' => $batch->id],['class'=>'btn btn-info btn-sm']);
                             }
                         ],
                     

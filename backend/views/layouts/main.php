@@ -218,7 +218,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/assets/adminlte')
         <!-- To the right -->
   
         <!-- Default to the left -->
-        <strong>&copy; FKP backend Portal <?= date('Y') ?></strong> All rights reserved.
+        <strong>&copy; Psychometric <?= date('Y') ?></strong> All rights reserved.
     </footer>
 
 </div>

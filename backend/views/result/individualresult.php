@@ -30,12 +30,7 @@ use richardfan\widget\JSRegister;
 <div class="card">
 	<div class="card-body">
 
-		<div style="text-align:center">
-		<div class="form-group">   
-			<input type="file" id="xlf" style="display:none;" />
-			<button type="button" id="btn-importexcel" class="btn btn-info"><span class="fa fa-upload"></span> UPLOAD ANSWERS </button>
-		</div>
-		</div>
+		
 
 		<div style="text-align:center"><strong>Name: </strong> <?php echo $user->can_name;?> &nbsp;&nbsp;<strong>No. Kad Pengenalan: </strong> <?php echo $user->username;?></div><br />
 
@@ -88,12 +83,19 @@ use richardfan\widget\JSRegister;
 				</tbody>
 				</table>
 
-				<h4>Business Idea</h4>
-
 			</div>
 
 			<div class="col-md-2">
 			</div>
+		</div>
+		
+		<div style="text-align:center">
+		<div class="form-group">   
+			<input type="file" id="xlf" style="display:none;" />
+			<?php if($answer->overall_status == 0): ?>
+			<button type="button" id="btn-importexcel" class="btn btn-info"><span class="fa fa-upload"></span> UPLOAD ANSWERS </button>
+			<?php endif; ?>
+		</div>
 		</div>
 	</div>
 </div>

@@ -76,6 +76,16 @@ $columns = [
                 }
             ];
         }
+        if($batch->column4)
+        {
+            $columns[] = [
+                'format' => 'raw',
+                'header' =>  $batch->column4 ,
+                'value' => function($model){
+                    return "";
+                }
+            ];
+        }
 
 ?>
 
@@ -110,10 +120,10 @@ $columns = [
     {
         $grid_columns[] = [
             'format' => 'raw',
-            'header' =>  $batch->column3 ,
+            'header' =>  $batch->column2 ,
             'value' => function($model){
                 if($model->answer){
-                    return $model->answer->column3;
+                    return $model->answer->column2;
                 }
             }
         ];
@@ -122,10 +132,22 @@ $columns = [
     {
         $grid_columns[] = [
             'format' => 'raw',
-            'header' =>  $batch->column2 ,
+            'header' =>  $batch->column3 ,
             'value' => function($model){
                 if($model->answer){
-                    return $model->answer->column2;
+                    return $model->answer->column3;
+                }
+            }
+        ];
+    }
+    if($batch->column4)
+    {
+        $grid_columns[] = [
+            'format' => 'raw',
+            'header' =>  $batch->column4 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column4;
                 }
             }
         ];

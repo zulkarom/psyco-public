@@ -71,6 +71,15 @@ $attributes = [
                 }
             ];
         }
+        if($model->column4)
+        {
+            $attributes[] = [
+                'attribute' => 'column4',
+                'value' => function($model){
+                    return $model->column4;
+                }
+            ];
+        }
 ?>
 
 <div class="card">

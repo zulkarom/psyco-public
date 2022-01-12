@@ -136,11 +136,9 @@ $columns = [
                 // ],
             ],
         ]);
-
-
-
         ?>   
 
+        <?= Html::a('FILTER RESULT', ['/result/analysis', "id" => $searchModel->bat_id], ['class' => 'btn btn-info']) ?>
 
         </div>
     </div>
@@ -190,6 +188,41 @@ $columns = [
                         $grid_columns[] = 'c'.$domain->grade_cat;
                     }
                 }
+                foreach($demos as $demo){
+                    if($demo->column_id == 1)
+                    {
+                        $grid_columns[] =[  
+                            'label' => $batch->column1,
+                            'value' => function($model){
+                                return $model->column1;
+                            }
+                        ];
+                    }else if($demo->column_id == 2)
+                    {
+                        $grid_columns[] =[  
+                            'label' => $batch->column2,
+                            'value' => function($model){
+                                return $model->column2;
+                            }
+                        ];
+                    }else if($demo->column_id == 3)
+                    {
+                        $grid_columns[] =[  
+                            'label' => $batch->column3,
+                            'value' => function($model){
+                                return $model->column3;
+                            }
+                        ];
+                    }else if($demo->column_id == 4)
+                    {
+                        $grid_columns[] =[  
+                            'label' => $batch->column4,
+                            'value' => function($model){
+                                return $model->column4;
+                            }
+                        ];
+                    }
+                }
                 if($domains){
                     $grid_columns[] =[   
                         'label' => 'Total',
@@ -198,14 +231,13 @@ $columns = [
                         }
                     ];
                 }
-                if($domains){
                     $grid_columns[] = ['class' => 'yii\grid\ActionColumn',
                         'contentOptions' => ['style' => 'width: 10%'],
                         'template' => '{view} {pdf}',
                         //'visible' => false,
                         'buttons'=>[
-                            'view'=>function ($url, $model) {
-                                return Html::a('<span class="fa fa-eye"></span> VIEW',['individual-result', 'id' => $model->id],['class'=>'btn btn-info btn-sm']);
+                            'view'=>function ($url, $model) use ($batch) {
+                                return Html::a('<span class="fa fa-eye"></span> VIEW',['individual-result', 'id' => $model->id, 'batch_id' => $batch->id],['class'=>'btn btn-info btn-sm']);
                             },
                             'pdf'=>function ($url, $model) {
                                 return Html::a('<span class="fa fa-download"></span> PDF',['individual-pdf', 'id' => $model->id],['class'=>'btn btn-danger btn-sm', 'target' => '_blank']);
@@ -213,7 +245,7 @@ $columns = [
                         ],
                     
                     ];
-                }
+                
                 
 ?>
 
@@ -224,6 +256,9 @@ $columns = [
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 // 'filterModel' => $searchModel,
+                'pager' => [
+                    'class' => 'yii\bootstrap4\LinkPager',
+                ],
                 'columns' => $grid_columns
             ]); ?>
         </div>

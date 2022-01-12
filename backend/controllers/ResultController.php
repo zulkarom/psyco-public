@@ -15,7 +15,9 @@ use backend\models\pdf\pdf_result;
 use backend\models\AnalysisDomain;
 use backend\models\AnalysisDemographic;
 use backend\models\Domain;
+use backend\models\Demographic;
 use backend\models\Batch;
+use backend\models\Answer;
 /**
  * ResultController implements the CRUD actions for Candidate model.
  */
@@ -46,7 +48,8 @@ class ResultController extends Controller
     public function actionIndex($bat_id)
     {
         $domains = Domain::find()->where(['bat_id' => $bat_id])->all();
-        $demos = Demographic::find()->where(['bat_id' => $bat_id])->all();
+        $demos = Demographic::find()->select('DISTINCT(column_id)')->where(['bat_id' => $bat_id])->all();
+        $batch = Batch::findOne($bat_id);
         $searchModel = new ResultSearch();
         $searchModel->bat_id = $bat_id;
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -56,6 +59,7 @@ class ResultController extends Controller
             'dataProvider' => $dataProvider,
             'domains' => $domains,
             'demos' => $demos,
+            'batch' => $batch,
         ]);
     }
 
@@ -67,6 +71,20 @@ class ResultController extends Controller
         $batch = Batch::findOne($id);
         $model->batch_id = $id;
         $model2->batch_id = $id;
+
+        
+        $grads = GradeCategory::find()->all();
+        if($grads){
+            foreach($grads as $grad){
+                $check = Domain::find()->where(['grade_cat' => $grad->id])->one();
+                if(!$check){
+                    $domain = new Domain;
+                    $domain->bat_id = $id;
+                    $domain->grade_cat = $grad->id;
+                    $domain->save();
+                }
+            }
+        }
 
         
         if ($model->load(Yii::$app->request->post()) 
@@ -130,14 +148,18 @@ class ResultController extends Controller
         $pdf->generatePdf();
     }
 
-    public function actionIndividualResult($id){
+    public function actionIndividualResult($id,$batch_id){
 
         $model = $this->findModel($id);
         $gcat = GradeCategory::find()->all();
+        $answer = Answer::find()->where(['can_id' => $id, 'bat_id' =>$batch_id])->one();
+        // echo $answer->overall_status;
+        // die();
 
         return $this->render('individualresult', [
             'user' => $model,
             'gcat' => $gcat,
+            'answer' => $answer,
         ]);
     }
 
