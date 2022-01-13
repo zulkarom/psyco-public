@@ -42,6 +42,18 @@ $columns[] = [
 
 ];
 ?>
+
+<div class="row">
+    <div class="col-2">
+        <p>
+            <?php echo Html::button('<span class="fa fa-plus"></span> NEW USER', ['value' => Url::to(['/candidate/create']), 'class' => 'btn btn-success', 'id' => 'modalBttnCandidate']);?>
+        </p>
+    </div>
+    <div class="col-4">
+        <a href="file/offline.xls" target="_blank">Download Offline Excel Question</a>
+    </div>
+</div>
+
 <div class="card">
 <div class="card-body"><div class="assignment-index">
 

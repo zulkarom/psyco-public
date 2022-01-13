@@ -147,6 +147,9 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <?php endif;?>
 
+    
+    <?= $form->field($batch, 'limit')->input('number', ['min' => 1, 'step' => 1]) ?>
+
     <div class="form-group">
         <?= Html::submitButton('RESULT', [
             'class' => 'btn btn-primary'

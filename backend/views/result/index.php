@@ -138,7 +138,7 @@ $columns = [
         ]);
         ?>   
 
-        <?= Html::a('FILTER RESULT', ['/result/analysis', "id" => $searchModel->bat_id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('FILTER RESULT', ['/result/analysis', "id" => $searchModel->bat_id, 'type' => 2], ['class' => 'btn btn-info']) ?>
 
         </div>
     </div>

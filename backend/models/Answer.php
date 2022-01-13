@@ -414,13 +414,31 @@ class Answer extends \yii\db\ActiveRecord
 
     public static function countResultSubmission(){
         return self::find()
-        ->where(['answer_status' => 3])
+        ->where(['overall_status' => 3])
         ->count();
     }
 
     public static function countSubmissionToday(){
         return self::find()
         ->where(['finished_at' => strtotime(date('Y-m-d'))])
+        ->count();
+    }
+
+    public static function countDefaultBatchAnswer(){
+        return self::find()
+        ->alias('a')
+        ->joinWith(['batch b'])
+        ->where(['<>','overall_status',0])
+        ->andWhere(['b.bat_show' => 1])
+        ->count();
+    }
+
+    public static function countDefaultBatchNotAnswer(){
+        return self::find()
+        ->alias('a')
+        ->joinWith(['batch b'])
+        ->where(['overall_status' => 0])
+        ->andWhere(['b.bat_show' => 1])
         ->count();
     }
 }

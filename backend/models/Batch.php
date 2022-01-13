@@ -29,7 +29,7 @@ class Batch extends \yii\db\ActiveRecord
             [['bat_text'], 'required'],
             [['bat_text'], 'string', 'max' => 100],
             [['column1', 'column2', 'column3', 'column4'], 'string', 'max' => 225],
-            [['bat_show', 'allow_register'], 'integer'],
+            [['bat_show', 'allow_register','limit'], 'integer'],
             [['start_date', 'end_date'], 'safe'],
         ];
     }
@@ -67,5 +67,14 @@ class Batch extends \yii\db\ActiveRecord
     public function getAnswer()
     {
         return $this->hasOne(Batch::className(), ['id' => 'can_batch']);
+    }
+
+    public function defaultBatch()
+    {
+        $query = self::find()
+        ->where(['bat_show' => 1])
+        ->one();
+
+        return $query->bat_text;
     }
 }

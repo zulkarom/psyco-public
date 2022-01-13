@@ -60,7 +60,7 @@ $columns = [
         </div>
 
         <div class="col-md-4">
-            <?= Html::a('ANALYSIS', ['/result/analysis', "id" => $searchModel->bat_id], ['class' => 'btn btn-danger']) ?>
+            <?= Html::a('ANALYSIS', ['/result/analysis', "id" => $searchModel->bat_id, 'type' => 1], ['class' => 'btn btn-danger']) ?>
         </div>
     </div>
 

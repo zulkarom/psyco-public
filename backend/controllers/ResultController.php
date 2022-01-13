@@ -52,6 +52,7 @@ class ResultController extends Controller
         $batch = Batch::findOne($bat_id);
         $searchModel = new ResultSearch();
         $searchModel->bat_id = $bat_id;
+        $searchModel->limit = $batch->limit;
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -63,7 +64,7 @@ class ResultController extends Controller
         ]);
     }
 
-    public function actionAnalysis($id)
+    public function actionAnalysis($id, $type)
     {
 
         $model = new AnalysisDomain();
@@ -72,23 +73,27 @@ class ResultController extends Controller
         $model->batch_id = $id;
         $model2->batch_id = $id;
 
-        
-        $grads = GradeCategory::find()->all();
-        if($grads){
-            foreach($grads as $grad){
-                $check = Domain::find()->where(['grade_cat' => $grad->id])->one();
-                if(!$check){
-                    $domain = new Domain;
-                    $domain->bat_id = $id;
-                    $domain->grade_cat = $grad->id;
-                    $domain->save();
+
+        if($type == 1)
+        {
+            $grads = GradeCategory::find()->all();
+            if($grads){
+                foreach($grads as $grad){
+                    $check = Domain::find()->where(['grade_cat' => $grad->id])->one();
+                    if(!$check){
+                        $domain = new Domain;
+                        $domain->bat_id = $id;
+                        $domain->grade_cat = $grad->id;
+                        $domain->save();
+                    }
                 }
             }
         }
 
         
         if ($model->load(Yii::$app->request->post()) 
-            && $model2->load(Yii::$app->request->post())) {
+            && $model2->load(Yii::$app->request->post()) 
+            && $batch->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 $model->saveDomains();
             }
@@ -98,6 +103,8 @@ class ResultController extends Controller
                 $model2->saveColumn3();
                 $model2->saveColumn4();
             }
+            $batch->save();
+
             return $this->redirect(['index', 'bat_id' => $id]);
         }
         $model->loadDomains();
