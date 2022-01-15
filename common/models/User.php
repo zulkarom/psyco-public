@@ -183,7 +183,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     {
 
-        return '';
+        return $this->password_hash;
 
     }
 
