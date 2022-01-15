@@ -20,7 +20,7 @@ if($user->can('manage-view')){
 }
 
 if($user->can('manage-admin')){
-    $items[] =  ['label' => 'Batches', 'level' => 1, 'url' => ['/batch/index'], 'icon' => 'fas fa-cog', 'children' => []];
+    $items[] =  ['label' => 'Batches', 'level' => 1, 'url' => ['/batch/index'], 'icon' => 'fas fa-columns', 'children' => []];
 
     $items[] =  ['label' => 'Setting', 'level' => 1, 'url' => ['/setting/index'], 'icon' => 'fas fa-cog', 'children' => []];
 

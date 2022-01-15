@@ -6,6 +6,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Candidate;
 use yii\helpers\ArrayHelper;
+use yii\db\Expression;
 /**
  * ResultSearch represents the model behind the search form of `backend\models\Candidate`.
  */
@@ -52,27 +53,50 @@ class ResultSearch extends Candidate
         "a.answer_status", "a.overall_status", "a.finished_at", 
         'a.column1', 'a.column2', 'a.column3', 'a.column4'];
         $c=1;
-        
-        $str_order = "";
+		$calc_all = '';
+		foreach($result as $row){
+			if($row->grade_cat <> 99){
+				if($c==1){$comma="";}else{$comma=", ";}
+				$str = "";
+				$quest = Question::find()->where(['grade_cat' => $row->grade_cat])->all();
+				
+				$i=1;
+				$jumq = count($quest);
+				foreach($quest as $rq){
+					if($i == $jumq){$plus = "";}else{$plus=" + ";}
+					$str .= "IF(q".$rq->que_id ." > 0,1,0) ". $plus ;
+				$i++;
+				}
+				
+				$str .= " as c". $row->grade_cat;
+				$c++;  
+				$colum[] = $str; 
+			}
+        }
+		
+		$quest_all = Question::find()->all();
+		$x=1;
+		$jums = count($quest_all);
+		foreach($quest_all as $rq){
+			$plus_all = $x == $jums ? '' : '+';
+			$calc_all .= "IF(q".$rq->que_id ." > 0,1,0) ". $plus_all ;
+		$x++;
+		}
+		$colum[] = $calc_all . ' as total';
+		
+		$str_order = "";
+		$c=1;
         foreach($result as $row){
         if($c==1){$comma="";}else{$comma=", ";}
-            $str = "";
-            
-            $quest = Question::find()->where(['grade_cat' => $row->grade_cat])->all();
-            $i=1;
-            $jumq = count($quest);
-            // echo $jumq;die();
-            foreach($quest as $rq){
-                if($i == $jumq){$plus = "";}else{$plus=" + ";}
-                $str .= "IF(q".$rq->que_id ." > 0,1,0) ". $plus ;
-            $i++;
-            }
-            $str .= " as c". $row->grade_cat;
-            $str_order .= $comma."c". $row->grade_cat." DESC";
+			if($row->grade_cat == 99){
+				$str_order .= $comma." total DESC";
+			}else{
+				$str_order .= $comma."c". $row->grade_cat." DESC";
+			}
         $c++;  
-        $colum[] = $str; 
         }
         $this->domainOrder = $str_order;
+		
         return $colum;
     }
 
@@ -85,8 +109,8 @@ class ResultSearch extends Candidate
         
         $select = $this->columResultAnswers();
         $order .= $this->domainOrder; //// .= append string order
-        $comma = $this->domainOrder ? '' : ','; 
-        $order .= $comma; //// klu ada domain order baru start dgn comma
+        $comma = $this->domainOrder ? ',' : ''; 
+        //$order .= $comma; //// klu ada domain order baru start dgn comma
 
         $array_filter = [];
         $colum = Demographic::find()
@@ -106,10 +130,11 @@ class ResultSearch extends Candidate
         }
         
         if($array_filter){ //////// string order field kat sini
+			$first_comma = $comma;
             $i = 1;
             foreach($array_filter as $key => $val){
-                $comma = $i == 0 ? '' : ','; ////yg kedua seterusnya kena comma
-                $order .= $comma. 'FIELD(column'.$key.', '. $this->arrayToStr($val) .')';
+				$comma = $i == 1 ? $first_comma : ',';
+                $order .= $comma . 'FIELD(a.column'.$key.', '. $this->arrayToStr($val) .')';
             $i++;
             }
         }
@@ -121,9 +146,12 @@ class ResultSearch extends Candidate
         ->alias('a')
         ->joinWith(['batch b', 'candidate c'])
         ->select($select)
-        ->orderBy($order) /// guna string biasa
-        ->andWhere(['b.id' => $this->bat_id])
-        ->limit($this->limit);
+        ->andWhere(['b.id' => $this->bat_id, 'a.answer_status' => 3])
+        ->limit($this->limit)
+		;
+		if($order){
+			$query->orderBy( new Expression($order)); /// guna string biasa
+		}
         
 
         if($array_filter){
@@ -138,10 +166,9 @@ class ResultSearch extends Candidate
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => false,
-            // 'pagination' => [
-            //     'pageSize' => $this->limit,
-            // ],
+            'pagination' => [
+                'pageSize' => 100,
+            ],
         ]);
 
         $this->load($params);
@@ -154,7 +181,6 @@ class ResultSearch extends Candidate
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'status' => $this->status,
             'can_batch' => $this->can_batch,
         ]);
 
@@ -174,7 +200,7 @@ class ResultSearch extends Candidate
             $i = 0;
             foreach($array as $a){
                 $comma = $i == 0 ? '': ',';
-                $str .= $comma. '"' . $a . '"'; //// letak double quote
+                $str .= $comma .  '"' . $a  . '"'; //// letak double quote
                 $i++;
             }
             return $str;

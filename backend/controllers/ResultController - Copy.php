@@ -14,13 +14,11 @@ use backend\models\pdf\pdf_individual;
 use backend\models\pdf\pdf_result;
 use backend\models\AnalysisDomain;
 use backend\models\AnalysisDemographic;
-use backend\models\AnalysisForm;
 use backend\models\Domain;
 use backend\models\Demographic;
 use backend\models\Batch;
 use backend\models\Answer;
 use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
 /**
  * ResultController implements the CRUD actions for Candidate model.
  */
@@ -69,24 +67,70 @@ class ResultController extends Controller
         ]);
     }
 
-    public function actionAnalysis($id, $reset = false, $redirect = false)
+    public function actionAnalysis($id, $type)
     {
-		//print_r(Yii::$app->request->post());die();
-		$batch = $this->findBatch($id);
-		$analysis = new AnalysisForm($batch, $reset);
-		if($redirect){
-			return $this->redirect(['index', 'bat_id' => $id]);
-		}
 
-        if ($analysis->load(Yii::$app->request->post())) {
-			if($analysis->saveAnalysis()){
-				return $this->redirect(['index', 'bat_id' => $id]);
-			}
+        $model = new AnalysisDomain();
+        $model2 = new AnalysisDemographic();
+        $batch = Batch::findOne($id);
+        $model->batch_id = $id;
+        $model2->batch_id = $id;
+
+
+        if($type == 1)
+        {
+            $grads = GradeCategory::allDomains();
+            if($grads){
+                foreach($grads as $grad){
+                    $check = Domain::find()->where(['grade_cat' => $grad->id])->one();
+                    if(!$check){
+                        $domain = new Domain;
+                        $domain->bat_id = $id;
+                        $domain->grade_cat = $grad->id;
+                        $domain->save();
+                    }
+                }
+            }
         }
 
+        
+        if ($model->load(Yii::$app->request->post()) 
+            && $model2->load(Yii::$app->request->post()) 
+            && $batch->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                $model->saveDomains();
+            }
+            if ($model2->validate()) {
+                $model2->saveColumn1();
+                $model2->saveColumn2();
+                $model2->saveColumn3();
+                $model2->saveColumn4();
+            }
+            $batch->save();
+
+            return $this->redirect(['index', 'bat_id' => $id]);
+        }
+        $model->loadDomains();
+        $model2->loadColumn1();
+        $model2->loadColumn2();
+        $model2->loadColumn3();
+        $model2->loadColumn4();
+
+        $items = AnalysisDomain::getAvailableDomain();
+        $items2 = AnalysisDemographic::getAvailableColumn1($id);
+        $items3 = AnalysisDemographic::getAvailableColumn2($id);
+        $items4 = AnalysisDemographic::getAvailableColumn3($id);
+        $items5 = AnalysisDemographic::getAvailableColumn4($id);
+
         return $this->render('analysis', [
-			'analysis' => $analysis,
-			'batch' => $batch
+            'batch' => $batch,
+            'model' => $model,
+            'model2' => $model2,
+            'items' => $items,
+            'items2' => $items2,
+            'items3' => $items3,
+            'items4' => $items4,
+            'items5' => $items5,
         ]);
     }
 
@@ -119,13 +163,13 @@ class ResultController extends Controller
         $model = $this->findModel($id);
         $gcat = GradeCategory::allDomains();
         $answer = Answer::find()->where(['can_id' => $id, 'bat_id' =>$batch_id])->one();
-        $batch = $this->findBatch($batch_id);
+        // echo $answer->overall_status;
+        // die();
 
         return $this->render('individualresult', [
             'user' => $model,
             'gcat' => $gcat,
             'answer' => $answer,
-			'batch' => $batch
         ]);
     }
 
@@ -192,15 +236,6 @@ class ResultController extends Controller
     protected function findModel($id)
     {
         if (($model = Candidate::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-	
-	protected function findBatch($id)
-    {
-        if (($model = Batch::findOne($id)) !== null) {
             return $model;
         }
 

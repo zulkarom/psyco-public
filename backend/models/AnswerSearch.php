@@ -19,7 +19,7 @@ class AnswerSearch extends Answer
     {
         return [
             [['status', 'bat_id', 'answer_status'], 'integer'],
-            [['others'], 'string'],
+            [['others', 'column1', 'column2', 'column3', 'column4'], 'string'],
         ];
     }
 

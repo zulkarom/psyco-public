@@ -6,12 +6,14 @@ use yii\bootstrap4\Modal;
 use kartik\export\ExportMenu;
 use yii\grid\GridView;
 use yii\helpers\Url;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ResultSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'View All Result';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Overall Result - ' . $batch->bat_text;
+$this->params['breadcrumbs'][] = ['label' => 'Participants', 'url' => ['/answer/index']];
+$this->params['breadcrumbs'][] = 'Overall Result';
 
 $col1[] = array();
 $col2[] = array();
@@ -20,172 +22,38 @@ $col4[] = array();
 $col5[] = array();
 $col6[] = array();
 
-$columns = [
-          
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'format' => 'raw',
-                'label' => 'Full Name(NRIC)',
-                'value' => function($model){
-                    return $model->can_name.'<br/>('.$model->username.')';
-                }
-            ],
-            [
-                'format' => 'raw',
-                'label' => 'Batch',
-                'value' => function($model){
-                    return $model->bat_text;
-                }
-            ],
-            [
-                'format' => 'raw',
-                'attribute' => 'status',
-                'value' => function($model){
-                    return $model->statusText;
-                }
-            ],
-            [
-                'format' => 'raw',
-                'attribute' => 'finished_at',
-                'value' => function($model){
-                    if($model->finished_at){
-                        return date('d M Y h:i:s', $model->finished_at);
-                    }
-                    else{
-                        return "-";
-                    }
-                }
-            ],   
-            'c1',
-            'c2',
-            'c3',
-            'c4',
-            'c5',
-            'c6', 
-            [   
-                'format' => 'raw',
-                'label' => 'Total',
-                'value' => function($model){
-                    return ($model->c1+$model->c2+$model->c3+$model->c4+$model->c5+$model->c6);
-                }
-            ], 
-
-        ];
-?>
-
-<div class="result-index">
-
-    <div class="row">
-
-        <div class="col-md-8">
-            <?= $this->render('_form_search', [
-                'model' => $searchModel,
-            ]) ?>
-        </div>
-
-        <div class="col-md-4">
-
-            <?=
-            ExportMenu::widget([
-            'dataProvider' => $dataProvider,
-            'columns' => $columns,
-            'columnSelectorOptions'=>[
-                'label' => 'Columns',
-                'class' => 'btn btn-danger',
-                'style'=> 'display:none;', 
-            ],
-            'fontAwesome' => true,
-            'dropdownOptions' => [
-                'label' => 'DOWNLOAD RESULT',
-                'class' => 'btn btn-danger',
-                'style'=> 'color:white;',
-            ],
-            'filename' => 'ALL RESULT' . date('Y-m-d'),
-            'clearBuffers' => true,
-            'onRenderSheet'=>function($sheet, $grid){
-                $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
-                ->getAlignment()->setWrapText(true);
-            },
-            'exportConfig' => [
-                ExportMenu::FORMAT_EXCEL_X => false,
-                ExportMenu::FORMAT_HTML => false,
-                ExportMenu::FORMAT_CSV => false,
-                ExportMenu::FORMAT_TEXT => false,
-                // ExportMenu::FORMAT_EXCEL => [
-                //     'label' => 'EXCEL',
-                //     'icon' => 'floppy-remove',
-                //     'iconOptions' => ['class' => 'text-success'],
-                //     'linkOptions' => [],
-                //     'options' => ['title' => 'PDF'],
-                //     'alertMsg' => 'The EXCEL 95+ (xls) export file will be generated for download.',
-                //     'mime' => 'application/vnd.ms-excel',
-                //     'extension' => 'xls',
-                //     'writer' => ExportMenu::FORMAT_EXCEL
-                // ],
-
-                // ExportMenu::FORMAT_PDF => [
-                //     'label' => 'PDF',
-                //     'icon' => 'file-pdf-o',
-                //     'iconOptions' => ['class' => 'text-danger'],
-                //     'linkOptions' => [],
-                //     'options' => ['title' => 'Portable Document Format'],
-                //     'alertMsg' => 'The PDF export file will be generated for download.',
-                //     'mime' => 'application/pdf',
-                //     'extension' => 'pdf',
-                //     'writer' => ExportMenu::FORMAT_PDF
-                // ],
-            ],
-        ]);
-        ?>   
-
-        <?= Html::a('FILTER RESULT', ['/result/analysis', "id" => $searchModel->bat_id, 'type' => 2], ['class' => 'btn btn-info']) ?>
-
-        </div>
-    </div>
-
-<?php
-    $grid_columns = [
+ $grid_columns = [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
-                        'format' => 'html',
                         'attribute' => 'others',
-                        'label' => 'Full Name(NRIC)',
+                        'label' => 'Name',
                         'value' => function($model){
-                            return $model->can_name.'<br/>('.$model->username.')';
+                            return $model->can_name;
                         }
                     ],
-                    [
-                        'format' => 'html',
-                        'label' => 'Batch',
+					
+					[
+                        'attribute' => 'others',
+                        'label' => 'NRIC',
+						'contentOptions' => ['cellFormat' => DataType::TYPE_STRING], 
                         'value' => function($model){
-                            
-                                return $model->bat_text;
-                            
+                            return $model->username;
                         }
                     ],
-                    [
-                        'attribute' => 'status',
-                        'value' => function($model){
-                            return $model->statusText;
-                        }
-                    ],
-                    [
-                        'attribute' => 'finished_at',
-                        'value' => function($model){
-                            if($model->finished_at){
-                                return date('d M Y h:i:s', $model->finished_at);
-                            }
-                            else{
-                                return "-";
-                            }
-                        }
-                    ],                                
+                    
+                                                   
 
                 ];
                 foreach($domains as $domain){
                     if($domain->grade_cat)
                     {
-                        $grid_columns[] = 'c'.$domain->grade_cat;
+						if($domain->grade_cat == 99){
+							$grid_columns[] = 'total';
+							
+						}else{
+							$grid_columns[] = 'c'.$domain->grade_cat;
+						}
+                        
                     }
                 }
                 foreach($demos as $demo){
@@ -223,14 +91,138 @@ $columns = [
                         ];
                     }
                 }
-                if($domains){
-                    $grid_columns[] =[   
-                        'label' => 'Total',
+?>
+
+<div class="result-index">
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <?= $this->render('_form_search', [
+                'model' => $searchModel,
+            ]) ?>
+        </div>
+		
+		<div class="col-md-2">
+		<div class="form-group"><?= Html::a('ANALYSE', ['/result/analysis', "id" => $searchModel->bat_id], ['class' => 'btn btn-info btn-block']) ?></div>
+		</div>
+		
+		<div class="col-md-1">
+		<div class="form-group"><?= Html::a('RESET', ['/result/analysis', "id" => $searchModel->bat_id, 'reset' => 1, 'redirect' => 1], ['class' => 'btn btn-warning btn-block']) ?></div>
+		</div>
+
+        <div class="col-md-2">
+<div style="display:none">
+            <?=
+            ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => $grid_columns,
+            'columnSelectorOptions'=>[
+                'label' => 'Columns',
+                'class' => 'btn btn-danger',
+                'style'=> 'display:none;', 
+            ],
+            'fontAwesome' => true,
+            'dropdownOptions' => [
+                'label' => 'DOWNLOAD',
+                'class' => 'btn btn-danger',
+                'style'=> 'color:white;',
+            ],
+            'filename' => 'ALL RESULT' . date('Y-m-d'),
+            'clearBuffers' => true,
+            'onRenderSheet'=>function($sheet, $grid){
+                $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+                ->getAlignment()->setWrapText(true);
+            },
+            'exportConfig' => [
+                ExportMenu::FORMAT_EXCEL_X => false,
+                ExportMenu::FORMAT_HTML => false,
+                ExportMenu::FORMAT_CSV => false,
+                ExportMenu::FORMAT_TEXT => false,
+            ],
+        ]);
+        ?>   </div>
+		
+		    <div class="form-group"> <button class="btn btn-success btn-block" id="dwl-exl"><i class="fa fa-download"></i> EXCEL</button></div>
+<?php 
+     $this->registerJs('
+            $("#dwl-exl").click(function(){
+                $("#w0-xls")[0].click();
+            });
+     ');
+     ?>
+
+
+        
+
+        </div>
+		
+    </div>
+
+<?php
+
+$grid_columns = [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    [
+                        'format' => 'html',
+                        'attribute' => 'others',
+                        'label' => 'Name / NRIC',
                         'value' => function($model){
-                            return ($model->c1+$model->c2+$model->c3+$model->c4+$model->c5+$model->c6);
+                            return $model->can_name.'<br/>('.$model->username.')';
                         }
-                    ];
+                    ],
+                    
+                                                   
+
+                ];
+                foreach($domains as $domain){
+                    if($domain->grade_cat)
+                    {
+						if($domain->grade_cat == 99){
+							$grid_columns[] = 'total';
+							
+						}else{
+							$grid_columns[] = 'c'.$domain->grade_cat;
+						}
+                        
+                    }
                 }
+                foreach($demos as $demo){
+                    if($demo->column_id == 1)
+                    {
+                        $grid_columns[] =[  
+                            'label' => $batch->column1,
+                            'value' => function($model){
+                                return $model->column1;
+                            }
+                        ];
+                    }else if($demo->column_id == 2)
+                    {
+                        $grid_columns[] =[  
+                            'label' => $batch->column2,
+                            'value' => function($model){
+                                return $model->column2;
+                            }
+                        ];
+                    }else if($demo->column_id == 3)
+                    {
+                        $grid_columns[] =[  
+                            'label' => $batch->column3,
+                            'value' => function($model){
+                                return $model->column3;
+                            }
+                        ];
+                    }else if($demo->column_id == 4)
+                    {
+                        $grid_columns[] =[  
+                            'label' => $batch->column4,
+                            'value' => function($model){
+                                return $model->column4;
+                            }
+                        ];
+                    }
+                }
+   
                     $grid_columns[] = ['class' => 'yii\grid\ActionColumn',
                         'contentOptions' => ['style' => 'width: 10%'],
                         'template' => '{view} {pdf}',
@@ -255,6 +247,7 @@ $columns = [
             <div class="table-responsive">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
+				
                 // 'filterModel' => $searchModel,
                 'pager' => [
                     'class' => 'yii\bootstrap4\LinkPager',

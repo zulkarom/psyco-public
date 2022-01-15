@@ -43,4 +43,11 @@ class Domain extends \yii\db\ActiveRecord
             'grade_cat' => 'Grade Cat',
         ];
     }
+	
+	public function getCategory(){
+         return $this->hasOne(GradeCategory::className(), ['id' => 'grade_cat']);
+    }
+
+	
+	
 }

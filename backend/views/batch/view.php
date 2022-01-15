@@ -81,12 +81,24 @@ $attributes = [
             ];
         }
 ?>
+<style>
+table.detail-view th {
+    width:15%;
+}
+</style>
 
 <div class="card">
 <div class="card-body">
 <div class="batch-view">
 
-    <p>
+  
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => $attributes,
+    ]) ?>
+	
+	  <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -95,16 +107,11 @@ $attributes = [
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('View Candidates', ['view-candidates', 'bat_id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('View Participants', ['view-candidates', 'bat_id' => $model->id], ['class' => 'btn btn-info']) ?>
        
 
         
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => $attributes,
-    ]) ?>
 </div>
 </div>
 </div>

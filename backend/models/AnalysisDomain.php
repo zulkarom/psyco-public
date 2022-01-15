@@ -73,13 +73,9 @@ class AnalysisDomain extends Model
         /* Be careful, $this->food_ids can be empty */
     }
    
-
-    /**
-     * @return array available foods
-     */
     public static function getAvailableDomain()
     {
-        $grads = GradeCategory::find()->asArray()->all();
+        $grads = GradeCategory::allDomainsArray();
         $items = ArrayHelper::map($grads, 'id', 'gcat_text');
         return $items;
     }

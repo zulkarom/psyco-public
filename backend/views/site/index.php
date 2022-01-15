@@ -5,12 +5,16 @@ use backend\models\Batch;
 use backend\models\Answer;
 use backend\models\GradeCategory;
 use richardfan\widget\JSRegister;
+use yii\helpers\Url;
 
 $this->title = 'Dashboard';
+$defaultBatch = Batch::findOne(['bat_show' => 1]);
 ?>
+
+<?php if( \Yii::$app->user->can('manage-admin')){ ?>
 <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
+        
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -73,59 +77,94 @@ $this->title = 'Dashboard';
           </div>
           <!-- ./col -->
         </div>
-        <!-- /.row -->
+        
        
       </div><!-- /.container-fluid -->
     </section>
     <br/>
+	<?php } ?>
     <h3><?php echo Batch::defaultBatch()?></h3>
     <br/>
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-3 col-3">
+		
+		<div class="col-lg-6 col-6">
+		  
+		  
+		  <div class="row">
+<div class="col-lg-6 col-6">
             <!-- small box -->
+		
             <div class="small-box bg-info">
+			
               <div class="inner">
-                <h3><?php echo Answer::countDefaultBatchAnswer()?></h3>
+                <h3><?php echo Answer::countDefaultBatchParticipant()?></h3>
 
-                <p>Answers</p>
+                <p>Total Participants</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo Url::to(['/answer/index'])?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-3">
-           <div class="small-box bg-success">
-              <div class="inner">
-                <h3><?php echo Answer::countDefaultBatchNotAnswer()?></h3>
-
-                <p>Not Answers</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+			
           </div>
           <!-- ./col -->
           <div class="col-lg-6 col-6">
-            <div class="card card-warning">
-            <div class="card-header">
-              <h3 class="card-title">Pie Chart</h3>
+           <div class="small-box bg-success">
+              <div class="inner">
+                <h3><?php echo Answer::countDefaultBatchAnswer()?></h3>
 
-              <!-- <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div> -->
+                <p>Submitted</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="<?php echo Url::to(['/answer/index', 'AnswerSearch[answer_status]' => 3])?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
+          </div>
+		  
+		  <div class="col-lg-6 col-6">
+           <div class="small-box bg-warning">
+              <div class="inner">
+                <h3><?php echo Answer::countDefaultBatchStarted()?></h3>
+
+                <p>Started</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="<?php echo Url::to(['/answer/index', 'AnswerSearch[answer_status]' => 1])?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+		  
+		  <div class="col-lg-6 col-6">
+           <div class="small-box bg-danger">
+              <div class="inner">
+                <h3><?php echo Answer::countDefaultBatchNotAnswer()?></h3>
+
+                <p>Not Submit</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="<?php echo Url::to(['/answer/index', 'AnswerSearch[answer_status]' => 0])?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+
+</div>
+		  
+		  
+		  
+		</div>
+          
+   
+          <div class="col-lg-4 col-4">
+            <div class="card card-warning">
             <div class="card-body">
-              <canvas id="pieChart" style="min-height: 450px; height: 450px; max-height: 450px; max-width: 100%;"></canvas>
+              <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
             </div>
             <!-- /.card-body -->
           </div>

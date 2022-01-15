@@ -7,18 +7,62 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use backend\assets\ExcelAsset;
 use richardfan\widget\JSRegister;
+$dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/assets/adminlte');
+$this->title = 'View Participant';
+$this->params['breadcrumbs'][] = ['label' => 'Participants', 'url' => ['/answer/index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<div class="row">
+<div class="col-md-6">
+<div class="card card-widget widget-user">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-info">
+                <h3 class="widget-user-username"><?php echo $user->can_name;?></h3>
+                <h5 class="widget-user-desc"><?php echo $user->username;?></h5>
+              </div>
+              <div class="widget-user-image">
+                <img class="img-circle elevation-2" src="<?=$dirAsset?>/dist/img/user.png" >
+              </div>
+              <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      &nbsp;
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Name: <?php echo $user->can_name;?>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      No i/c :  <?php echo $user->username;?>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Batch: <?=$batch->bat_text?>
+                    </a>
+                  </li>
+				  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      Status: <?=Answer::statusByUserBatch($user->id, $batch->id)?>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+</div>
 
-
+<div class="col-md-6">
 <div class="card card-info">
   <div class="card-header">
-    <h3 class="card-title">Pie Chart</h3>
+    <h3 class="card-title"><?php echo $user->can_name;?>'S CHART</h3>
 
     <div class="card-tools">
-      <button type="button" class="btn btn-tool" data-card-widget="collapse">
-        <i class="fas fa-minus"></i>
-      </button>
+ 
     </div>
   </div>
   <div class="card-body">
@@ -26,6 +70,11 @@ use richardfan\widget\JSRegister;
   </div>
   <!-- /.card-body -->
 </div>
+</div>
+
+</div>
+
+
 
 <div class="card">
 	<div class="card-body">
@@ -36,10 +85,9 @@ use richardfan\widget\JSRegister;
 
 
 		<div class="row">
-			<div class="col-md-2">
-			</div>
+		
 
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<table class="table">
 				<thead>
 				<tr>
@@ -55,12 +103,12 @@ use richardfan\widget\JSRegister;
 					$jum = 0;
 					foreach($result_cat as $rowcat){
 						$stringdata .="<tr>";
-						$stringdata .="<td><strong>".$rowcat->quest ."</strong></td>";
+						$stringdata .="<td>".$rowcat->quest ."</td>";
 						if($rowcat->answer == 1){
-							$ans ="<span class='fas fa-check'></span>";
+							$ans ="<span class='fas fa-check' style='color:green'></span>";
 							$jum +=1;
 						}else if($rowcat->answer == 0){
-							$ans ="<span class='fas fa-times'></span>";
+							$ans ="<span class='fas fa-times' style='color:red'></span>";
 						}else{
 							$ans ="NA";
 						}
@@ -85,8 +133,7 @@ use richardfan\widget\JSRegister;
 
 			</div>
 
-			<div class="col-md-2">
-			</div>
+			
 		</div>
 		
 		<div style="text-align:center">

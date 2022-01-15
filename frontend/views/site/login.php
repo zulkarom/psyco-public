@@ -33,7 +33,12 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 <div class="row">
                 
                 <div class="col-md-12">
-                
+                <?php 
+				/* echo date("l jS \of F Y h:i:s A");
+				echo '<br />';
+                echo strtotime($batch->start_date). '<' . time() .'&&'. time() . '<' . strtotime($batch->end_date . ' 23:59:59'); */
+                if(strtotime($batch->start_date) < time() && time() < strtotime($batch->end_date . ' 23:59:59')){
+                ?>
                 
                 
                 
@@ -42,10 +47,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 
                 <div class="col-md-6">
                 
-                <?php 
                 
-                // if($this->open == 1){
-                ?>
                 <h4> MULA MENJAWAB / <i>START ANSWERING</i>  </h4><br />
                
                 
@@ -59,12 +61,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 </div>
                 <?= Html::submitButton('LOG IN', ['class' => 'btn btn-primary', 'name' => 'submit', 'value' => '1']) ?>
                 <br /><br />
-                <?php 
-                // } else { 
-                
-                // echo '<h3>TUTUP / CLOSED</h3>';
-                // }
-                ?>
+               
                 </div>
                 
                 
@@ -73,7 +70,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 
                     <?php 
                 
-                // if($this->open == 1){
+                if($batch->allow_register == 1){
                 ?>
                     <h4> DAFTAR / <i>REGISTER</i>  </h4><br />
                 
@@ -95,10 +92,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 </div>                
                     <?= Html::submitButton('REGISTER', ['class' => 'btn btn-primary', 'name' => 'submit', 'value' => '2']) ?>
                 <?php 
-                // } else { 
-                
-                // echo '<h3>TUTUP / CLOSED</h3>';
-                // }
+                } 
                 ?>
                 
                 
@@ -107,6 +101,13 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
                 
                 </div>
                 </div>
+				
+				 <?php 
+                } else { 
+                
+                echo '<h3>TUTUP / CLOSED</h3>';
+                }
+                ?>
         
                 </div>
                 <div class="col-md-1"></div>

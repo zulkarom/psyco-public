@@ -65,4 +65,25 @@ class GradeCategory extends \yii\db\ActiveRecord
         }
         return $jum;
     }
+	
+	public static function allDomains(){
+		return self::find()
+		->where(['is_total' => 0])
+		->orderBy('gcat_order ASC')
+		->all();
+	}
+	
+	public static function allDomainsWithTotal(){
+		return self::find()
+		->orderBy('gcat_order ASC')
+		->all();
+	}
+	
+	public static function allDomainsArray(){
+		return self::find()
+		->where(['is_total' => 0])
+		->orderBy('gcat_order ASC')
+		->asArray()
+		->all();
+	}
 }

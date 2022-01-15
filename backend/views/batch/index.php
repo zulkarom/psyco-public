@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'format' => 'html',
                     'attribute' => 'bat_show',
-                    'filter' => Html::activeDropDownList($searchModel, 'bat_show', Common::showing() ,['class'=> 'form-control','prompt' => 'Select Showing']),
+                    'filter' => Html::activeDropDownList($searchModel, 'bat_show', Common::showing() ,['class'=> 'form-control','prompt' => 'Select']),
                     'value' => function($model){
                         return $model->showText;
                     }
