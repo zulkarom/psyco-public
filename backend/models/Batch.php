@@ -69,7 +69,7 @@ class Batch extends \yii\db\ActiveRecord
         return $this->hasOne(Batch::className(), ['id' => 'can_batch']);
     }
 
-    public function defaultBatch()
+    public static function defaultBatch()
     {
         $query = self::find()
         ->where(['bat_show' => 1])
