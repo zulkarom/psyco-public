@@ -22,7 +22,7 @@ $defaultBatch = Batch::findOne(['bat_show' => 1]);
               <div class="inner">
                 <h3><?php echo Candidate::countCandidates()?></h3>
 
-                <p>Candidates</p>
+                <p> All Participants</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
