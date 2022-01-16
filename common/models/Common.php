@@ -157,6 +157,16 @@ class Common {
         }
     }
 	
+	public static function arrayMap($model, $attr){
+		$array = [];
+		if($model){
+			foreach($model as $val){
+				$array[] = $val->$attr;
+			}
+		}
+		return $array;
+	}
+	
 	public static function status(){
 		return [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
 	}

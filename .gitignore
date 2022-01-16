@@ -22,8 +22,9 @@ Thumbs.db
 
 # composer itself is not needed
 composer.phar
-composer.json
-composer.lock
+/composer.json
+/composer.lock
+/composer-setup.php
 
 # Mac DS_Store Files
 .DS_Store

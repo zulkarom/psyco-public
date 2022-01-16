@@ -6,6 +6,7 @@ use yii\helpers\Html;
 
 $user =Yii::$app->user->identity;
 $dirAssets = Yii::$app->assetManager->getPublishedUrl('@frontend/assets/frontendAssets');
+$this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 ?>
 
 <div class="container">

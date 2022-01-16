@@ -157,6 +157,7 @@ class Answer extends \yii\db\ActiveRecord
     public $can_name;
     public $username;
     public $bat_text;
+	public $total;
     /**
      * {@inheritdoc}
      */
@@ -331,6 +332,20 @@ class Answer extends \yii\db\ActiveRecord
             'c6' => 'Realistic',
         ];
     }
+	
+	public function getStatusText(){
+		$list = [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
+        return $list[$this->overall_status];
+    }
+	
+	public static function statusByUserBatch($user, $batch){
+		$status = self::findOne(['can_id' => $user, 'bat_id' => $batch]);
+		if($status){
+			$status = $status->answer_status;
+			$list = [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
+			return $list[$status];
+		}
+	}
 
     public static function getAnswersByCat($can,$cat)
     {
@@ -398,9 +413,7 @@ class Answer extends \yii\db\ActiveRecord
         Answer::updateAll(['finished_at' => time()], ['can_id' => $user, 'bat_id' => $batch]);
     }
 
-    public function getStatusText(){
-        return Common::status()[$this->answer_status];
-    }
+    
 
     public function getBatch()
     {
@@ -410,5 +423,52 @@ class Answer extends \yii\db\ActiveRecord
     public function getCandidate()
     {
         return $this->hasOne(Candidate::className(), ['id' => 'can_id']);
+    }
+
+    public static function countResultSubmission(){
+        return self::find()
+        ->where(['overall_status' => 3])
+        ->count();
+    }
+
+    public static function countSubmissionToday(){
+        return self::find()
+        ->where(['finished_at' => strtotime(date('Y-m-d'))])
+        ->count();
+    }
+	
+	public static function countDefaultBatchParticipant(){
+        return self::find()
+        ->alias('a')
+        ->joinWith(['batch b'])
+        ->andWhere(['b.bat_show' => 1])
+        ->count();
+    }
+
+    public static function countDefaultBatchAnswer(){
+        return self::find()
+        ->alias('a')
+        ->joinWith(['batch b'])
+        ->where(['overall_status' => 3])
+        ->andWhere(['b.bat_show' => 1])
+        ->count();
+    }
+	
+	public static function countDefaultBatchStarted(){
+        return self::find()
+        ->alias('a')
+        ->joinWith(['batch b'])
+        ->where(['overall_status' => 1])
+        ->andWhere(['b.bat_show' => 1])
+        ->count();
+    }
+
+    public static function countDefaultBatchNotAnswer(){
+        return self::find()
+        ->alias('a')
+        ->joinWith(['batch b'])
+        ->where(['overall_status' => 0])
+        ->andWhere(['b.bat_show' => 1])
+        ->count();
     }
 }

@@ -11,13 +11,14 @@ use kartik\export\ExportMenu;
 use richardfan\widget\JSRegister;
 use yii\widgets\ActiveForm;
 use backend\assets\ExcelAsset;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 ExcelAsset::register($this); 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CandidateSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Candidates';
+$this->title = 'Participants';
 $this->params['breadcrumbs'][] = ['label' => 'Batches', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $batch->bat_text, 'url' => ['view', 'id' => $batch->id]];
 $this->params['breadcrumbs'][] = $this->title;
@@ -27,55 +28,74 @@ $column3[] = array();
 $grid_column1[] = array();
 $grid_column2[] = array();
 $grid_column3[] = array();
-$columns = [
-          
-            // ['class' => 'yii\grid\SerialColumn'],
-            [
-                'format' => 'raw',
-                'attribute' => 'can_name',
-                'value' => function($model){
-                    return "";
-                }
-            ],
-            [
-                'format' => 'raw',
-                'attribute' => 'username',
-                'value' => function($model){
-                    return "";
-                }
-            ],
+ $columns = [
+        [
+			'label' => 'Name',
+            'attribute' => 'can_name',
+            'value' => function($model){
+                return $model->can_name;
+            }
+        ],
+        [
+			'label' => 'NRIC',
+			'contentOptions' => ['cellFormat' => DataType::TYPE_STRING], 
+            'value' => function($model){
+                return $model->username;
+            }
+        ],      
+        
+        
+    ];
 
+    if($batch->column1)
+    {
+        $columns[] = [
+			'attribute' => 'column1',
+            'header' =>  $batch->column1 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column1;
+                }
+            }
         ];
-        if($batch->column1)
-        {
-            $columns[] = [
-                'format' => 'raw',
-                'header' =>  $batch->column1 ,
-                'value' => function($model){
-                    return "";
+    }
+    if($batch->column2)
+    {
+        $columns[] = [
+			'attribute' => 'column2',
+            'header' =>  $batch->column2 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column2;
                 }
-            ];
-        }
-        if($batch->column2)
-        {
-            $columns[] = [
-                'format' => 'raw',
-                'header' =>  $batch->column2 ,
-                'value' => function($model){
-                    return "";
+            }
+        ];
+    }
+    if($batch->column3)
+    {
+        $columns[] = [
+			'attribute' => 'column3',
+            'header' =>  $batch->column3 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column3;
                 }
-            ];
-        }
-        if($batch->column3)
-        {
-            $columns[] = [
-                'format' => 'raw',
-                'header' =>  $batch->column3 ,
-                'value' => function($model){
-                    return "";
+            }
+        ];
+    }
+    if($batch->column4)
+    {
+        $columns[] = [
+			'attribute' => 'column4',
+            'header' =>  $batch->column4 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column4;
                 }
-            ];
-        }
+            }
+        ];
+    }
+
 
 ?>
 
@@ -97,7 +117,7 @@ $columns = [
     if($batch->column1)
     {
         $grid_columns[] = [
-            'format' => 'raw',
+			'attribute' => 'column1',
             'header' =>  $batch->column1 ,
             'value' => function($model){
                 if($model->answer){
@@ -109,7 +129,19 @@ $columns = [
     if($batch->column2)
     {
         $grid_columns[] = [
-            'format' => 'raw',
+			'attribute' => 'column2',
+            'header' =>  $batch->column2 ,
+            'value' => function($model){
+                if($model->answer){
+                    return $model->answer->column2;
+                }
+            }
+        ];
+    }
+    if($batch->column3)
+    {
+        $grid_columns[] = [
+			'attribute' => 'column3',
             'header' =>  $batch->column3 ,
             'value' => function($model){
                 if($model->answer){
@@ -118,14 +150,14 @@ $columns = [
             }
         ];
     }
-    if($batch->column3)
+    if($batch->column4)
     {
         $grid_columns[] = [
-            'format' => 'raw',
-            'header' =>  $batch->column2 ,
+			'attribute' => 'column4',
+            'header' =>  $batch->column4 ,
             'value' => function($model){
                 if($model->answer){
-                    return $model->answer->column2;
+                    return $model->answer->column4;
                 }
             }
         ];
@@ -147,32 +179,12 @@ $columns = [
 <h4><?= $batch->bat_text?></h4>
 
 <div class="bttn-arrange">  
-    <?php echo Html::button('<span class="fa fa-plus"></span> NEW CANDIDATE', ['value' => Url::to(['/batch/create-candidate', 'id' => $batch->id]), 'class' => 'btn btn-success', 'id' => 'modalBttnCandidate']);
-        $this->registerJs('
-            $(function(){
-              $("#modalBttnCandidate").click(function(){
-                  $("#candidate").modal("show")
-                    .find("#formCandidate")
-                    .load($(this).attr("value"));
-              });
-            });
+    <?php echo Html::a('<span class="fa fa-plus"></span> New Participant', ['/batch/create-candidate', 'id' => $batch->id], ['class' => 'btn btn-success']);
 
-           
-        ');
-
-        Modal::begin([
-                'title' => '<h4>New Candidate</h4>',
-                'id' =>'candidate',
-                'size' => 'modal-lg'
-            ]);
-
-        echo '<div id="formCandidate"></div>';
-
-        Modal::end();
     ?>
     &nbsp
     <input type="file" id="xlf" style="display:none;" />
-    <button type="button" id="btn-importexcel" class="btn btn-info "><span class="fa fa-upload"></span> IMPORT CANDIDATES </button>
+    <button type="button" id="btn-importexcel" class="btn btn-info "><span class="fa fa-upload"></span> Import Participants </button>
    &nbsp
     <?=
         ExportMenu::widget([
@@ -185,7 +197,7 @@ $columns = [
             ],
             'fontAwesome' => true,
             'dropdownOptions' => [
-                'label' => 'DOWNLOAD TEMPLATE',
+                'label' => 'Download Template',
                 'class' => 'btn btn-danger',
                 'style'=> 'color:white;',
             ],
@@ -211,6 +223,11 @@ $columns = [
 
          <?= GridView::widget([
         'dataProvider' => $dataProvider,
+		'options' => [ 'style' => 'table-layout:fixed;' ],
+		'pager' => [
+            'class' => 'yii\bootstrap4\LinkPager',
+        ],
+
         'filterModel' => $searchModel,
         'columns' => $grid_columns
     ]); ?>

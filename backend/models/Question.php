@@ -75,6 +75,6 @@ class Question extends \yii\db\ActiveRecord
 
     public function getQuestionCategory()
     {
-        return $this->hasOne(QuestionCategory::className(), ['id' => 'display_cat']);
+        return $this->hasOne(QuestionCategory::className(), ['cat_id' => 'display_cat']);
     }
 }

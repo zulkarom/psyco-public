@@ -17,4 +17,13 @@ class AssignmentController extends BaseAssignmentController
                 'searchModel' => $searchModel,
         ]);
 	}
+
+   public function actionCreate()
+    {
+        $model = new User();
+
+        return $this->render('create-user', [
+            'model' => $model,
+        ]);
+    }
 }

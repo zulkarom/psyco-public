@@ -10,23 +10,28 @@ use backend\models\Candidate;
 use backend\models\BatchCandidateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use backend\models\GradeCategory;
+use backend\models\Domain;
 
 /**
  * BatchController implements the CRUD actions for Batch model.
  */
 class BatchController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
+	
+	    
+
+	public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -73,14 +78,10 @@ class BatchController extends Controller
                             if(!$checkAns){
                                 $newAns->can_id = $checkCan->id;
                                 $newAns->bat_id = $bat_id;
-                                /*foreach((array_slice($data, 0, 1)) as $dt){
-                                   $newAns->column1 = $dt[2]; 
-                                   $newAns->column2 = $dt[3]; 
-                                   $newAns->column3 = $dt[4]; 
-                                }*/
-                                $newAns->column1 = $can[2]; 
-                                $newAns->column2 = $can[3]; 
-                                $newAns->column3 = $can[4]; 
+								$newAns->column1 = array_key_exists(2,$can) ? $can[2] : ''; 
+								$newAns->column2 = array_key_exists(3,$can) ? $can[3] : '';
+								$newAns->column3 = array_key_exists(4,$can) ? $can[4] : ''; 
+								$newAns->column4 = array_key_exists(5,$can) ? $can[5] : '';
 
                                 for($i=1;$i<=120;$i++){
                                     $q = 'q'.$i;
@@ -94,24 +95,26 @@ class BatchController extends Controller
                             
                             // if(!$checkAns){
                                 $new = new Candidate();
-                                $new->can_name = $can[0];
-                                $new->username = $can[1];
-                                $new->can_batch = $batch->id;
+                                $new->can_name = array_key_exists(0,$can) ? $can[0] : '';
+                                $new->username = array_key_exists(1,$can) ? $can[1] : '';
 
                                 if($new->save()){
                                     $newAns->can_id = $new->id;
                                     $newAns->bat_id = $bat_id;
-                                    $newAns->column1 = $can[2]; 
-                                    $newAns->column2 = $can[3]; 
-                                    $newAns->column3 = $can[4]; 
+                                    $newAns->column1 = array_key_exists(2,$can) ? $can[2] : ''; 
+                                    $newAns->column2 = array_key_exists(3,$can) ? $can[3] : '';
+                                    $newAns->column3 = array_key_exists(4,$can) ? $can[4] : ''; 
+									$newAns->column4 = array_key_exists(5,$can) ? $can[5] : ''; 
                                     for($i=1;$i<=120;$i++){
                                         $q = 'q'.$i;
                                         $newAns->$q = '-1';
                                     }
                                     if(!$newAns->save()){
-                                    
+										print_r($newAns->getErrors());die();
                                     }
-                                }
+                                }else{
+									print_r($new->getErrors());die();
+								}
                             // }
                         }
                     }
@@ -156,6 +159,14 @@ class BatchController extends Controller
                     if($model->bat_show == 1){
                         Batch::updateAll(['bat_show' => 0], ['<>','id',$model->id]);
                     }
+					//default domain
+					$grads = GradeCategory::allDomains();
+					foreach($grads as $grad){
+						$domain = new Domain;
+						$domain->bat_id = $model->id;
+						$domain->grade_cat = $grad->id;
+						$domain->save();
+					}
                     return $this->redirect(['view', 'id' => $model->id]);  
                 }
             }
@@ -201,23 +212,31 @@ class BatchController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                if($model->save()){
-                    
-                    $modelAnswer->can_id = $model->id;
-                    for($i=1;$i<=120;$i++){
-                        $q = 'q'.$i;
-                        $modelAnswer->$q = '-1';
-                    }
-                    if($modelAnswer->save()){
-                        return $this->redirect(['view', 'id' => $model->id]);
-                    }
-                }
+				$user = Candidate::findOne(['username' => $model->username]);
+				if($user){
+					$model = $user;
+				}else{
+					$model->save();
+				}
+				$answer = Answer::findOne(['can_id' => $model->id, 'bat_id' => $id]);
+				if($answer){
+					Yii::$app->session->addFlash('success', "Participant already exist");
+					return $this->redirect(['view', 'id' => $model->id]);
+				}else{
+					$modelAnswer->can_id = $model->id;
+					$modelAnswer->bat_id = $id;
+					for($i=1;$i<=120;$i++){
+						$q = 'q'.$i;
+						$modelAnswer->$q = '-1';
+					}
+					if($modelAnswer->save()){
+						return $this->redirect(['/batch/view-candidates', 'bat_id' => $id]);
+					}
+				}
+				
             }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->renderAjax('create-candidate', [
+        } 
+        return $this->render('create-candidate', [
             'model' => $model,
             'modelBatch' => $modelBatch,
             'modelAnswer' => $modelAnswer,

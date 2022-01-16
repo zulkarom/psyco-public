@@ -7,7 +7,7 @@ use backend\models\Setting2;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use Yii;
 use backend\models\Batch;
 use backend\models\BatchSearch;
@@ -20,19 +20,21 @@ class SettingController extends Controller
     /**
      * @inheritDoc
      */
-    public function behaviors()
+        
+
+	public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     /**

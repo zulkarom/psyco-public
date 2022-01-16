@@ -24,7 +24,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/assets/adminlte')
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <link rel="icon" type="image/x-icon" href="<?=$dirAsset?>/images/umkicon.png" />
+
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -218,7 +218,7 @@ $dirAsset = Yii::$app->assetManager->getPublishedUrl('@backend/assets/adminlte')
         <!-- To the right -->
   
         <!-- Default to the left -->
-        <strong>&copy; FKP backend Portal <?= date('Y') ?></strong> All rights reserved.
+        <strong>&copy; Psychometric <?= date('Y') ?></strong> All rights reserved.
     </footer>
 
 </div>

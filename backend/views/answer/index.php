@@ -7,7 +7,8 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\AnswerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Candidates';
+$this->title = 'Participants';
+
 $this->params['breadcrumbs'][] = $this->title;
 
 $columns = [
@@ -53,14 +54,14 @@ $columns = [
 
     <div class="row">
 
-        <div class="col-md-8">
+        <div class="col-md-10">
             <?= $this->render('_form_search', [
                 'model' => $searchModel,
             ]) ?>
         </div>
 
-        <div class="col-md-4">
-            <?= Html::a('ANALYSIS', ['/result/analysis', "id" => $searchModel->bat_id], ['class' => 'btn btn-danger']) ?>
+        <div class="col-md-2">
+            <?= Html::a('OVERALL RESULT', ['/result/index', "bat_id" => $searchModel->bat_id, 'type' => 1], ['class' => 'btn btn-info']) ?>
         </div>
     </div>
 
@@ -72,14 +73,22 @@ $columns = [
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 // 'filterModel' => $searchModel,
+                'pager' => [
+                    'class' => 'yii\bootstrap4\LinkPager',
+                ],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
-                        'format' => 'html',
                         'attribute' => 'others',
-                        'label' => 'Full Name(NRIC)',
+                        'label' => 'Name',
                         'value' => function($model){
-                            return $model->candidate->can_name.'<br/>('.$model->candidate->username.')';
+                            return $model->candidate->can_name;
+                        }
+                    ],
+					[
+                        'label' => 'NRIC',
+                        'value' => function($model){
+                            return $model->candidate->username;
                         }
                     ],
                     [
@@ -97,14 +106,25 @@ $columns = [
                             return $model->statusText;
                         }
                     ],
+					 [
+                        'attribute' => 'finished_at',
+                        'value' => function($model){
+                            if($model->finished_at){
+                                return date('d M Y h:i:s', $model->finished_at);
+                            }
+                            else{
+                                return "-";
+                            }
+                        }
+                    ],
 
                     ['class' => 'yii\grid\ActionColumn',
                         'contentOptions' => ['style' => 'width: 10%'],
                         'template' => '{view}',
                         //'visible' => false,
                         'buttons'=>[
-                            'view'=>function ($url, $model) {
-                                return Html::a('<span class="fa fa-eye"></span> VIEW',['individual-result', 'id' => $model->id],['class'=>'btn btn-info btn-sm']);
+                            'view'=>function ($url, $model) use ($batch){
+                                return Html::a('<span class="fa fa-eye"></span> VIEW',['/result/individual-result', 'id' => $model->can_id, 'batch_id' => $batch->id],['class'=>'btn btn-info btn-sm']);
                             }
                         ],
                     

@@ -51,6 +51,10 @@ class BatchCandidateSearch extends Candidate
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+			'pagination' => [
+                'pageSize' => 100,
+            ],
+
         ]);
 
         $this->load($params);

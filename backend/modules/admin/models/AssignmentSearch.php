@@ -40,7 +40,7 @@ class AssignmentSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->where(['<>', 'user_id', 1])->orderBy('can_name ASC');
+        $query = User::find()->where(['is_admin' => 1])->orderBy('can_name ASC');
 
         // add conditions that should always apply here
 

@@ -19,16 +19,11 @@ $form = ActiveForm::begin([
 
 ]); ?>  
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <?= $form->field($model, 'others', [
         'addon' => ['prepend' => ['content'=>'<span class="fa fa-search"></span>']]])->label(false)->textInput(['placeholder' => "Search Name or NRIC"]) ?> 
 
 
-    </div>
-    <div class="col-md-6">
-
-            <?= $form->field($model, 'answer_status')->dropDownList(
-                Common::status(), ['prompt' => 'Select Status',  'class' => 'form-control select-choice'])->label(false) ?>
     </div>
 </div>
     <?php ActiveForm::end(); ?>

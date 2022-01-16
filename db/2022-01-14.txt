@@ -1,0 +1,3 @@
+ALTER TABLE `psy_batch` ADD `result_limit` INT(11) NULL DEFAULT NULL AFTER `end_date`;
+ALTER TABLE `psy_grade_cat` ADD `is_total` TINYINT(1) NOT NULL DEFAULT '0' AFTER `gcat_order`;
+INSERT INTO `psy_grade_cat` (`id`, `gcat_text`, `gcat_order`, `is_total`) VALUES ('99', 'Total', '99', '1');
