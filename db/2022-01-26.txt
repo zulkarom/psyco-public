@@ -1,0 +1,2 @@
+ALTER TABLE `psy_batch` ADD `allow_update` TINYINT(1) NOT NULL DEFAULT '0' AFTER `allow_register`;
+ALTER TABLE `psy_batch` ADD `is_open` TINYINT(1) NOT NULL DEFAULT '0' AFTER `allow_update`;

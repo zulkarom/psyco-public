@@ -18,30 +18,50 @@ $column3[] = array();
 
 $attributes = [
             'bat_text',
+    [
+        'attribute' => 'bat_show',
+        'value' => function($model){
+        return $model->showText;
+        }
+        ],
+            [
+                'attribute' => 'allow_register',
+                'value' => function($model){
+                return $model->allowText;
+                }
+                ],
+                [
+                    'attribute' => 'allow_update',
+                    'value' => function($model){
+                    return $model->allowUpdateText;
+                    }
+                    ],
+                [
+                    'attribute' => 'is_open',
+                    'value' => function($model){
+                    return $model->openText;
+                    }
+                    ],
+                  
             [
                 'attribute' => 'start_date',
                 'value' => function($model){
-                    return date("d F Y",strtotime($model->start_date));
+                    if($model->start_date && $model->start_date != '0000-00-00'){
+                        return date("d F Y",strtotime($model->start_date));
+                    }
                 }
             ],
             [
                 'attribute' => 'end_date',
                 'value' => function($model){
-                    return date("d F Y",strtotime($model->end_date));
+                    if($model->start_date && $model->end_date != '0000-00-00'){
+                        return date("d F Y",strtotime($model->end_date));
+                    }
+                    
                 }
             ],
-            [
-                'attribute' => 'bat_show',
-                'value' => function($model){
-                    return $model->showText;
-                }
-            ],
-            [
-                'attribute' => 'allow_register',
-                'value' => function($model){
-                    return $model->allowText;
-                }
-            ],
+            
+            
             
         ];
         if($model->column1)

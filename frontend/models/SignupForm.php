@@ -25,7 +25,7 @@ class SignupForm extends Model
         return [
             ['username', 'trim'],
             [['username', 'fullname'], 'required', 'on' => 'register'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+          //  ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['fullname', 'string', 'min' => 2, 'max' => 255],
@@ -34,7 +34,7 @@ class SignupForm extends Model
             // ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+          //  ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
             // ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
@@ -53,20 +53,33 @@ class SignupForm extends Model
         }
         
         $user = new User();
-        $user->username = $this->username;
-        $user->can_name = $this->fullname;
-        $user->status = 10;
-        $user->generateAuthKey();
+        $find = User::findOne(['username' => $this->username]);
+        if($find){
+            $user = $find;
+            
+        }else{
+            $user->username = $this->username;
+            $user->can_name = $this->fullname;
+            $user->status = 10;
+            $user->generateAuthKey();
+        }
+        $user->updated_at = time();
 
         if($user->save()){
-            $modelAnswer = new Answer();
-            $modelAnswer->can_id = $user->id;
-            $modelAnswer->bat_id = $batch;
-            for($i=1;$i<=120;$i++){
-                $q = 'q'.$i;
-                $modelAnswer->$q = '-1';
+            $ans = Answer::findOne(['bat_id' => $batch, 'can_id' => $user->id]);
+            if($ans){
+                $modelAnswer = $ans;
+            }else{
+                $modelAnswer = new Answer();
+                $modelAnswer->can_id = $user->id;
+                $modelAnswer->bat_id = $batch;
+                for($i=1;$i<=120;$i++){
+                    $q = 'q'.$i;
+                    $modelAnswer->$q = '-1';
+                }
+                $modelAnswer->save();
             }
-            $modelAnswer->save();
+            
         }
         return true;
     }

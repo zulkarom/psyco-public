@@ -24,9 +24,20 @@ use kartik\date\DatePicker;
             <?= $form->field($model, 'bat_show')->dropDownList( [1 => 'Yes' , 0 => 'No'] )?>
         </div>
     </div>
-    <div class="row">
+      <div class="row">
         <div class="col-6">
             <?= $form->field($model, 'allow_register')->dropDownList( [1 => 'Yes' , 0 => 'No'] )?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <?= $form->field($model, 'allow_update')->dropDownList( [1 => 'Yes' , 0 => 'No'] )?>
+        </div>
+    </div>
+  
+    <div class="row">
+        <div class="col-6">
+            <?= $form->field($model, 'is_open')->dropDownList( [1 => 'Yes' , 0 => 'No'] )?>
         </div>
     </div>
     <div class="row">

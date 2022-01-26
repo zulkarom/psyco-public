@@ -394,7 +394,7 @@ class Answer extends \yii\db\ActiveRecord
     }
 
     public static function updateLastSaved($user,$batch,$time,$qlast){
-        Answer::updateAll(['answer_last_saved' => $time, 'question_last_saved' => $qlast], ['can_id' => $user, 'bat_id' => $batch]);
+        Answer::updateAll(['answer_last_saved' => $time, 'question_last_saved' => $qlast, 'updated_at' => time()], ['can_id' => $user, 'bat_id' => $batch]);
     }
 
     public static function setStatus($status,$user,$batch)

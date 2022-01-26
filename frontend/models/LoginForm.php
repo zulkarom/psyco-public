@@ -55,7 +55,7 @@ class LoginForm extends Model
             
             if (!$user) {
                 
-                $this->addError($attribute, 'Tiada Capaian');
+                $this->addError($attribute, 'Tiada Capaian / You have no access');
             }
         }
     }

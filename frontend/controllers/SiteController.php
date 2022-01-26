@@ -95,7 +95,7 @@ class SiteController extends Controller
                 $session = Yii::$app->session;
                 if ($model->load(Yii::$app->request->post()) && $model->login()) {
                     $session->set('batch', $openBatch->id);
-                    return $this->redirect(['/test/index']);
+                    return $this->redirect(['/test/update']);
                 }
                 
             }elseif ($submit == 2) {
@@ -105,8 +105,8 @@ class SiteController extends Controller
                     $session = Yii::$app->session;
                     if($model->login()){
                         $session->set('batch', $openBatch->id);
-                        Yii::$app->session->setFlash('success', 'Thank you for registration.');
-                        return $this->redirect(['/test/index']); 
+                        Yii::$app->session->setFlash('success', 'Thank you for your registration.');
+                        return $this->redirect(['/test/update']); 
                     }
                 }
             }
@@ -118,6 +118,8 @@ class SiteController extends Controller
 			'batch' => $openBatch
         ]);
     }
+    
+    
 
     /**
      * Logs in a user.

@@ -43,6 +43,10 @@ class TestController extends Controller
         $answer = Answer::find()
         ->where(['bat_id' => $batch, 'can_id' => Yii::$app->user->identity->id])
         ->one();
+        if(!$answer){
+            Yii::$app->user->logout();
+            return $this->redirect(['site/index']);
+        }
 
         $quest = Question::find()->all();
         
@@ -51,6 +55,43 @@ class TestController extends Controller
             'answer' => $answer,
         ]); 
     }
+    
+    public function actionUpdate(){
+        $this->layout = "//main-login";
+        $session = Yii::$app->session;
+        $batch = $session->get('batch');
+        $batch = Batch::findOne($batch);
+        if($batch->allow_update == 0){
+            return $this->redirect(['index']);
+        }
+        
+        $answer = Answer::find()
+        ->where(['bat_id' => $batch->id, 'can_id' => Yii::$app->user->identity->id])
+        ->one();
+        if(!$answer){
+            Yii::$app->user->logout();
+            return $this->redirect(['site/index']);
+        }
+        
+        if ($answer->load(Yii::$app->request->post())) {
+            if($answer->save()){
+                return $this->redirect(['index']);
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        return $this->render('update', [
+            'model' => $answer,
+            'batch' => $batch,
+        ]);
+    }
 
     public function actionChangeStatus($status=0){
         $session = Yii::$app->session;
@@ -58,7 +99,12 @@ class TestController extends Controller
         $user_id = Yii::$app->user->identity->id;
 
         // Answer::setStatus($status, $user->id);
-        Answer::updateAll(['answer_status' => $status], ['can_id' => $user_id, 'bat_id' => $batch]);
+        if($status == 1){
+            Answer::updateAll(['answer_status' => $status, 'created_at' => time()], ['can_id' => $user_id, 'bat_id' => $batch]);
+        }else{
+            Answer::updateAll(['answer_status' => $status, 'updated_at' => time()], ['can_id' => $user_id, 'bat_id' => $batch]);
+        }
+        
         Answer::processOverallStatus($status, 1, $user_id, $batch);
     }
 

@@ -37,7 +37,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 				/* echo date("l jS \of F Y h:i:s A");
 				echo '<br />';
                 echo strtotime($batch->start_date). '<' . time() .'&&'. time() . '<' . strtotime($batch->end_date . ' 23:59:59'); */
-                if(strtotime($batch->start_date) < time() && time() < strtotime($batch->end_date . ' 23:59:59')){
+                if($batch->is_open == 1 && strtotime($batch->start_date) < time() && time() < strtotime($batch->end_date . ' 23:59:59')){
                 ?>
                 
                 
