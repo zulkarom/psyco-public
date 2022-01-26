@@ -21,6 +21,8 @@ if($user->can('manage-view')){
 
 if($user->can('manage-admin')){
     $items[] =  ['label' => 'Batches', 'level' => 1, 'url' => ['/batch/index'], 'icon' => 'fas fa-columns', 'children' => []];
+    
+    $items[] =  ['label' => 'Questions', 'level' => 1, 'url' => ['/question/index'], 'icon' => 'fas fa-list', 'children' => []];
 
    /*  $items[] =  ['label' => 'Setting', 'level' => 1, 'url' => ['/setting/index'], 'icon' => 'fas fa-cog', 'children' => []]; */
 

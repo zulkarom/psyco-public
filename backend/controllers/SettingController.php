@@ -70,6 +70,7 @@ class SettingController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+    
 
     /**
      * Creates a new Setting model.

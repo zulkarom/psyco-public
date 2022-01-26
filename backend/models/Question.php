@@ -42,10 +42,10 @@ class Question extends \yii\db\ActiveRecord
     {
         return [
             'que_id' => 'Que ID',
-            'que_text' => 'Que Text',
-            'que_text_bi' => 'Que Text Bi',
-            'display_cat' => 'Display Cat',
-            'grade_cat' => 'Grade Cat',
+            'que_text' => 'Question Text',
+            'que_text_bi' => 'Question Text En',
+            'display_cat' => 'Instruction',
+            'grade_cat' => 'Domain',
         ];
     }
 
@@ -72,6 +72,11 @@ class Question extends \yii\db\ActiveRecord
     //     $query->execute();
     //     return $query->fetchAll();
     // }
+    
+    public function getGradeCategory()
+    {
+        return $this->hasOne(GradeCategory::className(), ['id' => 'grade_cat']);
+    }
 
     public function getQuestionCategory()
     {
