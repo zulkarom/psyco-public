@@ -29,7 +29,7 @@ class Batch extends \yii\db\ActiveRecord
             [['bat_text'], 'required'],
             [['bat_text'], 'string', 'max' => 100],
             [['column1', 'column2', 'column3', 'column4'], 'string', 'max' => 225],
-            [['bat_show', 'allow_register','allow_update', 'is_open', 'result_limit'], 'integer'],
+            [['bat_show', 'allow_register','allow_update', 'is_open', 'result_limit', 'point_min', 'point_min_total'], 'integer'],
             [['start_date', 'end_date'], 'safe'],
         ];
     }

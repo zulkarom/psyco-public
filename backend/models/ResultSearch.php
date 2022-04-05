@@ -15,6 +15,8 @@ class ResultSearch extends Candidate
     public $others = null;
     public $bat_id;
     public $limit;
+    public $point_min;
+    public $point_min_total;
     public $domainOrder;
     public $column1;
     /**
@@ -100,8 +102,9 @@ class ResultSearch extends Candidate
         return $colum;
     }
 
-    public function search($params)
+    public function search()
     {
+        //print_r($params);die();
 
         // SELECT answer_status AS c1, overall_status AS c2, column1 FROM `psy_answers` WHERE column1 IN("PTPTN", "JABATAN DASAR") ORDER BY c1 ASC, c2 ASC, FIELD(column1, "PTPTN", "JABATAN DASAR"),  FIELD(column2, "32", "33")
         
@@ -140,15 +143,30 @@ class ResultSearch extends Candidate
         }
         
 
-        // echo $limit;
-        // die();
+        //echo $this->limit;
+        //die();
         $query = Answer::find()
         ->alias('a')
         ->joinWith(['batch b', 'candidate c'])
         ->select($select)
-        ->andWhere(['b.id' => $this->bat_id, 'a.answer_status' => 3])
-        ->limit($this->limit)
+        ->andWhere(['b.id' => $this->bat_id, 'a.answer_status' => 3]);
+        if($this->point_min){
+            $point = $this->point_min;
+            $query = $query->andHaving(['>=', 'c1', $point]);
+            $query = $query->andHaving(['>=', 'c2', $point]);
+            $query = $query->andHaving(['>=', 'c3', $point]);
+            $query = $query->andHaving(['>=', 'c4', $point]);
+            $query = $query->andHaving(['>=', 'c5', $point]);
+            $query = $query->andHaving(['>=', 'c6', $point]);
+        }
+        if($this->point_min_total){
+            $point = $this->point_min_total;
+            $query = $query->andHaving(['>=', 'total', $point]);
+        }
+        $query = $query->limit($this->limit)
 		;
+        $total = count($query->all());
+        //echo $total;die();
 		if($order){
 			$query->orderBy( new Expression($order)); /// guna string biasa
 		}
@@ -160,18 +178,27 @@ class ResultSearch extends Candidate
 
             }
         }
+        
         // echo $this->domainOrder;
         // die();
         // add conditions that should always apply here
-
+    
+       $limit = 100;
+        if($this->limit){
+            if($limit <= 100){
+                $limit = $this->limit;
+            }
+        } 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 100,
+                'pageSize' => $limit,
             ],
         ]);
+        
+        $dataProvider->setTotalCount($total);
 
-        $this->load($params);
+       // $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

@@ -20,6 +20,8 @@ class AnalysisForm extends Model
 	public $colum3;
 	public $colum4;
 	public $limit;
+	public $point_min;
+	public $point_min_total;
 	
 	public $aval_domains;
 	public $sel_domains;
@@ -42,6 +44,8 @@ class AnalysisForm extends Model
 
 		$this->batch = $batch;
 		$this->limit = $this->batch->result_limit;
+		$this->point_min = $this->batch->point_min;
+		$this->point_min_total = $this->batch->point_min_total;
 		
 		if($reset){
 			$this->resetDomain($batch->id);
@@ -58,7 +62,15 @@ class AnalysisForm extends Model
         return [
             
             [['domains', 'colum1', 'colum2', 'colum3', 'colum4'], 'string'],
-			 ['limit', 'integer'],
+            [['limit', 'point_min', 'point_min_total'], 'integer'],
+        ];
+    }
+    
+    public function attributeLabels()
+    {
+        return [
+            'point_min' => 'Minimum Point of Each Domain',
+            'point_min_total' => 'Minimum Total Point'
         ];
     }
 	
@@ -72,12 +84,20 @@ class AnalysisForm extends Model
 			$domain->save();
 		}
 		Demographic::deleteAll(['bat_id' => $batch]);
+		$this->batch->result_limit = null;
+		$this->batch->point_min = null;
+		$this->batch->point_min_total = null;
+		//echo $this->point_min;die();
+		$this->batch->save();
 	}
 	
 	public function saveLimit(){
 		$batch = $this->batch->id;
 		//save limit
 		$this->batch->result_limit = $this->limit;
+		$this->batch->point_min = $this->point_min;
+		$this->batch->point_min_total = $this->point_min_total;
+		//echo $this->point_min;die();
 		return $this->batch->save();
 	}
 	
@@ -96,7 +116,6 @@ class AnalysisForm extends Model
 				}
 			}
 		}
-		
 		return true;
 	}
 	

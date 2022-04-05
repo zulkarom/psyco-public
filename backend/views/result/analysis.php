@@ -72,7 +72,12 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?=$form->field($analysis, 'domains')->hiddenInput(['value' => json_encode($sd)])->label(false)?>
 
+<div class="row">
+<div class="col-md-3"> <?= $form->field($analysis, 'point_min', ['template' => '{label}{input}<i>Value from 1 to 20 <br /> leave blank if not applicable</i>{error}'])->input('number', ['min' => 1, 'step' => 1]) ?></div>
 
+<div class="col-md-3"> <?= $form->field($analysis, 'point_min_total', ['template' => '{label}{input}<i>Value from 1 to 120 <br /> leave blank if not applicable</i>{error}'])->input('number', ['min' => 1, 'step' => 1]) ?></div>
+
+</div>
 
 <?php 
 

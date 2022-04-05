@@ -58,7 +58,9 @@ class ResultController extends Controller
         $searchModel = new ResultSearch();
         $searchModel->bat_id = $bat_id;
         $searchModel->limit = $batch->result_limit;
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $searchModel->point_min = $batch->point_min;
+        $searchModel->point_min_total = $batch->point_min_total;
+        $dataProvider = $searchModel->search();
 
         return $this->render('index', [
             'searchModel' => $searchModel,

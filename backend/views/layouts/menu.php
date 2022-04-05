@@ -13,10 +13,6 @@ $items[] = ['label' => 'Dashboard', 'level' => 1, 'url' => ['/site/index'], 'ico
 
 if($user->can('manage-view')){
     $items[] = ['label' => 'Participants', 'level' => 1, 'url' => ['/answer/index'], 'icon' => 'fas fa-users', 'children' => []];
-
-    
-
-    
 }
 
 if($user->can('manage-admin')){

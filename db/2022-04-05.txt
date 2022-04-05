@@ -1,0 +1,2 @@
+ALTER TABLE `psy_batch` ADD `point_min` INT NULL AFTER `result_limit`;
+ALTER TABLE `psy_batch` ADD `point_min_total` INT NULL DEFAULT NULL AFTER `point_min`;
