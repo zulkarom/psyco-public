@@ -35,10 +35,10 @@ $fieldOptions = [
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="" class="h1"><b>Psychometric</b></a>
+      <a href="" class="h1"><b>UMK (GEMS)</b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Graduate Executive Marketer for SSPN-I Plus</p>
 
         
             <?= $form
@@ -71,9 +71,7 @@ $fieldOptions = [
       <div class="social-auth-links text-center mt-2 mb-3">
       </div>
 
-      <p class="mb-1">
-        <a href="">I forgot my password</a>
-      </p>
+  
     </div>
     <!-- /.card-body -->
   <!-- /.card -->
