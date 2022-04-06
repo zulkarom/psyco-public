@@ -224,7 +224,7 @@ $grid_columns = [
                 }
    
                     $grid_columns[] = ['class' => 'yii\grid\ActionColumn',
-                        'contentOptions' => ['style' => 'width: 10%'],
+                        'contentOptions' => ['style' => 'width: 15%'],
                         'template' => '{view} {pdf}',
                         //'visible' => false,
                         'buttons'=>[
