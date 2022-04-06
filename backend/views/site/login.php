@@ -7,7 +7,7 @@
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 
-$this->title = 'Psychometric';
+$this->title = 'UMK (GEMS)';
 
 // $fieldOptions1 = [
 //     'options' => ['class' => 'input-group mb-3'],
@@ -38,7 +38,7 @@ $fieldOptions = [
       <a href="" class="h1"><b>UMK (GEMS)</b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Graduate Executive Marketer for SSPN-I Plus</p>
+      <p class="login-box-msg">Graduate Executive Marketer for <br />SSPN-I Plus</p>
 
         
             <?= $form
