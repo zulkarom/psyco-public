@@ -43,8 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
 
                 ['class' => 'yii\grid\ActionColumn',
-                    'contentOptions' => ['style' => 'width: 10%'],
-                    'template' => '{view} {update}',
+                    'contentOptions' => ['style' => 'width: 25%'],
+                    'template' => '{view} {update} {participant}',
                     //'visible' => false,
                     'buttons'=>[
                         'view'=>function ($url, $model) {
@@ -52,6 +52,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'update'=>function ($url, $model) {
                             return Html::a('<span class="fa fa-pencil"></span> UPDATE',['/batch/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        },
+                        'participant'=>function ($url, $model) {
+                        return Html::a('<span class="fa fa-pencil"></span> PARTICIPANTS',['/batch/view-candidates', 'bat_id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                         }
                     ],
                 
