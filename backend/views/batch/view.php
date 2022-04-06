@@ -127,7 +127,7 @@ table.detail-view th {
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('View Participants', ['view-candidates', 'bat_id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('View Participants', ['view-candidates', 'bat_id' => $model->id], ['class' => 'btn btn-success']) ?>
        
 
         

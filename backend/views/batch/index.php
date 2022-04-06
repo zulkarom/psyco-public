@@ -51,10 +51,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a('<span class="fa fa-eye"></span> VIEW',['/batch/view', 'id' => $model->id],['class'=>'btn btn-info btn-sm']);
                         },
                         'update'=>function ($url, $model) {
-                            return Html::a('<span class="fa fa-pencil"></span> UPDATE',['/batch/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                            return Html::a('<span class="fa fa-edit"></span> UPDATE',['/batch/update', 'id' => $model->id],['class'=>'btn btn-warning btn-sm']);
                         },
                         'participant'=>function ($url, $model) {
-                        return Html::a('<span class="fa fa-pencil"></span> PARTICIPANTS',['/batch/view-candidates', 'bat_id' => $model->id],['class'=>'btn btn-warning btn-sm']);
+                        return Html::a('<span class="fa fa-user"></span> PARTICIPANTS',['/batch/view-candidates', 'bat_id' => $model->id],['class'=>'btn btn-success btn-sm']);
                         }
                     ],
                 
