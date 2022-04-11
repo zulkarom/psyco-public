@@ -213,7 +213,9 @@ class BatchController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
 				$user = Candidate::findOne(['username' => $model->username]);
+				
 				if($user){
+				    $user->can_name = $model->can_name;
 					$model = $user;
 				}else{
 					$model->save();
@@ -268,6 +270,17 @@ class BatchController extends Controller
             'modelBatch' => $modelBatch,
             'modelAnswer' => $modelAnswer,
         ]);
+    }
+    
+    public function actionDeleteCandidate($cid,$bid)
+    {
+        $model = $this->findAnswer($cid,$bid);
+
+        if($model->delete()){
+            Yii::$app->session->addFlash('success', "Delete Successful");
+            return $this->redirect(['view-candidates', 'bat_id' => $bid]);
+        }
+        
     }
 
     public function actionUploadCandidates()
@@ -324,6 +337,14 @@ class BatchController extends Controller
             return $model;
         }
 
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    protected function findAnswer($cid,$bid)
+    {
+        if (($model = Answer::findOne(['can_id' => $cid, 'bat_id' => $bid])) !== null) {
+            return $model;
+        }
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

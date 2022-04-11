@@ -164,14 +164,18 @@ $grid_column3[] = array();
     }
     if($batch->bat_text || $batch->column1 || $batch->column2 || $batch->column3){
         $grid_columns[] = ['class' => 'yii\grid\ActionColumn',
-            'contentOptions' => ['style' => 'width: 10%'],
-            'template' => '{delete}',
+            'contentOptions' => ['style' => 'width: 16%'],
+            'template' => '{edit} {delete}',
             //'visible' => false,
             'buttons'=>[
-                'delete'=>function ($url, $model) {
-                    return Html::a('<span class="fa fa-trash"></span> Delete',['individual-result', 'id' => $model->id],['class'=>'btn btn-danger btn-sm']);
+                'delete'=>function ($url, $model)  use ($batch){
+                return Html::a('<span class="fa fa-trash"></span> Delete',['delete-candidate', 'cid' => $model->id, 'bid' => $batch->id],['class'=>'btn btn-danger btn-sm', 'data-confirm' => 'Are you sure to delete this participant? This action cannot be undone']);
+                },
+                'edit'=>function ($url, $model) use ($batch) {
+                return Html::a('<span class="fa fa-edit"></span> Edit',['/batch/update-candidate', 'cid' => $model->id, 'bid' => $batch->id],['class'=>'btn btn-primary btn-sm']);
                 },
             ],
+            
         ];
     }
 ?>
