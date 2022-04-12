@@ -151,6 +151,6 @@ class TestController extends Controller
             }
             echo 1;
         }
-        
+        exit;
     }
 }
