@@ -117,8 +117,8 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 	<br />
 <div id="timerMsg"></div>
 </div>
+	<?php //   <div style="text-align:center;" id="conxls" class="hidden"><br /><a href="#" id="dwnxls" >Save as Excel</a></div>  ?>
 	
-	<div style="text-align:center;" id="conxls" class="hidden"><br /><a href="#" id="dwnxls" >Save as Excel</a></div>
 </div>
 <!-- <button id="test">test</button> -->
 
