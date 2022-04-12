@@ -18,7 +18,10 @@ $columns = [
                 'format' => 'raw',
                 'label' => 'Full Name(NRIC)',
                 'value' => function($model){
-                    return $model->candidate->can_name.'<br/>('.$model->candidate->username.')';
+                    if($model->candidate){
+                        return $model->candidate->can_name.'<br/>('.$model->candidate->username.')';
+                    }
+                    
                 }
             ],
             [
@@ -82,13 +85,19 @@ $columns = [
                         'attribute' => 'others',
                         'label' => 'Name',
                         'value' => function($model){
+                        if($model->candidate){
                             return $model->candidate->can_name;
+                        }
+                            
                         }
                     ],
 					[
                         'label' => 'NRIC',
                         'value' => function($model){
+                        if($model->candidate){
                             return $model->candidate->username;
+                        }
+                            
                         }
                     ],
                     [

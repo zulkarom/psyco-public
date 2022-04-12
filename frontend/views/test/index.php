@@ -126,7 +126,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 
 <script>
 var originalTimer = 15; //minutes
-var baki = '<?=$answer->answer_last_saved;?>';
+var baki = '<?=$answer->answer_last_saved ? $answer->answer_last_saved : '15:00';?>';
 var res = baki.split(":");
 var mm = 0;
 var ss = 0;
@@ -330,6 +330,7 @@ function submitForm(action,curtime) {
 } 
 
 function ajaxSubmit(action,curtime){
+	console.log('ajaxSubmit');
 	if(checkNetConnection(action)){
 		$.ajax({
         type: "POST",

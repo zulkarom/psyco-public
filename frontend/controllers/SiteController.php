@@ -128,7 +128,8 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        $this->layout = "//main-login";
+        return $this->redirect('index');
+    /*     $this->layout = "//main-login";
 
         if(\Yii::$app->request->post('submit')) {
             $submit = \Yii::$app->request->post('submit');
@@ -159,7 +160,7 @@ class SiteController extends Controller
             return $this->render('login', [
                 'model' => $model,
             ]);
-        }
+        } */
     }
 
     /**
