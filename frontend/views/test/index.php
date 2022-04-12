@@ -330,7 +330,7 @@ function submitForm(action,curtime) {
 } 
 
 function ajaxSubmit(action,curtime){
-	console.log('ajaxSubmit');
+	console.log('dlm ajaxSubmit action=' + action);
 	if(checkNetConnection(action)){
 		$.ajax({
         type: "POST",
@@ -352,6 +352,8 @@ function ajaxSubmit(action,curtime){
         dataType: "json",
         timeout: 15000, // in milliseconds
         success: function(result){
+        console.log('success ' + action);
+        console.log('result = ' + result);
 			if(action==0){
 				if(result ==1){
 					$("#errmsg").html("");
