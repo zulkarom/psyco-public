@@ -204,7 +204,7 @@ $("#submit-btn").click(function(){
 		$("#q"+curr).addClass("hidden");
 		$("#submit-btn").addClass("hidden");
 		submitForm(0,0);
-		$('#ginstruction').html("Ujian Tamat / The Test Ends"+linklogout); 
+		$('#ginstruction').html("Ujian Tamat / The Test Ends"); 
 		$('#ginstruction').removeClass("hidden");
 		stopTimer();
 		$('#shortly').countdown('toggle');
@@ -277,7 +277,7 @@ function stopTimer(){
 		$('#timerMsg').addClass("hidden");
 }
 function liftOff() { 
-	$('#ginstruction').html("Masa telah tamat / The time ends"+linklogout); 
+	$('#ginstruction').html("Masa telah tamat / The time ends"); 
 	$('#ginstruction').removeClass("hidden");
 	$('#quest-container').hide();
 	submitForm(0,0);
