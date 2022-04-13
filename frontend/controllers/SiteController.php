@@ -88,9 +88,9 @@ class SiteController extends Controller
             $submit = \Yii::$app->request->post('submit');
             if($submit == 1){
                 $model->scenario = 'login';
-                if (!Yii::$app->user->isGuest) {
+                /* if (!Yii::$app->user->isGuest) {
                     return $this->goHome();
-                }
+                } */
                 
                 $session = Yii::$app->session;
                 if ($model->load(Yii::$app->request->post()) && $model->login()) {
