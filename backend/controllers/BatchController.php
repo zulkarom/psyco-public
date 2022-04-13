@@ -88,7 +88,8 @@ class BatchController extends Controller
                                     $newAns->$q = '-1';
                                 }
                                 if(!$newAns->save()){
-                                    
+                                    $newAns->flashError();
+
                                 }
                             }
                         }else{
