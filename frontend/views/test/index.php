@@ -106,7 +106,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 	</div>
 	<div id="errmsg" style="text-align:center;color:red"></div>
 	<div id="goodmsg" style="text-align:center;display:none">
-	<br/>
+	<img src="<?php echo Yii::getAlias('@web')?>/images/loading.gif" /><br/>
 	Sila Tunggu, Jawapan Anda Sedang Dihantar / Please wait, your answering is being submitted
 	</div>
     </div>
