@@ -22,12 +22,12 @@ if($user->can('manage-admin')){
 
    /*  $items[] =  ['label' => 'Setting', 'level' => 1, 'url' => ['/setting/index'], 'icon' => 'fas fa-cog', 'children' => []]; */
 
-    $items[] =  ['label' => 'System Management', 'level' => 2 , 'icon' => 'fas fa-th', 'children' => [
+/*     $items[] =  ['label' => 'System Management', 'level' => 2 , 'icon' => 'fas fa-th', 'children' => [
                     ['label' => 'User Assignment', 'url' => ['/admin/assignment/index'], 'icon' => 'far fa-circle'],
                     ['label' => 'Role List', 'url' => ['/admin/role/index'], 'icon' => 'far fa-circle'],
                     ['label' => 'Route List', 'url' => ['/admin/route/index'], 'icon' => 'far fa-circle'],
                         
-                ]];
+                ]]; */
 }
 $items[] = ['label' => 'Change Password', 'level' => 1, 'url' => ['/candidate/change-password'], 'icon' => 'fas fa-unlock-alt', 'children' => []];
 

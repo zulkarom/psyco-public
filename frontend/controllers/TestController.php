@@ -5,8 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use backend\models\Answer;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use backend\models\Batch;
 use backend\models\Question;
 
@@ -18,13 +17,17 @@ class TestController extends Controller
     /**
      * {@inheritdoc}
      */
+
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -148,6 +151,6 @@ class TestController extends Controller
             }
             echo 1;
         }
-        
+        exit;
     }
 }

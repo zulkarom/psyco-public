@@ -117,8 +117,8 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 	<br />
 <div id="timerMsg"></div>
 </div>
+	<?php //   <div style="text-align:center;" id="conxls" class="hidden"><br /><a href="#" id="dwnxls" >Save as Excel</a></div>  ?>
 	
-	<div style="text-align:center;" id="conxls" class="hidden"><br /><a href="#" id="dwnxls" >Save as Excel</a></div>
 </div>
 <!-- <button id="test">test</button> -->
 
@@ -126,7 +126,7 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
 
 <script>
 var originalTimer = 15; //minutes
-var baki = '<?=$answer->answer_last_saved;?>';
+var baki = '<?=$answer->answer_last_saved ? $answer->answer_last_saved : '15:00';?>';
 var res = baki.split(":");
 var mm = 0;
 var ss = 0;
@@ -204,7 +204,7 @@ $("#submit-btn").click(function(){
 		$("#q"+curr).addClass("hidden");
 		$("#submit-btn").addClass("hidden");
 		submitForm(0,0);
-		$('#ginstruction').html("Ujian Tamat / The Test Ends"+linklogout); 
+		$('#ginstruction').html("Ujian Tamat / The Test Ends"); 
 		$('#ginstruction').removeClass("hidden");
 		stopTimer();
 		$('#shortly').countdown('toggle');
@@ -277,7 +277,7 @@ function stopTimer(){
 		$('#timerMsg').addClass("hidden");
 }
 function liftOff() { 
-	$('#ginstruction').html("Masa telah tamat / The time ends"+linklogout); 
+	$('#ginstruction').html("Masa telah tamat / The time ends"); 
 	$('#ginstruction').removeClass("hidden");
 	$('#quest-container').hide();
 	submitForm(0,0);
@@ -330,6 +330,7 @@ function submitForm(action,curtime) {
 } 
 
 function ajaxSubmit(action,curtime){
+	console.log('dlm ajaxSubmit action=' + action);
 	if(checkNetConnection(action)){
 		$.ajax({
         type: "POST",
@@ -351,6 +352,8 @@ function ajaxSubmit(action,curtime){
         dataType: "json",
         timeout: 15000, // in milliseconds
         success: function(result){
+        console.log('success ' + action);
+        console.log('result = ' + result);
 			if(action==0){
 				if(result ==1){
 					$("#errmsg").html("");
