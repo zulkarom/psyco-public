@@ -32,9 +32,13 @@ $form = ActiveForm::begin([
     </div>
     <div class="col-md-4">
 
-        <?= $form->field($model, 'bat_id')->dropDownList(
-            ArrayHelper::map(Batch::find()->all(),'id', 'bat_text'), ['options'=>[$bat_id=>["Selected"=>true]]]
-        )->label(false) ?>
+        <?php 
+        if(Yii::$app->user->identity->id == 1){
+            echo $form->field($model, 'bat_id')->dropDownList(
+                ArrayHelper::map(Batch::find()->all(),'id', 'bat_text'), ['options'=>[$bat_id=>["Selected"=>true]]]
+                )->label(false);
+        }
+         ?>
 
     </div>
    
