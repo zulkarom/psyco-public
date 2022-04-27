@@ -19,6 +19,7 @@ class ResultSearch extends Candidate
     public $point_min_total;
     public $domainOrder;
     public $column1;
+    public $domain;
     /**
      * {@inheritdoc}
      */
@@ -56,6 +57,7 @@ class ResultSearch extends Candidate
         'a.column1', 'a.column2', 'a.column3', 'a.column4'];
         $c=1;
 		$calc_all = '';
+		$this->domain = [];
 		foreach($result as $row){
 			if($row->grade_cat <> 99){
 				if($c==1){$comma="";}else{$comma=", ";}
@@ -71,6 +73,7 @@ class ResultSearch extends Candidate
 				}
 				
 				$str .= " as c". $row->grade_cat;
+				$this->domain[] = $row->grade_cat;
 				$c++;  
 				$colum[] = $str; 
 			}
@@ -152,12 +155,12 @@ class ResultSearch extends Candidate
         ->andWhere(['b.id' => $this->bat_id, 'a.answer_status' => 3]);
         if($this->point_min){
             $point = $this->point_min;
-            $query = $query->andHaving(['>=', 'c1', $point]);
-            $query = $query->andHaving(['>=', 'c2', $point]);
-            $query = $query->andHaving(['>=', 'c3', $point]);
-            $query = $query->andHaving(['>=', 'c4', $point]);
-            $query = $query->andHaving(['>=', 'c5', $point]);
-            $query = $query->andHaving(['>=', 'c6', $point]);
+            if($this->domain){
+                foreach($this->domain as $c){
+                    $query = $query->andHaving(['>=', $c.'1', $point]);
+                }
+            }
+      
         }
         if($this->point_min_total){
             $point = $this->point_min_total;
