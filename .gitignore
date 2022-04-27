@@ -39,6 +39,7 @@ phpunit.phar
 
 # ignore generated files
 backend/web/
+backend/views/sheetjs
 frontend/web/
 website/web/
 frontend/web/
