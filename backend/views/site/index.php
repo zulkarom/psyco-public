@@ -92,7 +92,12 @@ $defaultBatch = Batch::findOne(['bat_show' => 1]);
 		
 		<div class="col-lg-6 col-6">
 		  
-		  
+		<?php 
+		$count_submit = Answer::countDefaultBatchAnswer();
+		$count_started =  Answer::countDefaultBatchStarted();
+		$count_notstarted = Answer::countDefaultBatchNotAnswer();
+		
+		?>  
 		  <div class="row">
 <div class="col-lg-6 col-6">
             <!-- small box -->
@@ -115,7 +120,7 @@ $defaultBatch = Batch::findOne(['bat_show' => 1]);
           <div class="col-lg-6 col-6">
            <div class="small-box bg-success">
               <div class="inner">
-                <h3><?php echo Answer::countDefaultBatchAnswer()?></h3>
+                <h3><?php echo $count_submit?></h3>
 
                 <p>Submitted</p>
               </div>
@@ -129,7 +134,7 @@ $defaultBatch = Batch::findOne(['bat_show' => 1]);
 		  <div class="col-lg-6 col-6">
            <div class="small-box bg-warning">
               <div class="inner">
-                <h3><?php echo Answer::countDefaultBatchStarted()?></h3>
+                <h3><?php echo $count_started ?></h3>
 
                 <p>Started</p>
               </div>
@@ -143,9 +148,9 @@ $defaultBatch = Batch::findOne(['bat_show' => 1]);
 		  <div class="col-lg-6 col-6">
            <div class="small-box bg-danger">
               <div class="inner">
-                <h3><?php echo Answer::countDefaultBatchNotAnswer()?></h3>
+                <h3><?php echo $count_notstarted?></h3>
 
-                <p>Not Submit</p>
+                <p>Not Started</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
@@ -180,10 +185,12 @@ $defaultBatch = Batch::findOne(['bat_show' => 1]);
 <?php
   
   $answer = [];
+  $started = [];
   $notAnswer = [];
 
-  $answer[] = Answer::countDefaultBatchAnswer();
-  $notAnswer[] = Answer::countDefaultBatchNotAnswer();
+  $answer[] =$count_submit;
+  $started[] = $count_started;
+  $notAnswer[] = $count_notstarted;
 ?>
 
 <?php JSRegister::begin(); ?>
@@ -196,17 +203,19 @@ $defaultBatch = Batch::findOne(['bat_show' => 1]);
 
     var data_answer = <?php echo json_encode($answer)?>;
     var data_not_answer = <?php echo json_encode($notAnswer)?>;
+    var data_started = <?php echo json_encode($started)?>;
 
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
     var pieData        = {
       labels: [
-          'Answers',
-          'Not Answers',
+          'Submitted',
+          'Started',
+          'Not Started',
       ],
       datasets: [
         {
-          data: [data_answer,data_not_answer],
-          backgroundColor : ['#17a2b8', '#28a745'],
+          data: [data_answer,data_started, data_not_answer],
+          backgroundColor : ['#28a745', '#ffc107',  '#dc3545'],
         }
       ]
     }

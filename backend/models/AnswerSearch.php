@@ -64,7 +64,7 @@ class AnswerSearch extends Answer
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'a.answer_status' => $this->answer_status,
+            'a.overall_status' => $this->answer_status,
             'bat_id' => $this->bat_id,
         ]);
 

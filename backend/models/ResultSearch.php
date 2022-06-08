@@ -157,7 +157,7 @@ class ResultSearch extends Candidate
             $point = $this->point_min;
             if($this->domain){
                 foreach($this->domain as $c){
-                    $query = $query->andHaving(['>=', $c.'1', $point]);
+                    $query = $query->andHaving(['>=', 'c'.$c, $point]);
                 }
             }
       
