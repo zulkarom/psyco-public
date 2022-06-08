@@ -24,7 +24,19 @@ $this->title = 'UJIAN PSIKOMETRIK / PSYCHOMETRIC TEST';
             <!-- login box on left side -->
             <div>
 
-<img src="<?=$dirAssets?>/images/Psychometric-Tests.png" width="80%" />
+
+
+<picture >
+   <source
+      media="(min-width: 650px)"
+      srcset="<?=$dirAssets?>/images/banner-gems.png" width="100%">
+   <source
+      media="(min-width: 465px)"
+      srcset="<?=$dirAssets?>/images/banner-gems.png" width="100%">
+   <img src="<?=$dirAssets?>/images/banner-gems.png"
+    width="100%">
+</picture>
+
 
 <?php
 
