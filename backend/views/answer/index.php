@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use kartik\export\ExportMenu;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\AnswerSearch */
@@ -15,31 +17,38 @@ $columns = [
           
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'format' => 'raw',
-                'label' => 'Full Name(NRIC)',
+                'label' => 'NAME',
+                'contentOptions' => ['cellFormat' => DataType::TYPE_STRING], 
                 'value' => function($model){
                     if($model->candidate){
-                        return $model->candidate->can_name.'<br/>('.$model->candidate->username.')';
+                        return strtoupper($model->candidate->can_name);
                     }
                     
                 }
             ],
             [
-                'format' => 'raw',
+                'label' => 'NRIC',
+                'contentOptions' => ['cellFormat' => DataType::TYPE_STRING], 
+                'value' => function($model){
+                    if($model->candidate){
+                        return $model->candidate->username;
+                    }
+                    
+                }
+            ],
+            [
                 'label' => 'Batch',
                 'value' => function($model){
                     return $model->batch->bat_text;
                 }
             ],
             [
-                'format' => 'raw',
                 'attribute' => 'status',
                 'value' => function($model){
-                    return $model->statusText;
+                    return strtoupper($model->statusText);
                 }
             ],
             [
-                'format' => 'raw',
                 'attribute' => 'finished_at',
                 'value' => function($model){
                     if($model->finished_at){
@@ -57,14 +66,54 @@ $columns = [
 
     <div class="row">
 
-        <div class="col-md-10">
+        <div class="col-md-9">
             <?= $this->render('_form_search', [
                 'model' => $searchModel,
             ]) ?>
         </div>
 
         <div class="col-md-2">
-            <?= Html::a('OVERALL RESULT', ['/result/index', "bat_id" => $searchModel->bat_id, 'type' => 1], ['class' => 'btn btn-info']) ?>
+            <?= Html::a('OVERALL RESULT', ['/result/index', "bat_id" => $searchModel->bat_id, 'type' => 1], ['class' => 'btn btn-info btn-block']) ?>
+        </div>
+        <div class="col-md-1">
+        <div style="display:none">
+            <?=
+            ExportMenu::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => $columns,
+            'columnSelectorOptions'=>[
+                'label' => 'Columns',
+                'class' => 'btn btn-danger',
+                'style'=> 'display:none;', 
+            ],
+            'fontAwesome' => true,
+            'dropdownOptions' => [
+                'label' => 'DOWNLOAD',
+                'class' => 'btn btn-danger',
+                'style'=> 'color:white;',
+            ],
+            'filename' => 'ALL PARTICIPANTS',
+            'clearBuffers' => true,
+            'onRenderSheet'=>function($sheet, $grid){
+                $sheet->getStyle('A2:'.$sheet->getHighestColumn().$sheet->getHighestRow())
+                ->getAlignment()->setWrapText(true);
+            },
+            'exportConfig' => [
+                ExportMenu::FORMAT_EXCEL_X => false,
+                ExportMenu::FORMAT_HTML => false,
+                ExportMenu::FORMAT_CSV => false,
+                ExportMenu::FORMAT_TEXT => false,
+            ],
+        ]);
+        ?>   </div>
+        <div class="form-group"> <button class="btn btn-success btn-block" id="dwl-exl"><i class="fa fa-download"></i> Excel</button></div>
+        <?php 
+     $this->registerJs('
+            $("#dwl-exl").click(function(){
+                $("#w0-xls")[0].click();
+            });
+     ');
+     ?>
         </div>
     </div>
 

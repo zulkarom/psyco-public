@@ -335,7 +335,10 @@ class Answer extends \yii\db\ActiveRecord
 	
 	public function getStatusText(){
 		$list = [0 => 'Not Started', 1 => 'Started', 3 => 'Submitted'];
-        return $list[$this->overall_status];
+        if(array_key_exists($this->overall_status, $list)){
+            return $list[$this->overall_status];
+        }
+        
     }
 	
 	public static function statusByUserBatch($user, $batch){
